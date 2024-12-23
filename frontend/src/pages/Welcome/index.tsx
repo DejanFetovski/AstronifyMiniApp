@@ -22,7 +22,7 @@ const Welcome = () => {
     >
       {step == 0 ? (
         <>
-          <img src="assets/images/stars.png"></img>
+          <img src="assets/images/stars.png" className="scale-125"></img>
           <div className="text-[36px] leading-[38px] tracking-[0.4px] font-bold text-[#EAEAEA] flex flex-col gap-[30px]">
             <span>Start cannot talk without details.....</span>
             <span>Share yours!</span>

@@ -2,3 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+.gradientButton {
+  background: linear-gradient(
+    137.48deg,
+    rgba(255, 83, 188, 0.15) 15.13%,
+    rgba(10, 252, 212, 0.15) 87.01%
+  );
+  border: 2px solid linear-gradient(115.09deg, #fe53bb 20.63%, #03b1fb 92.38%);
+  backdrop-filter: blur(42px);
+}

@@ -2,8 +2,23 @@ import TaskIcon from "../../svgs/TaskIcon";
 import WalletIcon from "../../svgs/WalletIcon";
 
 const Horoscope = () => {
+  const handleClickProfile = () => {
+    console.log("handleClickProfile");
+  };
+
+  const handleClickAgent = () => {
+    console.log("handleClickAgent");
+  };
+
+  const handleClickInvite = () => {
+    console.log("handleClickInvite");
+  };
   return (
-    <div className="horoscope min-h-screen flex flex-col justify-start gap-[42px] px-6 pt-[56px] pb-[28px]">
+    <div className="horoscope relative min-h-screen flex flex-col justify-start gap-[42px] px-6 pt-[56px] pb-[28px]">
+      <img
+        src="assets/images/diagram.png"
+        className="absolute top-0 right-0"
+      ></img>
       <h1 className="text-[24px] leading-[43px] tracking-[0.4px] text-white">
         Daily Horoscope
       </h1>
@@ -59,10 +74,15 @@ const Horoscope = () => {
           <span>Wallet</span>
         </div>
       </div>
-
-      <div className="relative w-full px-[20px] flex justify-center">
-        <img src="assets/images/bottombar.png" className=""></img>
-        <div></div>
+      <div className="flex justify-center">
+        <div className="relative max-w-[321px] flex flex-col items-center justify-center">
+          <img src="assets/images/bottombar.png" className="w-full"></img>
+          <div className="absolute w-full h-full top-0 left-0 grid grid-cols-3">
+            <button onClick={handleClickProfile}></button>
+            <button onClick={handleClickAgent}></button>
+            <button onClick={handleClickInvite}></button>
+          </div>
+        </div>
       </div>
     </div>
   );

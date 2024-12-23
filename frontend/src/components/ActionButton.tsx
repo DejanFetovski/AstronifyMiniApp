@@ -11,11 +11,8 @@ const ActionButton: React.FC<ActionButtonProps> = ({
   ...rest
 }) => {
   return (
-    <button
-      className={`bg-gradient-to-r from-[rgba(255,83,188,0.15)] via-transparent to-[rgba(10,252,212,0.15)] border-[2px] border-[#FF53BC26] rounded-full p-4 backdrop-blur-[40px] ${className}`}
-      {...rest}
-    >
-      {children}
+    <button className={`rounded-full ${className}`} {...rest}>
+      <img src="assets/images/button.png"></img>
     </button>
   );
 };
