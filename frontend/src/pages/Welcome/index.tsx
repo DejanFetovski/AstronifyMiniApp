@@ -6,14 +6,20 @@ import ActionButton from "../../components/ActionButton";
 import { useNavigate } from "react-router-dom";
 
 const Welcome = () => {
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(0);
   const navigate = useNavigate();
   const handleClick = () => {
     navigate("/horoscope");
   };
+  const handleBgClick = () => {
+    setStep(1);
+  };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-start gap-[42px] px-10 pt-10">
+    <div
+      className="min-h-screen flex flex-col items-center justify-start gap-[42px] px-10 pt-10"
+      onClick={handleBgClick}
+    >
       {step == 0 ? (
         <>
           <img src="assets/images/stars.png"></img>
