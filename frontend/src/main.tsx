@@ -8,6 +8,7 @@ import Question from "./pages/Question";
 import Welcome from "./pages/Welcome";
 import Horoscope from "./pages/Horoscope";
 import Wallet from "./pages/Wallet";
+import Tasks from "./pages/Tasks";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -19,6 +20,7 @@ createRoot(document.getElementById("root")!).render(
           <Route path="/welcome" element={<Welcome />} />
           <Route path="/horoscope" element={<Horoscope />} />
           <Route path="/wallet" element={<Wallet />} />
+          <Route path="/tasks" element={<Tasks />} />
         </Route>
       </Routes>
     </BrowserRouter>

@@ -1,14 +1,20 @@
+import { useNavigate } from "react-router-dom";
+
 const BottomBar = () => {
+  const navigate = useNavigate();
   const handleClickProfile = () => {
     console.log("handleClickProfile");
+    navigate("/");
   };
 
   const handleClickAgent = () => {
     console.log("handleClickAgent");
+    navigate("/agent");
   };
 
   const handleClickInvite = () => {
     console.log("handleClickInvite");
+    navigate("/invite");
   };
   return (
     <div className="absolute bottom-[32px] flex justify-center">

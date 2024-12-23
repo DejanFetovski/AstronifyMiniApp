@@ -42,3 +42,15 @@
     rgba(139, 139, 139, 0.5) 100%
   );
 }
+
+.colorDivider {
+  height: 1px;
+  width: 100%;
+  background: linear-gradient(
+    90deg,
+    rgba(8, 41, 230, 0.486) 0%,
+    #dd0ce4 45.5%,
+    rgba(192, 13, 138, 0.781) 100%
+  );
+  opacity: 60%;
+}

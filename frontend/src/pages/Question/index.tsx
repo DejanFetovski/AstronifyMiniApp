@@ -14,7 +14,7 @@ const Question = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-start gap-[42px] px-10 pt-10">
+    <div className="min-h-screen flex flex-col items-center justify-start gap-[20px] px-10 pt-10">
       {step == 0 ? (
         <>
           <img src="assets/images/tree.png"></img>
