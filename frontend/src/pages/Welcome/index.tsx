@@ -1,7 +1,13 @@
 import { useState } from "react";
+import WomanIcon from "../../svgs/FemaleIcon";
+import MaleIcon from "../../svgs/MaleIcon";
+import ArrowDown from "../../svgs/ArrowDown";
+import FemaleIcon from "../../svgs/FemaleIcon";
+import ActionButton from "../../components/ActionButton";
 
 const Welcome = () => {
   const [step, setStep] = useState(1);
+  const handleClick = () => {};
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-start gap-[42px] px-10 pt-10">
@@ -16,7 +22,7 @@ const Welcome = () => {
       ) : (
         <>
           <img src="assets/images/suns.png"></img>
-          <div className="flex flex-col gap-[18px] w-full">
+          <div className="flex flex-col gap-[18px] w-full  items-start">
             <div className="flex flex-col w-full gap-1">
               <span className="text-[17px] leading-[22px] tracking-[-0.4px] text-[#FFFFFFBF]">
                 Your Name
@@ -29,25 +35,51 @@ const Welcome = () => {
               </div>
             </div>
 
-            <div className="flex flex-col gap-1">
+            <div className="flex flex-col gap-1 w-full">
               <span className="text-[17px] leading-[22px] tracking-[-0.4px] text-[#FFFFFFBF]">
                 Date of birth
               </span>
               <div className="grid grid-cols-2 gap-[20px]">
-                <div className="border-[1px] border-black bg-[#00000075] [box-shadow:0px_0px_0px_1px_rgba(255,255,255,0.25)] rounded-full py-2 px-3 h-[48px] w-full">
+                <div className="relative flex items-center border-[1px] border-black bg-[#00000075] [box-shadow:0px_0px_0px_1px_rgba(255,255,255,0.25)] rounded-full py-2 px-3 h-[48px] w-full">
                   <input
                     className="text-[#FFFFFF99] outline-none cursor-pointer bg-transparent border-none text-[14px] leading-[22px] font-light"
                     placeholder="DD"
                   ></input>
+                  <div className="absolute right-3">
+                    <ArrowDown />
+                  </div>
                 </div>
 
-                <div className="border-[1px] border-black bg-[#00000075] [box-shadow:0px_0px_0px_1px_rgba(255,255,255,0.25)] rounded-full py-2 px-3 h-[48px] w-full">
+                <div className="relative flex items-center border-[1px] border-black bg-[#00000075] [box-shadow:0px_0px_0px_1px_rgba(255,255,255,0.25)] rounded-full py-2 px-3 h-[48px] w-full">
                   <input
                     className="text-[#FFFFFF99] outline-none cursor-pointer bg-transparent border-none text-[14px] leading-[22px] font-light"
                     placeholder="MM"
                   ></input>
+                  <div className="absolute right-3">
+                    <ArrowDown />
+                  </div>
                 </div>
               </div>
+            </div>
+
+            <div className="bg-[#00000066] border-[1px] border-black [box-shadow: 0px_0px_0px_1px_rgba(187, 167, 167, 0.15)] rounded-full flex p-1 gap-3">
+              <div className="bg-[rgb(254,83,187)] flex items-center p-2 rounded-full gap-2 pr-4 text-[16.7px] leading-[22px] tracking-[-0.34px] text-white">
+                <FemaleIcon />
+                <span>Female</span>
+              </div>
+              <div className="bg-transparent flex items-center p-2 rounded-full gap-2 pr-4 text-[16.7px] leading-[22px] tracking-[-0.34px] text-[#737B84BF]">
+                <MaleIcon />
+                <span>Female</span>
+              </div>
+            </div>
+
+            <div className="w-full flex items-center justify-center mt-4">
+              <ActionButton
+                className="w-[167px] h-[40px] flex justify-center items-center"
+                onClick={handleClick}
+              >
+                {<span className="text-[14px] text-white">Next</span>}
+              </ActionButton>
             </div>
           </div>
         </>
