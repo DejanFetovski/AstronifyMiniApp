@@ -9,7 +9,7 @@ const Welcome = () => {
   const [step, setStep] = useState(0);
   const navigate = useNavigate();
   const handleClick = () => {
-    navigate("/horoscope");
+    navigate("/profile");
   };
   const handleBgClick = () => {
     setStep(1);

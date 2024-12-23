@@ -4,7 +4,7 @@ const BottomBar = () => {
   const navigate = useNavigate();
   const handleClickProfile = () => {
     console.log("handleClickProfile");
-    navigate("/horoscope");
+    navigate("/profile");
   };
 
   const handleClickAgent = () => {

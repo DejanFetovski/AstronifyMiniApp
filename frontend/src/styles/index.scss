@@ -80,3 +80,10 @@
   );
   backdrop-filter: blur(42px);
 }
+
+.askInput {
+  box-shadow: -1px 9px 16px 0px rgba(101, 117, 231, 1),
+    2px -7px 14px 0px rgba(101, 117, 231, 1);
+  background: linear-gradient(90deg, #9b54dd 0%, rgba(60, 148, 215, 0.95) 100%);
+  backdrop-filter: blur(42px);
+}

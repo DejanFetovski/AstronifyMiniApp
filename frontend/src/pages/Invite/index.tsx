@@ -31,7 +31,7 @@ const Invite = () => {
           </div>
         </div>
 
-        <div className="inviteCard mt-12 border border border-[#FE53BB] ">
+        <div className="inviteCard mt-12 border border-[#FE53BB] ">
           <div className="flex justify-between items-center mb-4">
             <span className="text-[24px] leading-[32.7px] text-white">
               Invite a friend
