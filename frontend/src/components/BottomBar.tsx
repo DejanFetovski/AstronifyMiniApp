@@ -9,7 +9,7 @@ const BottomBar = () => {
 
   const handleClickAgent = () => {
     console.log("handleClickAgent");
-    navigate("/agent");
+    navigate("/horoscope");
   };
 
   const handleClickInvite = () => {
