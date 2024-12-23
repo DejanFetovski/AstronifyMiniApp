@@ -3,10 +3,14 @@ import MaleIcon from "../../svgs/MaleIcon";
 import ArrowDown from "../../svgs/ArrowDown";
 import FemaleIcon from "../../svgs/FemaleIcon";
 import ActionButton from "../../components/ActionButton";
+import { useNavigate } from "react-router-dom";
 
 const Welcome = () => {
   const [step, setStep] = useState(1);
-  const handleClick = () => {};
+  const navigate = useNavigate();
+  const handleClick = () => {
+    navigate("/horoscope");
+  };
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-start gap-[42px] px-10 pt-10">

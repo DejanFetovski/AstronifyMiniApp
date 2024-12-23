@@ -60,11 +60,8 @@ const Horoscope = () => {
         </div>
       </div>
 
-      <div className="relative w-full px-[20px]">
-        <img
-          src="assets/images/bottombar.png"
-          className="absolute left-0 right-0"
-        ></img>
+      <div className="relative w-full px-[20px] flex justify-center">
+        <img src="assets/images/bottombar.png" className=""></img>
         <div></div>
       </div>
     </div>
