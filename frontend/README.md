@@ -1,0 +1,1 @@
+# Frontend Project for Astronify Mini App
