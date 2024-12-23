@@ -11,3 +11,34 @@
   border: 2px solid linear-gradient(115.09deg, #fe53bb 20.63%, #03b1fb 92.38%);
   backdrop-filter: blur(42px);
 }
+
+.greenButton {
+  background: linear-gradient(
+    137.48deg,
+    #43c713 15.13%,
+    #74e646 49.63%,
+    #47ce08 87.01%
+  );
+  backdrop-filter: blur(42px);
+}
+
+.blueButton {
+  background: linear-gradient(
+    137.48deg,
+    #1367c7 15.13%,
+    #4698e6 51.07%,
+    #0893ce 87.01%
+  );
+  backdrop-filter: blur(42px);
+}
+
+.divider {
+  height: 1px;
+  width: 100%;
+  background: linear-gradient(
+    270deg,
+    rgba(139, 139, 139, 0.5) 0%,
+    #ffffff 45.5%,
+    rgba(139, 139, 139, 0.5) 100%
+  );
+}

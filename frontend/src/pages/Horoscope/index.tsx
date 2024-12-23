@@ -1,20 +1,20 @@
+import { useNavigate } from "react-router-dom";
+import BottomBar from "../../components/BottomBar";
 import TaskIcon from "../../svgs/TaskIcon";
 import WalletIcon from "../../svgs/WalletIcon";
 
 const Horoscope = () => {
-  const handleClickProfile = () => {
-    console.log("handleClickProfile");
+  const navigate = useNavigate();
+
+  const handleClickWallet = () => {
+    navigate("/wallet");
   };
 
-  const handleClickAgent = () => {
-    console.log("handleClickAgent");
-  };
-
-  const handleClickInvite = () => {
-    console.log("handleClickInvite");
+  const handleClickTasks = () => {
+    navigate("/tasks");
   };
   return (
-    <div className="horoscope relative min-h-screen flex flex-col justify-start gap-[42px] px-6 pt-[56px] pb-[28px]">
+    <div className="horoscope relative min-h-screen flex flex-col justify-start gap-[20px] px-6 pt-[30px] pb-[28px]">
       <img
         src="assets/images/diagram.png"
         className="absolute top-0 right-0"
@@ -51,7 +51,7 @@ const Horoscope = () => {
       </div>
 
       <div className="w-full flex justify-center">
-        <img src="assets/images/horoscope.png"></img>
+        <img src="assets/images/horoscope.png" className="h-[244px]"></img>
       </div>
 
       <span className="text-[24px] leading-[43px] tracking-[0.4px] font-bold text-white text-center">
@@ -61,13 +61,19 @@ const Horoscope = () => {
       <div className="divider border-[1px] border-[#8B8B8B80] opacity-40 px-[20px]"></div>
 
       <div className="grid grid-cols-2 text-white gap-[17px]">
-        <div className="flex items-center justify-center gap-2 bg-gradient-to-r from-[rgba(134,134,134,0.5)] to-[rgba(88,88,88,0.5)] border border-[#77777766] rounded-[20px] py-[14px] backdrop-blur-[42px]">
+        <div
+          className="flex items-center justify-center gap-2 bg-gradient-to-r from-[rgba(134,134,134,0.5)] to-[rgba(88,88,88,0.5)] border border-[#77777766] rounded-[20px] py-[14px] backdrop-blur-[42px]"
+          onClick={handleClickTasks}
+        >
           <div>
             <TaskIcon />
           </div>
           <span>Tasks</span>
         </div>
-        <div className="flex items-center justify-center gap-2 bg-gradient-to-r from-[rgba(134,134,134,0.5)] to-[rgba(88,88,88,0.5)] border border-[#77777766] rounded-[20px] py-[14px] backdrop-blur-[42px]">
+        <div
+          className="flex items-center justify-center gap-2 bg-gradient-to-r from-[rgba(134,134,134,0.5)] to-[rgba(88,88,88,0.5)] border border-[#77777766] rounded-[20px] py-[14px] backdrop-blur-[42px]"
+          onClick={handleClickWallet}
+        >
           <div>
             <WalletIcon />
           </div>
@@ -75,14 +81,7 @@ const Horoscope = () => {
         </div>
       </div>
       <div className="flex justify-center">
-        <div className="relative max-w-[321px] flex flex-col items-center justify-center">
-          <img src="assets/images/bottombar.png" className="w-full"></img>
-          <div className="absolute w-full h-full top-0 left-0 grid grid-cols-3">
-            <button onClick={handleClickProfile}></button>
-            <button onClick={handleClickAgent}></button>
-            <button onClick={handleClickInvite}></button>
-          </div>
-        </div>
+        <BottomBar />
       </div>
     </div>
   );
