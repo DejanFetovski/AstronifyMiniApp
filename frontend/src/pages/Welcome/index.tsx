@@ -1,5 +1,4 @@
 import { useState } from "react";
-import WomanIcon from "../../svgs/FemaleIcon";
 import MaleIcon from "../../svgs/MaleIcon";
 import ArrowDown from "../../svgs/ArrowDown";
 import FemaleIcon from "../../svgs/FemaleIcon";
