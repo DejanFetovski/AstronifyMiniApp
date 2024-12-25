@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import AskInput from "../../components/AskInput";
 import BottomBar from "../../components/BottomBar";
+import GradientBorder from "../../components/GradientBorder";
 
 const Horoscope = () => {
   const navigate = useNavigate();
@@ -66,7 +67,19 @@ const Horoscope = () => {
           </div>
         </div>
 
-        <AskInput></AskInput>
+        <div className="px-[60px]">
+          <GradientBorder className="rounded-full" borderWidth={2}>
+            <div className="rounded-full gradient-bg flex items-center justify-between text-white px-4">
+              <span className="text-[15px] leading-[15px] tracking-[0.4px]">
+                Rewards Points
+              </span>  
+              <span className="text-[19px] leading-[43px] tracking-[0.4px]">
+                1000
+              </span>
+            </div>
+          </GradientBorder> 
+        </div>
+        <AskInput></AskInput >
       </div>
       <div className="flex justify-center">
         <BottomBar />

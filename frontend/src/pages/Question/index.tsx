@@ -67,7 +67,7 @@ const Question = () => {
       ) : (
         <>
           <img src="assets/images/box.png"></img>
-          <span className="text-[16px] leading-[22px] tracking-[0.4px] font-bold text-white">
+          <span className="text-[16px] leading-[22px] tracking-[0.4px] font-bold text-white -mt-12">
             Q. You reach a beautiful clearing with a hidden treasure chest at
             its center. The sun shines, a fresh breeze whispers, "You made it,
             adventurer!" Do you:
