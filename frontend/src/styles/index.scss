@@ -87,3 +87,32 @@
   background: linear-gradient(90deg, #9b54dd 0%, rgba(60, 148, 215, 0.95) 100%);
   backdrop-filter: blur(42px);
 }
+
+.border-wrap {
+  &.light {
+    background: linear-gradient(115deg, #fe53bb 20.6%, #03b1fb 92.4%);
+  }
+
+  &.dark {
+    background: linear-gradient(
+      114.72deg,
+      rgba(232, 54, 248, 0.117) 31.37%,
+      rgba(130, 241, 254, 0.117) 46.71%,
+      rgba(232, 54, 248, 0.39) 97.46%
+    );
+  }
+
+  .border-content {
+    width: 100%;
+    height: 100%;
+    background: #060417;
+  }
+}
+
+.gradient-bg {
+  background: linear-gradient(
+    137.48deg,
+    rgba(255, 83, 188, 0.15) 15.13%,
+    rgba(10, 252, 212, 0.15) 87.01%
+  );
+}

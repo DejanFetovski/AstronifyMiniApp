@@ -42,7 +42,16 @@ const Wallet = () => {
               Astrox:
             </span>
             <span className="text-[24px] leading-[43px] tracking-[0.4px] font-bold">
-              3.86
+              0
+            </span>
+          </div>
+
+          <div className="text-white px-[30px] py-[8px] flex items-center gap-4 bg-gradient-to-r from-[rgba(255,83,188,0.15)] to-[rgba(10,252,212,0.15)] border border-[#FE53BB] rounded-full">
+            <span className="text-[20px] leading-[43px] tracking-[0.4px]">
+              USDT:
+            </span>
+            <span className="text-[24px] leading-[43px] tracking-[0.4px] font-bold">
+              0
             </span>
           </div>
         </div>

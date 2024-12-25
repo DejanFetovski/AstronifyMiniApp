@@ -12,6 +12,8 @@ import Invite from "./pages/Invite";
 import Profile from "./pages/Profile";
 import Horoscope from "./pages/Horoscope";
 import Agent from "./pages/Agent";
+import Withdraw from "./pages/Withdraw";
+import Deposit from "./pages/Deposit";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -25,6 +27,8 @@ createRoot(document.getElementById("root")!).render(
           <Route path="/horoscope" element={<Horoscope />} />
           <Route path="/agent" element={<Agent />} />
           <Route path="/wallet" element={<Wallet />} />
+          <Route path="/withdraw" element={<Withdraw />} />
+          <Route path="/deposit" element={<Deposit />} />
           <Route path="/tasks" element={<Tasks />} />
           <Route path="/invite" element={<Invite />} />
         </Route>
