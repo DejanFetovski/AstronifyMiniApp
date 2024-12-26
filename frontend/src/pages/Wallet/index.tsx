@@ -1,6 +1,8 @@
+import { useNavigate } from "react-router-dom";
 import BottomBar from "../../components/BottomBar";
 
 const Wallet = () => {
+  const navigate = useNavigate();
   return (
     <div className="horoscope relative min-h-screen flex flex-col justify-start gap-[42px] px-6 pt-[56px] pb-[28px]">
       <img
@@ -28,10 +30,20 @@ const Wallet = () => {
             ></img>
           </div>
           <div className="grid grid-cols-2 gap-4 text-white text-[14px] leading-[19px]">
-            <button className="greenButton py-[10px] rounded-full">
+            <button
+              className="greenButton py-[10px] rounded-full"
+              onClick={() => {
+                navigate("/withdraw");
+              }}
+            >
               Withdraw
             </button>
-            <button className="blueButton py-[10px] rounded-full">
+            <button
+              className="blueButton py-[10px] rounded-full"
+              onClick={() => {
+                navigate("/deposit");
+              }}
+            >
               Deposit
             </button>
           </div>

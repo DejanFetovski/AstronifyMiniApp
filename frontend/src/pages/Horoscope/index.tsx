@@ -28,9 +28,6 @@ const Horoscope = () => {
     setStartQuestion("Let’s explore your wellness journey.....");
   };
 
-  const onSendMessage = () => {
-    navigate("/agent");
-  };
   return (
     <div className="relative min-h-screen flex flex-col justify-start gap-[40px] px-6 pt-[30px] pb-[28px]">
       <img
@@ -95,7 +92,10 @@ const Horoscope = () => {
         </div>
         <AskInput
           text={startQuestion}
-          onSendMessage={() => onSendMessage}
+          onSendMessage={() => {
+            console.log("onSendMessage");
+            navigate("/agent", { state: { question: startQuestion } });
+          }}
         ></AskInput>
       </div>
       <div className="flex justify-center">

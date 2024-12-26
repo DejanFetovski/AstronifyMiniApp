@@ -1,11 +1,17 @@
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import AskInput from "../../components/AskInput";
 import BackIcon from "../../svgs/BackIcon";
 import BubbleMessage from "../../components/BubbleMessage";
 import SampleQuestion from "./SampleQuestion";
+import { useEffect } from "react";
 
 const Agent = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  useEffect(() => {
+    const { question } = location.state;
+    console.log("start question = ", question);
+  }, [location]);
   const handleBack = () => {
     navigate("/horoscope");
   };
@@ -48,7 +54,12 @@ const Agent = () => {
         <SampleQuestion question="What is my lucky number?"></SampleQuestion>
         <SampleQuestion question="Where does my potential lie?"></SampleQuestion>
       </div>
-      <AskInput text={""} />
+      <AskInput
+        text={""}
+        onSendMessage={() => {
+          console.log("agent page, onSendMessage");
+        }}
+      />
     </div>
   );
 };
