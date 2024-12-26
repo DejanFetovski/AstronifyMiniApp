@@ -42,7 +42,7 @@ const Horoscope = () => {
           <div className="grid grid-cols-2 gap-6">
             <div
               className="text-white flex flex-col items-center justify-between bg-gradient-to-r from-[rgba(255,83,188,0.15)] to-[rgba(10,252,212,0.15)] border border-[#FE53BB] rounded-[24px] py-2"
-              onClick={handleClickFinance}
+              onClick={() => handleClickFinance()}
             >
               <img src="assets/images/rocket.png"></img>
               <span className="text-[20px] leading-[43px] tracking-[0.4px]">
@@ -51,7 +51,7 @@ const Horoscope = () => {
             </div>
             <div
               className="text-white flex flex-col items-center justify-between bg-gradient-to-r from-[rgba(255,83,188,0.15)] to-[rgba(10,252,212,0.15)] border border-[#FE53BB] rounded-[24px] py-2"
-              onClick={handleClickCareer}
+              onClick={() => handleClickCareer()}
             >
               <img src="assets/images/panda.png"></img>
               <span className="text-[20px] leading-[43px] tracking-[0.4px]">
@@ -62,7 +62,7 @@ const Horoscope = () => {
           <div className="grid grid-cols-2 gap-6">
             <div
               className="text-white flex flex-col items-center justify-between bg-gradient-to-r from-[rgba(255,83,188,0.15)] to-[rgba(10,252,212,0.15)] border border-[#FE53BB] rounded-[24px] py-2"
-              onClick={handleClickRelation}
+              onClick={() => handleClickRelation()}
             >
               <img src="assets/images/relation.png"></img>
               <span className="text-[20px] leading-[43px] tracking-[0.4px]">
@@ -71,7 +71,7 @@ const Horoscope = () => {
             </div>
             <div
               className="text-white flex flex-col items-center justify-between bg-gradient-to-r from-[rgba(255,83,188,0.15)] to-[rgba(10,252,212,0.15)] border border-[#FE53BB] rounded-[24px] py-2"
-              onClick={handleClickHealth}
+              onClick={() => handleClickHealth()}
             >
               <img src="assets/images/watch.png"></img>
               <span className="text-[20px] leading-[43px] tracking-[0.4px]">

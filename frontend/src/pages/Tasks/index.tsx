@@ -1,6 +1,8 @@
+import { useNavigate } from "react-router-dom";
 import BottomBar from "../../components/BottomBar";
 
 const Tasks = () => {
+  const navigate = useNavigate();
   return (
     <div className="relative min-h-screen flex flex-col justify-start gap-[40px] px-6 pt-[60px] pb-[28px]">
       <img
@@ -33,7 +35,12 @@ const Tasks = () => {
                 +500 Points
               </span>
             </div>
-            <img src="assets/images/start-btn.png"></img>
+            <img
+              src="assets/images/start-btn.png"
+              onClick={() => {
+                navigate("/horoscope");
+              }}
+            ></img>
           </div>
 
           <div className="colorDivider"></div>
@@ -47,7 +54,12 @@ const Tasks = () => {
                 +1200 Points
               </span>
             </div>
-            <img src="assets/images/start-btn.png"></img>
+            <img
+              src="assets/images/start-btn.png"
+              onClick={() => {
+                navigate("/horoscope");
+              }}
+            ></img>
           </div>
           <div className="colorDivider"></div>
 
@@ -60,7 +72,12 @@ const Tasks = () => {
                 +750 Points
               </span>
             </div>
-            <img src="assets/images/start-btn.png"></img>
+            <img
+              src="assets/images/start-btn.png"
+              onClick={() => {
+                navigate("/horoscope");
+              }}
+            ></img>
           </div>
           <div className="colorDivider"></div>
           <div className="flex justify-between">
@@ -72,7 +89,12 @@ const Tasks = () => {
                 +1200 Points
               </span>
             </div>
-            <img src="assets/images/start-btn.png"></img>
+            <img
+              src="assets/images/start-btn.png"
+              onClick={() => {
+                navigate("/horoscope");
+              }}
+            ></img>
           </div>
         </div>
       </div>
