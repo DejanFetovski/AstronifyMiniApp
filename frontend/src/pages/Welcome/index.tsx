@@ -1,9 +1,10 @@
 import { useState } from "react";
 import MaleIcon from "../../svgs/MaleIcon";
-import ArrowDown from "../../svgs/ArrowDown";
 import FemaleIcon from "../../svgs/FemaleIcon";
 import ActionButton from "../../components/ActionButton";
 import { useNavigate } from "react-router-dom";
+import DateSelector from "../../components/DateSelector";
+import MonthSelector from "../../components/MonthSelector";
 
 const Welcome = () => {
   const [step, setStep] = useState(0);
@@ -51,25 +52,8 @@ const Welcome = () => {
                 Date of birth
               </span>
               <div className="grid grid-cols-2 gap-[20px]">
-                <div className="relative flex items-center border-[1px] border-black bg-[#00000075] [box-shadow:0px_0px_0px_1px_rgba(255,255,255,0.25)] rounded-full py-2 px-3 h-[48px] w-full">
-                  <input
-                    className="text-[#FFFFFF99] outline-none cursor-pointer bg-transparent border-none text-[14px] leading-[22px] font-light"
-                    placeholder="DD"
-                  ></input>
-                  <div className="absolute right-3">
-                    <ArrowDown />
-                  </div>
-                </div>
-
-                <div className="relative flex items-center border-[1px] border-black bg-[#00000075] [box-shadow:0px_0px_0px_1px_rgba(255,255,255,0.25)] rounded-full py-2 px-3 h-[48px] w-full">
-                  <input
-                    className="text-[#FFFFFF99] outline-none cursor-pointer bg-transparent border-none text-[14px] leading-[22px] font-light"
-                    placeholder="MM"
-                  ></input>
-                  <div className="absolute right-3">
-                    <ArrowDown />
-                  </div>
-                </div>
+                <DateSelector />
+                <MonthSelector />
               </div>
             </div>
 
@@ -100,7 +84,7 @@ const Welcome = () => {
 
             <div className="w-full flex items-center justify-center mt-4">
               <ActionButton
-                className="w-[167px] h-[40px] flex justify-center items-center"
+                className="gradient-bg w-[167px] h-[40px] flex justify-center items-center"
                 onClick={handleClick}
               >
                 {<span className="text-[14px] text-white">Next</span>}

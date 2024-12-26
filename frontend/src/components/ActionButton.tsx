@@ -1,4 +1,5 @@
 import React, { ReactNode, ButtonHTMLAttributes } from "react";
+import GradientBorder from "./GradientBorder";
 
 interface ActionButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
@@ -11,12 +12,14 @@ const ActionButton: React.FC<ActionButtonProps> = ({
   ...rest
 }) => {
   return (
-    <button
-      className={`rounded-full p-4 active:scale-95 transition-all ${className}`}
-      {...rest}
-    >
-      <img src="assets/images/button.png"></img>
-    </button>
+    <GradientBorder className={`${className}`} borderWidth={1}>
+      <button
+        className={`rounded-full p-4 active:scale-95 transition-all ${className} hover:opacity-50`}
+        {...rest}
+      >
+        {children}
+      </button>
+    </GradientBorder>
   );
 };
 

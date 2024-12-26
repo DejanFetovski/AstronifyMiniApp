@@ -3,11 +3,12 @@ import AskInput from "../../components/AskInput";
 import BackIcon from "../../svgs/BackIcon";
 import BubbleMessage from "../../components/BubbleMessage";
 import SampleQuestion from "./SampleQuestion";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const Agent = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const [inputMessage, setInputMessage] = useState("");
   useEffect(() => {
     const { question } = location.state;
     console.log("start question = ", question);
@@ -28,18 +29,6 @@ const Agent = () => {
       <div className="relative flex flex-col gap-4 overflow-auto">
         <BubbleMessage
           message="sdfsfsjdlfkjsldfjsldfjsldjfsldjflsjdfsldfsdfsfsjdlfkjsldfjsldfjsldjfsldjflsjdfsldfjsldjflsdjflsdjflsjdfgdfjgldjfgldjfgldjfgljdflgjdfljsldjflsdjflsdjflsjdfgdfjgldjfgldjfgldjfgljdflgjdfl"
-          type="start"
-        />
-        <BubbleMessage
-          message="sdfsfsjdlfkjsldfjsldfjsldjfsldjflsjdfsldfsdfsfsjdlfkjsldfjsldfjsldjfsldjflsjdfsldfjsldjflsdjflsdjflsjdfgdfjgldjfgldjfgldjfgljdflgjdfljsldjflsdjflsdjflsjdfgdfjgldjfgldjfgldjfgljdflgjdfl"
-          type="end"
-        />
-        <BubbleMessage
-          message="sdfsfsjdlfkjsldfjsldfjsldjfsldjflsjdfsldfsdfsfsjdlfkjsldfjsldfjsldjfsldjflsjdfsldfjsldjflsdjflsdjflsjdfgdfjgldjfgldjfgldjfgljdflgjdfljsldjflsdjflsdjflsjdfgdfjgldjfgldjfgldjfgljdflgjdfl"
-          type="start"
-        />
-        <BubbleMessage
-          message="sdfsfsjdlfkjsldfjsldfjsldjfsldjflsjdfsldfsdfsfsjdlfkjsldfjsldfjsldjfsldjflsjdfsldfjsldjflsdjflsdjflsjdfgdfjgldjfgldjfgldjfgljdflgjdfljsldjflsdjflsdjflsjdfgdfjgldjfgldjfgldjfgljdflgjdfl"
           type="end"
         />
         <BubbleMessage
@@ -55,7 +44,10 @@ const Agent = () => {
         <SampleQuestion question="Where does my potential lie?"></SampleQuestion>
       </div>
       <AskInput
-        text={""}
+        text={inputMessage}
+        onChange={(message: string) => {
+          setInputMessage(message);
+        }}
         onSendMessage={() => {
           console.log("agent page, onSendMessage");
         }}

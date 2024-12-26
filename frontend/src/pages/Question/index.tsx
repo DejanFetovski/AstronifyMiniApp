@@ -86,7 +86,7 @@ const Question = () => {
               className={`flex flex-col items-center justify-center border border-[#A6A6A6] ${
                 walkSelection == 2 ? "bg-[#F0F0F055]" : "bg-[#F0F0F026]"
               } rounded-[30px] max-w-[176px] p-4`}
-              onClick={() => handlePathSelection(2)}
+              onClick={() => handleWalkSelection(2)}
             >
               <img
                 src="assets/images/keepwalking.png"
@@ -135,7 +135,7 @@ const Question = () => {
         </>
       )}
       <ActionButton
-        className="w-[167px] h-[40px] flex justify-center items-center"
+        className="gradient-bg w-[167px] h-[40px] flex justify-center items-center"
         onClick={handleClick}
       >
         {<span className="text-[14px] text-white">Next</span>}

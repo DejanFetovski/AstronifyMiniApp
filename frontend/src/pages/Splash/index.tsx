@@ -18,7 +18,7 @@ const Splash = () => {
           yourself!
         </p>
         <ActionButton
-          className="w-[167px] h-[40px] flex justify-center items-center"
+          className="gradient-bg w-[167px] h-[40px] flex justify-center items-center"
           onClick={handleClick}
         >
           {<span className="text-[14px] text-white">Next</span>}

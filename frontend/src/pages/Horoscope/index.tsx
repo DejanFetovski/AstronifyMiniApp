@@ -92,6 +92,9 @@ const Horoscope = () => {
         </div>
         <AskInput
           text={startQuestion}
+          onChange={(message) => {
+            setStartQuestion(message);
+          }}
           onSendMessage={() => {
             console.log("onSendMessage");
             navigate("/agent", { state: { question: startQuestion } });

@@ -62,7 +62,7 @@ const Profile = () => {
 
       <div className="grid grid-cols-2 text-white gap-[17px]">
         <div
-          className="flex items-center justify-center gap-2 bg-gradient-to-r from-[rgba(134,134,134,0.5)] to-[rgba(88,88,88,0.5)] border border-[#77777766] rounded-[20px] py-[14px] backdrop-blur-[42px]"
+          className="flex items-center justify-center gap-2 bg-gradient-to-r from-[rgba(134,134,134,0.5)] to-[rgba(88,88,88,0.5)] border border-[#77777766] rounded-[20px] py-[14px] backdrop-blur-[42px] hover:opacity-50"
           onClick={handleClickTasks}
         >
           <div>
@@ -71,7 +71,7 @@ const Profile = () => {
           <span>Tasks</span>
         </div>
         <div
-          className="flex items-center justify-center gap-2 bg-gradient-to-r from-[rgba(134,134,134,0.5)] to-[rgba(88,88,88,0.5)] border border-[#77777766] rounded-[20px] py-[14px] backdrop-blur-[42px]"
+          className="flex items-center justify-center gap-2 bg-gradient-to-r from-[rgba(134,134,134,0.5)] to-[rgba(88,88,88,0.5)] border border-[#77777766] rounded-[20px] py-[14px] backdrop-blur-[42px] hover:opacity-50"
           onClick={handleClickWallet}
         >
           <div>

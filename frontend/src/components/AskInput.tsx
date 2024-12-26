@@ -2,9 +2,10 @@ import PlusIcon from "../svgs/PlusIcon";
 
 interface Props {
   text: string;
+  onChange: (value: string) => void;
   onSendMessage: () => void;
 }
-const AskInput = ({ text, onSendMessage }: Props) => {
+const AskInput = ({ text, onChange, onSendMessage }: Props) => {
   const handleSendMessage = () => {
     console.log("handleSendMessage");
     onSendMessage();
@@ -16,6 +17,9 @@ const AskInput = ({ text, onSendMessage }: Props) => {
         <input
           className="text-[14.7px] leading-[43px] traking-[0.4px] text-white outline-none bg-transparent gap-[10px] w-full"
           placeholder="Ask me anything!"
+          onChange={(event) => {
+            onChange(event.target.value);
+          }}
           value={text}
         ></input>
       </div>
