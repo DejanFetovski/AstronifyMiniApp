@@ -50,6 +50,30 @@ const Tasks = () => {
             <img src="assets/images/start-btn.png"></img>
           </div>
           <div className="colorDivider"></div>
+
+          <div className="flex justify-between">
+            <div className="flex flex-col justify-between">
+              <span className="text-white text-[14.7px] leading-[20px]">
+                Get your daily horoscope reading
+              </span>
+              <span className="text-[14.7px] leading-[20px] tracking-[0.4px] text-[#FE53BB]">
+                +750 Points
+              </span>
+            </div>
+            <img src="assets/images/start-btn.png"></img>
+          </div>
+          <div className="colorDivider"></div>
+          <div className="flex justify-between">
+            <div className="flex flex-col justify-between">
+              <span className="text-white text-[14.7px] leading-[20px]">
+                Share with 1 friend
+              </span>
+              <span className="text-[14.7px] leading-[20px] tracking-[0.4px] text-[#FE53BB]">
+                +1200 Points
+              </span>
+            </div>
+            <img src="assets/images/start-btn.png"></img>
+          </div>
         </div>
       </div>
       <div className="flex justify-center">
