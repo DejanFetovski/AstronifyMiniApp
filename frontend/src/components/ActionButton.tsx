@@ -11,7 +11,10 @@ const ActionButton: React.FC<ActionButtonProps> = ({
   ...rest
 }) => {
   return (
-    <button className={`rounded-full ${className}`} {...rest}>
+    <button
+      className={`rounded-full p-4 active:scale-95 transition-all ${className}`}
+      {...rest}
+    >
       <img src="assets/images/button.png"></img>
     </button>
   );

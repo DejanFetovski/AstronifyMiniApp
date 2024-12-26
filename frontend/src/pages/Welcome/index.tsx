@@ -15,6 +15,8 @@ const Welcome = () => {
     setStep(1);
   };
 
+  const [sexSelection, setSexSelection] = useState(0);
+
   return (
     <div
       className="min-h-screen flex flex-col items-center justify-start gap-[42px] px-10 pt-10"
@@ -71,14 +73,28 @@ const Welcome = () => {
               </div>
             </div>
 
-            <div className="bg-[#00000066] border-[1px] border-black [box-shadow: 0px_0px_0px_1px_rgba(187, 167, 167, 0.15)] rounded-full flex p-1 gap-3">
-              <div className="bg-[rgb(254,83,187)] flex items-center p-2 rounded-full gap-2 pr-4 text-[16.7px] leading-[22px] tracking-[-0.34px] text-white">
-                <FemaleIcon />
+            <div className="bg-[#00000066] border-[1px] border-black [box-shadow: 0px_0px_0px_1px_rgba(187, 167, 167, 0.15)] rounded-full grid grid-cols-2 p-1 gap-3">
+              <div
+                className={`${
+                  sexSelection == 0
+                    ? "bg-[rgb(254,83,187)] text-white"
+                    : "bg-transparent text-[#737B84BF]"
+                } flex items-center p-2 rounded-full gap-2 pr-4 text-[16.7px] leading-[22px] tracking-[-0.34px] w- `}
+                onClick={() => setSexSelection(0)}
+              >
+                <FemaleIcon active={sexSelection == 0 ? true : false} />
                 <span>Female</span>
               </div>
-              <div className="bg-transparent flex items-center p-2 rounded-full gap-2 pr-4 text-[16.7px] leading-[22px] tracking-[-0.34px] text-[#737B84BF]">
-                <MaleIcon />
-                <span>Female</span>
+              <div
+                className={`${
+                  sexSelection == 1
+                    ? "bg-[rgb(254,83,187)] text-white"
+                    : "bg-transparent text-[#737B84BF]"
+                } flex items-center justify-center p-2 rounded-full gap-2 pr-4 text-[16.7px] leading-[22px] tracking-[-0.34px] `}
+                onClick={() => setSexSelection(1)}
+              >
+                <MaleIcon active={sexSelection == 1 ? true : false} />
+                <span>Male</span>
               </div>
             </div>
 

@@ -2,7 +2,6 @@ import BottomBar from "../../components/BottomBar";
 import GradientBorder from "../../components/GradientBorder";
 import ArrowDown from "../../svgs/ArrowDown";
 import CopyIcon from "../../svgs/CopyIcon";
-import ShareIcon from "../../svgs/ShareIcon";
 
 const Deposit = () => {
   return (

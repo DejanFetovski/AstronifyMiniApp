@@ -1,4 +1,8 @@
-const FemaleIcon = () => {
+interface Props {
+  active: boolean;
+}
+
+const FemaleIcon = ({ active }: Props) => {
   return (
     <div>
       <svg
@@ -10,21 +14,21 @@ const FemaleIcon = () => {
       >
         <path
           d="M12 16C15.866 16 19 12.866 19 9C19 5.13401 15.866 2 12 2C8.13401 2 5 5.13401 5 9C5 12.866 8.13401 16 12 16Z"
-          stroke="white"
+          stroke={`${active ? "white" : "#737B84"}`}
           stroke-width="1.5"
           stroke-linecap="round"
           stroke-linejoin="round"
         />
         <path
           d="M12 16V22"
-          stroke="white"
+          stroke={`${active ? "white" : "#737B84"}`}
           stroke-width="1.5"
           stroke-linecap="round"
           stroke-linejoin="round"
         />
         <path
           d="M15 19H9"
-          stroke="white"
+          stroke={`${active ? "white" : "#737B84"}`}
           stroke-width="1.5"
           stroke-linecap="round"
           stroke-linejoin="round"

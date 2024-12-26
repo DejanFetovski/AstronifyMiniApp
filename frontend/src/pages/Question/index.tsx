@@ -13,6 +13,18 @@ const Question = () => {
     }
   };
 
+  const [pathSelection, setPathSelection] = useState(0);
+  const handlePathSelection = (value: number) => {
+    setPathSelection(value);
+  };
+
+  const [walkSelection, setWalkSelection] = useState(0);
+  const handleWalkSelection = (value: number) => {
+    setWalkSelection(value);
+  };
+
+  const [boxSelection, setBoxSelection] = useState(0);
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-start gap-[20px] px-10 pt-10">
       {step == 0 ? (
@@ -23,14 +35,24 @@ const Question = () => {
             path splits into two directions. Which way do you go?
           </span>
           <div className="grid grid-cols-2 gap-[20px]">
-            <div className="flex flex-col items-center justify-center border border-[#A6A6A6] bg-[#F0F0F026] rounded-[30px] w-[176px] p-4">
+            <div
+              className={`flex flex-col items-center justify-center border border-[#A6A6A6] ${
+                pathSelection == 1 ? "bg-[#F0F0F055]" : "bg-[#F0F0F026]"
+              } rounded-[30px] max-w-[176px] p-4`}
+              onClick={() => handlePathSelection(1)}
+            >
               <img
                 src="assets/images/left-path.png"
                 className="-mt-3 h-[100px]"
               ></img>
               <span className="text-[#EAEAEA]">Left Path</span>
             </div>
-            <div className="flex flex-col items-center justify-center border border-[#A6A6A6] bg-[#F0F0F026] rounded-[30px] w-[176px] p-4">
+            <div
+              className={`flex flex-col items-center justify-center border border-[#A6A6A6] ${
+                pathSelection == 2 ? "bg-[#F0F0F055]" : "bg-[#F0F0F026]"
+              } rounded-[30px] max-w-[176px] p-4`}
+              onClick={() => handlePathSelection(2)}
+            >
               <img
                 src="assets/images/right-path.png"
                 className="-mt-3 h-[100px]"
@@ -48,14 +70,24 @@ const Question = () => {
             ear. Do you:
           </span>
           <div className="grid grid-cols-2 gap-[20px]">
-            <div className="flex flex-col items-center justify-center border border-[#A6A6A6] bg-[#F0F0F026] rounded-[30px] w-[176px] p-4">
+            <div
+              className={`flex flex-col items-center justify-center border border-[#A6A6A6] ${
+                walkSelection == 1 ? "bg-[#F0F0F055]" : "bg-[#F0F0F026]"
+              } rounded-[30px] max-w-[176px] p-4`}
+              onClick={() => handleWalkSelection(1)}
+            >
               <img
                 src="assets/images/investigate.png"
                 className="-mt-3 h-[100px]"
               ></img>
               <span className="text-[#EAEAEA]">Investigate sound</span>
             </div>
-            <div className="flex flex-col items-center justify-center border border-[#A6A6A6] bg-[#F0F0F026] rounded-[30px] w-[176px] p-4">
+            <div
+              className={`flex flex-col items-center justify-center border border-[#A6A6A6] ${
+                walkSelection == 2 ? "bg-[#F0F0F055]" : "bg-[#F0F0F026]"
+              } rounded-[30px] max-w-[176px] p-4`}
+              onClick={() => handlePathSelection(2)}
+            >
               <img
                 src="assets/images/keepwalking.png"
                 className="-mt-3 h-[100px]"
@@ -73,14 +105,26 @@ const Question = () => {
             adventurer!" Do you:
           </span>
           <div className="grid grid-cols-2 gap-[20px]">
-            <div className="flex flex-col items-center justify-center border border-[#A6A6A6] bg-[#F0F0F026] rounded-[30px] w-[176px] p-4">
+            <div
+              className={`flex flex-col items-center justify-center border border-[#A6A6A6] ${
+                boxSelection == 1 ? "bg-[#F0F0F055]" : "bg-[#F0F0F026]"
+              } rounded-[30px] max-w-[176px] p-4`}
+              onClick={() => setBoxSelection(1)}
+            >
               <img
                 src="assets/images/openchest.png"
                 className="-mt-3 h-[100px]"
               ></img>
               <span className="text-[#EAEAEA]">Open the chest</span>
             </div>
-            <div className="flex flex-col items-center justify-center border border-[#A6A6A6] bg-[#F0F0F026] rounded-[30px] w-[176px] p-4">
+            <div
+              className={`flex flex-col items-center justify-center border border-[#A6A6A6] ${
+                boxSelection == 2 ? "bg-[#F0F0F055]" : "bg-[#F0F0F026]"
+              } rounded-[30px] max-w-[176px] p-4`}
+              onClick={() => {
+                setBoxSelection(2);
+              }}
+            >
               <img
                 src="assets/images/closechest.png"
                 className="-mt-3 h-[100px]"
