@@ -2,19 +2,33 @@ import { useNavigate } from "react-router-dom";
 import AskInput from "../../components/AskInput";
 import BottomBar from "../../components/BottomBar";
 import GradientBorder from "../../components/GradientBorder";
+import { useState } from "react";
 
 const Horoscope = () => {
   const navigate = useNavigate();
+  const [startQuestion, setStartQuestion] = useState("");
+
   const handleClickFinance = () => {
-    navigate("/agent");
+    console.log("handleClickFinance");
+    setStartQuestion(
+      "Let’s unlock your financial secrets - Where should we start?"
+    );
   };
   const handleClickCareer = () => {
-    navigate("/agent");
+    setStartQuestion(
+      "Time to uncover your career magic - What’s on your mind?"
+    );
   };
   const handleClickRelation = () => {
-    navigate("/agent");
+    setStartQuestion(
+      "Let’s navigate your love life - What are you curious about?"
+    );
   };
   const handleClickHealth = () => {
+    setStartQuestion("Let’s explore your wellness journey.....");
+  };
+
+  const onSendMessage = () => {
     navigate("/agent");
   };
   return (
@@ -72,14 +86,17 @@ const Horoscope = () => {
             <div className="rounded-full gradient-bg flex items-center justify-between text-white px-4">
               <span className="text-[15px] leading-[15px] tracking-[0.4px]">
                 Rewards Points
-              </span>  
+              </span>
               <span className="text-[19px] leading-[43px] tracking-[0.4px]">
                 1000
               </span>
             </div>
-          </GradientBorder> 
+          </GradientBorder>
         </div>
-        <AskInput></AskInput >
+        <AskInput
+          text={startQuestion}
+          onSendMessage={() => onSendMessage}
+        ></AskInput>
       </div>
       <div className="flex justify-center">
         <BottomBar />

@@ -48,7 +48,7 @@ const Agent = () => {
         <SampleQuestion question="What is my lucky number?"></SampleQuestion>
         <SampleQuestion question="Where does my potential lie?"></SampleQuestion>
       </div>
-      <AskInput />
+      <AskInput text={""} />
     </div>
   );
 };
