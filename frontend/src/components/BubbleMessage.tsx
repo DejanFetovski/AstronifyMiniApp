@@ -17,7 +17,7 @@ export default function BubbleMessage({ message, type }: Props) {
       </div>
       <div className="chat-footer">
         <time className="text-[#8A9099] text-[12px] leading-[16.34px]">
-          2 hour ago
+          1 min ago
         </time>
       </div>
     </div>
