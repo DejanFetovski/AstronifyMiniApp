@@ -12,7 +12,7 @@ const ActionButton: React.FC<ActionButtonProps> = ({
   ...rest
 }) => {
   return (
-    <GradientBorder className={`${className}`} borderWidth={1}>
+    <GradientBorder className={`${className}`} borderWidth={2}>
       <button
         className={`rounded-full p-4 active:scale-95 transition-all ${className} hover:opacity-50`}
         {...rest}

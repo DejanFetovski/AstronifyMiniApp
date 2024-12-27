@@ -3,8 +3,8 @@ import MaleIcon from "../../svgs/MaleIcon";
 import FemaleIcon from "../../svgs/FemaleIcon";
 import ActionButton from "../../components/ActionButton";
 import { useNavigate } from "react-router-dom";
-import DateSelector from "../../components/DateSelector";
-import MonthSelector from "../../components/MonthSelector";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const Welcome = () => {
   const [step, setStep] = useState(0);
@@ -15,8 +15,12 @@ const Welcome = () => {
   const handleBgClick = () => {
     setStep(1);
   };
-
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [sexSelection, setSexSelection] = useState(0);
+
+  const handleDateChange = (date: Date | null) => {
+    setSelectedDate(date);
+  };
 
   return (
     <div
@@ -48,13 +52,20 @@ const Welcome = () => {
             </div>
 
             <div className="flex flex-col gap-1 w-full">
-              <span className="text-[17px] leading-[22px] tracking-[-0.4px] text-[#FFFFFFBF]">
+              <label
+                className="text-[17px] leading-[22px] tracking-[-0.4px] text-[#FFFFFFBF]"
+                htmlFor="datepicker"
+              >
                 Date of birth
-              </span>
-              <div className="grid grid-cols-2 gap-[20px]">
-                <DateSelector />
-                <MonthSelector />
-              </div>
+              </label>
+              <DatePicker
+                id="datepicker"
+                selected={selectedDate}
+                dateFormat="yyyy/MM/dd"
+                placeholderText="YYYY/MM/DD"
+                onChange={handleDateChange}
+                className="w-full outline-none bg-[#00000075] rounded-full border-[1px] border-[#000000] text-[#FFFFFF99] cursor-pointer border-none text-[14px] leading-[22px] tracking-[-0.34px] font-light shadow-[0px_0px_0px_1px_#FFFFFF40]  py-2 px-3 h-[48px] "
+              />
             </div>
 
             <div className="bg-[#00000066] border-[1px] border-black [box-shadow: 0px_0px_0px_1px_rgba(187, 167, 167, 0.15)] rounded-full grid grid-cols-2 p-1 gap-3">

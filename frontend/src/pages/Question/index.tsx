@@ -30,7 +30,7 @@ const Question = () => {
       {step == 0 ? (
         <>
           <img src="assets/images/tree.png"></img>
-          <span className="text-[16px] leading-[22px] tracking-[0.4px] font-bold text-white">
+          <span className="text-[16px] leading-[22px] tracking-[0.4px] font-bold text-white max-w-[1024px]">
             Q. You find yourself standing at the edge of a mysterious forest. A
             path splits into two directions. Which way do you go?
           </span>
@@ -64,7 +64,7 @@ const Question = () => {
       ) : step == 1 ? (
         <>
           <img src="assets/images/forest.png"></img>
-          <span className="text-[16px] leading-[22px] tracking-[0.4px] font-bold text-white">
+          <span className="text-[16px] leading-[22px] tracking-[0.4px] font-bold text-white max-w-[1024px]">
             Q. Walking the sunny path, the warm forest welcomes you. Birds
             chirp, “This is nice, right?” A rustling in the bushes catches your
             ear. Do you:
@@ -99,7 +99,7 @@ const Question = () => {
       ) : (
         <>
           <img src="assets/images/box.png"></img>
-          <span className="text-[16px] leading-[22px] tracking-[0.4px] font-bold text-white -mt-12">
+          <span className="text-[16px] leading-[22px] tracking-[0.4px] font-bold text-white -mt-12 max-w-[1024px]">
             Q. You reach a beautiful clearing with a hidden treasure chest at
             its center. The sun shines, a fresh breeze whispers, "You made it,
             adventurer!" Do you:
@@ -140,6 +140,24 @@ const Question = () => {
       >
         {<span className="text-[14px] text-white">Next</span>}
       </ActionButton>
+
+      <div className=" absolute bottom-10 flex gap-[8px]">
+        <div
+          className={`w-[6px] h-[6px] rounded-full ${
+            step == 0 ? "bg-[#FE53BB]" : "bg-[#FFFFFF33]"
+          }`}
+        ></div>
+        <div
+          className={`w-[6px] h-[6px] rounded-full ${
+            step == 1 ? "bg-[#FE53BB]" : "bg-[#FFFFFF33]"
+          }`}
+        ></div>
+        <div
+          className={`w-[6px] h-[6px] rounded-full ${
+            step == 2 ? "bg-[#FE53BB]" : "bg-[#FFFFFF33]"
+          }`}
+        ></div>
+      </div>
     </div>
   );
 };

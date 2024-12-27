@@ -54,34 +54,51 @@ const Agent = () => {
         <BackIcon />
       </div>
       <div className="relative flex flex-col gap-4 overflow-auto flex-grow">
-        {allMessages.map((msg) => {
+        {allMessages.map((msg, index) => {
           if (msg.type == 1)
-            return <BubbleMessage message={msg.message} type="start" />;
-          else return <BubbleMessage message={msg.message} type="end" />;
+            return (
+              <BubbleMessage message={msg.message} type="start" key={index} />
+            );
+          else
+            return (
+              <BubbleMessage message={msg.message} type="end" key={index} />
+            );
         })}
       </div>
       <div className="flex flex-col gap-5">
         <div className="flex flex-wrap gap-2">
           {type == 1
-            ? sampleQuestions_finance.map((ques) => (
-                <div onClick={() => handleSelectSampleQuestion(ques)}>
+            ? sampleQuestions_finance.map((ques, index) => (
+                <div
+                  onClick={() => handleSelectSampleQuestion(ques)}
+                  key={index}
+                >
                   <SampleQuestion question={ques}></SampleQuestion>
                 </div>
               ))
             : type == 2
-            ? sampleQuestions_career.map((ques) => (
-                <div onClick={() => handleSelectSampleQuestion(ques)}>
+            ? sampleQuestions_career.map((ques, index) => (
+                <div
+                  onClick={() => handleSelectSampleQuestion(ques)}
+                  key={index}
+                >
                   <SampleQuestion question={ques}></SampleQuestion>
                 </div>
               ))
             : type == 3
-            ? sampleQuestions_relationship.map((ques) => (
-                <div onClick={() => handleSelectSampleQuestion(ques)}>
+            ? sampleQuestions_relationship.map((ques, index) => (
+                <div
+                  onClick={() => handleSelectSampleQuestion(ques)}
+                  key={index}
+                >
                   <SampleQuestion question={ques}></SampleQuestion>
                 </div>
               ))
-            : sampleQuestions_health.map((ques) => (
-                <div onClick={() => handleSelectSampleQuestion(ques)}>
+            : sampleQuestions_health.map((ques, index) => (
+                <div
+                  onClick={() => handleSelectSampleQuestion(ques)}
+                  key={index}
+                >
                   <SampleQuestion question={ques}></SampleQuestion>
                 </div>
               ))}

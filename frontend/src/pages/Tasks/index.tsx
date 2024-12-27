@@ -3,6 +3,24 @@ import BottomBar from "../../components/BottomBar";
 
 const Tasks = () => {
   const navigate = useNavigate();
+  const tasks = [
+    {
+      title: "Daily login bonus",
+      points: 500,
+    },
+    {
+      title: "Engage with AI Agent - 2 Prompts",
+      points: 1200,
+    },
+    {
+      title: "Get your daily horoscope reading",
+      points: 750,
+    },
+    {
+      title: "Share with 1 friend",
+      points: 1200,
+    },
+  ];
   return (
     <div className="relative min-h-screen flex flex-col justify-start items-center gap-[40px] px-6 pt-[60px] pb-[28px]">
       <img
@@ -26,76 +44,27 @@ const Tasks = () => {
           <img src="assets/images/medal.png" className="absolute top-3"></img>
         </div>
         <div className="absolute left-0 right-0 top-0 bottom-0 w-full h-full flex flex-col p-5 pt-20 gap-6">
-          <div className="flex justify-between">
-            <div className="flex flex-col justify-between">
-              <span className="text-white text-[14.7px] leading-[20px]">
-                Daily login bonus
-              </span>
-              <span className="text-[14.7px] leading-[20px] tracking-[0.4px] text-[#FE53BB]">
-                +500 Points
-              </span>
-            </div>
-            <img
-              src="assets/images/start-btn.png"
-              onClick={() => {
-                navigate("/horoscope");
-              }}
-            ></img>
-          </div>
-
-          <div className="colorDivider"></div>
-
-          <div className="flex justify-between">
-            <div className="flex flex-col justify-between">
-              <span className="text-white text-[14.7px] leading-[20px]">
-                Engage with AI Agent - 2 Prompts
-              </span>
-              <span className="text-[14.7px] leading-[20px] tracking-[0.4px] text-[#FE53BB]">
-                +1200 Points
-              </span>
-            </div>
-            <img
-              src="assets/images/start-btn.png"
-              onClick={() => {
-                navigate("/horoscope");
-              }}
-            ></img>
-          </div>
-          <div className="colorDivider"></div>
-
-          <div className="flex justify-between">
-            <div className="flex flex-col justify-between">
-              <span className="text-white text-[14.7px] leading-[20px]">
-                Get your daily horoscope reading
-              </span>
-              <span className="text-[14.7px] leading-[20px] tracking-[0.4px] text-[#FE53BB]">
-                +750 Points
-              </span>
-            </div>
-            <img
-              src="assets/images/start-btn.png"
-              onClick={() => {
-                navigate("/horoscope");
-              }}
-            ></img>
-          </div>
-          <div className="colorDivider"></div>
-          <div className="flex justify-between">
-            <div className="flex flex-col justify-between">
-              <span className="text-white text-[14.7px] leading-[20px]">
-                Share with 1 friend
-              </span>
-              <span className="text-[14.7px] leading-[20px] tracking-[0.4px] text-[#FE53BB]">
-                +1200 Points
-              </span>
-            </div>
-            <img
-              src="assets/images/start-btn.png"
-              onClick={() => {
-                navigate("/horoscope");
-              }}
-            ></img>
-          </div>
+          {tasks.map((task, index) => (
+            <>
+              <div className="flex justify-between" key={index}>
+                <div className="flex flex-col justify-between">
+                  <span className="text-white text-[14.7px] leading-[20px]">
+                    {task.title}
+                  </span>
+                  <span className="text-[14.7px] leading-[20px] tracking-[0.4px] text-[#FE53BB]">
+                    +{task.points} Points
+                  </span>
+                </div>
+                <img
+                  src="assets/images/start-btn.png"
+                  onClick={() => {
+                    navigate("/horoscope");
+                  }}
+                ></img>
+              </div>
+              <div className="colorDivider"></div>
+            </>
+          ))}
         </div>
       </div>
       <div className="flex justify-center">
