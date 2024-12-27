@@ -1,10 +1,17 @@
 import { useNavigate } from "react-router-dom";
 import BottomBar from "../../components/BottomBar";
+import { motion } from "framer-motion";
 
 const Wallet = () => {
   const navigate = useNavigate();
   return (
-    <div className="horoscope relative min-h-screen flex flex-col justify-start gap-[42px] px-6 pt-[56px] pb-[28px]">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 1 }}
+      className="horoscope relative min-h-screen flex flex-col justify-start gap-[42px] px-6 pt-[56px] pb-[28px]"
+    >
       <img
         src="assets/images/diagram.png"
         className="absolute top-0 right-0"
@@ -71,7 +78,7 @@ const Wallet = () => {
       <div className="flex justify-center">
         <BottomBar />
       </div>
-    </div>
+    </motion.div>
   );
 };
 

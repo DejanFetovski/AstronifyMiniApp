@@ -1,10 +1,32 @@
+import {
+  useTonConnectUI,
+  useTonWallet,
+  // useTonAddress,
+} from "@tonconnect/ui-react";
+
 import BottomBar from "../../components/BottomBar";
 import CopyIcon from "../../svgs/CopyIcon";
 import SearchIcon from "../../svgs/SearchIcon";
+import { motion } from "framer-motion";
 
 const Invite = () => {
+  const [tonConnectUI] = useTonConnectUI();
+  const wallet = useTonWallet();
+  // const walletAddress = useTonAddress();
+
+  const handleClickInvite = () => {
+    console.log("handleClickInvite");
+    if (!wallet) tonConnectUI.openModal();
+  };
+
   return (
-    <div className="relative h-screen flex flex-col justify-start gap-[40px] px-6 pt-[30px]">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 1 }}
+      className="relative h-screen flex flex-col justify-start gap-[40px] px-6 py-[30px]"
+    >
       <img
         src="assets/images/diagram.png"
         className="absolute top-0 right-0"
@@ -15,7 +37,10 @@ const Invite = () => {
           Earn Rewards Invite Friends
         </span>
         <div className="w-full grid grid-cols-2 gap-4 mt-12">
-          <div className="text-white px-[20px] py-[8px] flex items-center justify-between gap-4 bg-gradient-to-r from-[rgba(255,83,188,0.15)] to-[rgba(10,252,212,0.15)] border border-[#FE53BB] rounded-full">
+          <div
+            className="text-white px-[20px] py-[8px] flex items-center justify-between gap-4 bg-gradient-to-r from-[rgba(255,83,188,0.15)] to-[rgba(10,252,212,0.15)] border border-[#FE53BB] rounded-full"
+            onClick={handleClickInvite}
+          >
             <div className="flex flex-col">
               <span className="text-[12px] leading-[16px]">Invite Via</span>
               <span className="text-[16px] leading-[22px]">Telegram</span>
@@ -39,41 +64,76 @@ const Invite = () => {
             ></input>
             <SearchIcon />
           </div>
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <img src="assets/images/avatar.png"></img>
-              <span className="text-[16px] leading-[21.8px] text-white">
-                Tongkun Lee
-              </span>
+          <div className="flex flex-col max-h-[300px] overflow-scroll gap-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <img src="assets/images/avatar.png"></img>
+                <span className="text-[16px] leading-[21.8px] text-white">
+                  Tongkun Lee
+                </span>
+              </div>
+              <button className="bg-[#03B1FB] p-3 rounded-2xl">Invite</button>
             </div>
-            <button className="bg-[#03B1FB] p-3 rounded-2xl">Invite</button>
-          </div>
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <img src="assets/images/avatar-2.png"></img>
-              <span className="text-[16px] leading-[21.8px] text-white">
-                Rehmem Khihal
-              </span>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <img src="assets/images/avatar-2.png"></img>
+                <span className="text-[16px] leading-[21.8px] text-white">
+                  Rehmem Khihal
+                </span>
+              </div>
+              <button className="bg-[#03B1FB] p-3 rounded-2xl">Invite</button>
             </div>
-            <button className="bg-[#03B1FB] p-3 rounded-2xl">Invite</button>
-          </div>
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <img src="assets/images/avatar-3.png"></img>
-              <span className="text-[16px] leading-[21.8px] text-white">
-                Fazur Nalim
-              </span>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <img src="assets/images/avatar-3.png"></img>
+                <span className="text-[16px] leading-[21.8px] text-white">
+                  Fazur Nalim
+                </span>
+              </div>
+              <button className="bg-[#03B1FB] p-3 rounded-2xl opacity-50">
+                Accepted
+              </button>
             </div>
-            <button className="bg-[#03B1FB] p-3 rounded-2xl opacity-50">
-              Accepted
-            </button>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <img src="assets/images/avatar-3.png"></img>
+                <span className="text-[16px] leading-[21.8px] text-white">
+                  Fazur Nalim
+                </span>
+              </div>
+              <button className="bg-[#03B1FB] p-3 rounded-2xl opacity-50">
+                Accepted
+              </button>
+            </div>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <img src="assets/images/avatar-3.png"></img>
+                <span className="text-[16px] leading-[21.8px] text-white">
+                  Fazur Nalim
+                </span>
+              </div>
+              <button className="bg-[#03B1FB] p-3 rounded-2xl opacity-50">
+                Accepted
+              </button>
+            </div>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <img src="assets/images/avatar-3.png"></img>
+                <span className="text-[16px] leading-[21.8px] text-white">
+                  Fazur Nalim
+                </span>
+              </div>
+              <button className="bg-[#03B1FB] p-3 rounded-2xl opacity-50">
+                Accepted
+              </button>
+            </div>
           </div>
         </div>
       </div>
       <div className="flex justify-center">
         <BottomBar />
       </div>
-    </div>
+    </motion.div>
   );
 };
 

@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import ActionButton from "../../components/ActionButton";
+import { motion } from "framer-motion";
 
 const Splash = () => {
   const navigate = useNavigate();
@@ -7,7 +8,13 @@ const Splash = () => {
     navigate("/question");
   };
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center gap-[42px]">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 1 }}
+      className="min-h-screen flex flex-col items-center justify-center gap-[42px]"
+    >
       <img src="assets/images/splash.png" className="w-[354px] h-[354px]"></img>
       <div className="flex flex-col items-center max-w-[300px] gap-4">
         <p className="text-[35.5px] font-bold text-[#FFFFFFCC] text-center">
@@ -24,7 +31,7 @@ const Splash = () => {
           {<span className="text-[14px] text-white">Next</span>}
         </ActionButton>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

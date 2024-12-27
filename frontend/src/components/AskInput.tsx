@@ -1,17 +1,24 @@
 // import PlusIcon from "../svgs/PlusIcon";
 
+import { useState } from "react";
+
 interface Props {
   text: string;
   onChange: (value: string) => void;
   onSendMessage: () => void;
 }
 const AskInput = ({ text, onChange, onSendMessage }: Props) => {
+  const [isFocused, setIsFocused] = useState(false);
   const handleSendMessage = () => {
     console.log("handleSendMessage");
     onSendMessage();
   };
   return (
-    <div className="askInput bg-gradient-to-r from-[#9B54DD] to-[#3C94D7F2] flex items-center px-4 rounded-full justify-between">
+    <div
+      className={`${
+        isFocused ? "askInput" : ""
+      } bg-gradient-to-r from-[#9B54DD] to-[#3C94D7F2] flex items-center px-4 rounded-full justify-between `}
+    >
       <div className="flex gap-2 items-center flex-grow">
         {/* <PlusIcon /> */}
         <input
@@ -21,6 +28,8 @@ const AskInput = ({ text, onChange, onSendMessage }: Props) => {
             onChange(event.target.value);
           }}
           value={text}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
         ></input>
       </div>
       <img

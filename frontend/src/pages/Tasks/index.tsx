@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import BottomBar from "../../components/BottomBar";
+import { motion } from "framer-motion";
 
 const Tasks = () => {
   const navigate = useNavigate();
@@ -22,7 +23,13 @@ const Tasks = () => {
     },
   ];
   return (
-    <div className="relative min-h-screen flex flex-col justify-start items-center gap-[40px] px-6 pt-[60px] pb-[28px]">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 1 }}
+      className="relative min-h-screen flex flex-col justify-start items-center gap-[40px] px-6 pt-[60px] pb-[28px]"
+    >
       <img
         src="assets/images/diagram.png"
         className="absolute top-0 right-0"
@@ -37,9 +44,9 @@ const Tasks = () => {
           </span>
         </div>
       </div>
-      <div className="relative w-[384px] h-full">
+      <div className="relative w-[500px] h-full">
         <div className="absolute -top-3 left-0 w-full h-[50px] bg-gradient-to-r from-[rgba(254, 83, 187, 1)] to-[rgba(3, 177, 251, 1)] blur-3xl"></div>
-        <img src="assets/images/tasks-bg.png" className="h-full"></img>
+        <img src="assets/images/tasks-bg.png" className="h-full w-full"></img>
         <div className="flex justify-center">
           <img src="assets/images/medal.png" className="absolute top-3"></img>
         </div>
@@ -70,7 +77,7 @@ const Tasks = () => {
       <div className="flex justify-center">
         <BottomBar />
       </div>
-    </div>
+    </motion.div>
   );
 };
 

@@ -4,8 +4,21 @@ import BackIcon from "../../svgs/BackIcon";
 import BubbleMessage from "../../components/BubbleMessage";
 import SampleQuestion from "./SampleQuestion";
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+
+interface Message {
+  type: number;
+  message: string;
+}
 
 const Agent = () => {
+  const sampleQuestions_agent = [
+    "What is the best time to take a major decision? ",
+    "How can I find more meaning?",
+    "What is my lucky number?",
+    "Where does my potential lie?",
+  ];
+
   const sampleQuestions_health = [
     "Am I over-leveraging my stress levels like my trades?",
     "Does my sign say I need more sleep, or am I just blaming the moon?",
@@ -26,10 +39,11 @@ const Agent = () => {
     "Is it a good day to slide into someone’s DMs or will I get left on ‘seen’?",
     "Should I date someone who believes in NFTs or is that a red flag?",
   ];
-  const [allMessages, setAllMessages] = useState<any[]>([]);
+
   const navigate = useNavigate();
   const location = useLocation();
   const [type, setType] = useState(1);
+  const [allMessages, setAllMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState("");
   useEffect(() => {
     const { type, question } = location.state;
@@ -45,7 +59,13 @@ const Agent = () => {
   };
 
   return (
-    <div className="relative h-screen flex flex-col justify-between gap-[20px] px-6 pt-[30px] pb-[28px]">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 1 }}
+      className="relative h-screen flex flex-col justify-between gap-[20px] px-6 pt-[55px] pb-[28px]"
+    >
       <img
         src="assets/images/diagram.png"
         className="absolute top-0 right-0"
@@ -67,7 +87,16 @@ const Agent = () => {
       </div>
       <div className="flex flex-col gap-5">
         <div className="flex flex-wrap gap-2">
-          {type == 1
+          {type == 0
+            ? sampleQuestions_agent.map((ques, index) => (
+                <div
+                  onClick={() => handleSelectSampleQuestion(ques)}
+                  key={index}
+                >
+                  <SampleQuestion question={ques}></SampleQuestion>
+                </div>
+              ))
+            : type == 1
             ? sampleQuestions_finance.map((ques, index) => (
                 <div
                   onClick={() => handleSelectSampleQuestion(ques)}
@@ -117,7 +146,7 @@ const Agent = () => {
           }}
         />
       </div>
-    </div>
+    </motion.div>
   );
 };
 

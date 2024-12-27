@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import BottomBar from "../../components/BottomBar";
 import TaskIcon from "../../svgs/TaskIcon";
 import WalletIcon from "../../svgs/WalletIcon";
+import { motion } from "framer-motion";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -14,7 +15,13 @@ const Profile = () => {
     navigate("/tasks");
   };
   return (
-    <div className="horoscope relative min-h-screen flex flex-col justify-start gap-[20px] px-6 pt-[30px] pb-[28px]">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 1 }}
+      className="horoscope relative min-h-screen flex flex-col justify-start gap-[20px] px-6 pt-[30px] pb-[28px]"
+    >
       <img
         src="assets/images/diagram.png"
         className="absolute top-0 right-0"
@@ -83,7 +90,7 @@ const Profile = () => {
       <div className="flex justify-center">
         <BottomBar />
       </div>
-    </div>
+    </motion.div>
   );
 };
 

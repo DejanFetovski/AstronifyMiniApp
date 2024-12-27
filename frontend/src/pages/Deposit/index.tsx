@@ -2,10 +2,17 @@ import BottomBar from "../../components/BottomBar";
 import GradientBorder from "../../components/GradientBorder";
 import ArrowDown from "../../svgs/ArrowDown";
 import CopyIcon from "../../svgs/CopyIcon";
+import { motion } from "framer-motion";
 
 const Deposit = () => {
   return (
-    <div className="horoscope relative min-h-screen flex flex-col justify-start gap-[42px] px-6 pt-[56px] pb-[28px]">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 1 }}
+      className="horoscope relative min-h-screen flex flex-col justify-start gap-[42px] px-6 pt-[56px] pb-[28px]"
+    >
       <img
         src="assets/images/diagram.png"
         className="absolute top-0 right-0"
@@ -51,7 +58,7 @@ const Deposit = () => {
       <div className="flex justify-center">
         <BottomBar />
       </div>
-    </div>
+    </motion.div>
   );
 };
 

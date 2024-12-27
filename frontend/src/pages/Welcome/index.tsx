@@ -4,6 +4,7 @@ import FemaleIcon from "../../svgs/FemaleIcon";
 import ActionButton from "../../components/ActionButton";
 import { useNavigate } from "react-router-dom";
 import DatePicker from "react-datepicker";
+import { motion } from "framer-motion";
 import "react-datepicker/dist/react-datepicker.css";
 
 const Welcome = () => {
@@ -23,7 +24,11 @@ const Welcome = () => {
   };
 
   return (
-    <div
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 1 }}
       className="min-h-screen flex flex-col items-center justify-start gap-[42px] px-10 pt-10"
       onClick={handleBgClick}
     >
@@ -38,7 +43,7 @@ const Welcome = () => {
       ) : (
         <>
           <img src="assets/images/suns.png"></img>
-          <div className="flex flex-col gap-[18px] w-full  items-start">
+          <div className="flex flex-col gap-[18px] w-full  items-start max-w-[640px]">
             <div className="flex flex-col w-full gap-1">
               <span className="text-[17px] leading-[22px] tracking-[-0.4px] text-[#FFFFFFBF]">
                 Your Name
@@ -104,7 +109,7 @@ const Welcome = () => {
           </div>
         </>
       )}
-    </div>
+    </motion.div>
   );
 };
 

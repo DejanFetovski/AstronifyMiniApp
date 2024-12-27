@@ -1,6 +1,7 @@
 import { useState } from "react";
 import ActionButton from "../../components/ActionButton";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 
 const Question = () => {
   const [step, setStep] = useState(0);
@@ -26,7 +27,13 @@ const Question = () => {
   const [boxSelection, setBoxSelection] = useState(0);
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-start gap-[20px] px-10 pt-10">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 1 }}
+      className="min-h-screen flex flex-col items-center justify-start gap-[20px] px-10 pt-10"
+    >
       {step == 0 ? (
         <>
           <img src="assets/images/tree.png"></img>
@@ -158,7 +165,7 @@ const Question = () => {
           }`}
         ></div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

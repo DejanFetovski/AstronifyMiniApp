@@ -10,9 +10,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@tonconnect/ui-react": "^2.0.9",
+    "framer-motion": "^11.15.0",
     "react": "^18.3.1",
     "react-datepicker": "^7.5.0",
     "react-dom": "^18.3.1",
+    "react-loading-skeleton": "^3.5.0",
     "react-router-dom": "^7.1.0",
     "sass": "^1.83.0"
   },

@@ -3,6 +3,7 @@ import AskInput from "../../components/AskInput";
 import BottomBar from "../../components/BottomBar";
 import GradientBorder from "../../components/GradientBorder";
 import { useState } from "react";
+import { motion } from "framer-motion";
 
 const Horoscope = () => {
   const navigate = useNavigate();
@@ -34,12 +35,18 @@ const Horoscope = () => {
   };
 
   return (
-    <div className="relative h-screen flex flex-col justify-start gap-[40px] px-6 pt-[30px] pb-[28px]">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 1 }}
+      className="relative h-screen flex flex-col justify-start gap-[40px] px-6 pt-[30px] pb-[28px]"
+    >
       <img
         src="assets/images/diagram.png"
         className="absolute top-0 right-0"
       ></img>
-      <div className="flex flex-col justify-between min-h-screen py-48">
+      <div className="flex flex-col justify-center min-h-screen gap-8">
         <div className="grid grid-rows-2 gap-6">
           <div className="grid grid-cols-2 gap-6">
             <div
@@ -119,7 +126,7 @@ const Horoscope = () => {
       <div className="flex justify-center">
         <BottomBar />
       </div>
-    </div>
+    </motion.div>
   );
 };
 
