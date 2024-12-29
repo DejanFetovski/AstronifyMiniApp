@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import BottomBar from "../../components/BottomBar";
 import { motion } from "framer-motion";
+import { TonConnectButton } from "@tonconnect/ui-react";
 
 const Wallet = () => {
   const navigate = useNavigate();
@@ -16,9 +17,12 @@ const Wallet = () => {
         src="assets/images/diagram.png"
         className="absolute top-0 right-0"
       ></img>
+      <div className="flex justify-between z-10">
       <h1 className="text-[24px] leading-[43px] tracking-[0.4px] text-white">
         Connect Wallet
       </h1>
+      <TonConnectButton />
+      </div>
       <div className="flex flex-col px-[10px]">
         <div className="flex flex-col gap-[36px]">
           <div className="relative flex flex-col">
