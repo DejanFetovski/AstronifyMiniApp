@@ -25,13 +25,13 @@ const Invite = () => {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 1 }}
-      className="relative h-screen flex flex-col justify-start gap-[40px] px-6 py-[30px]"
+      className="relative h-screen px-6 py-[30px] pb-[130px]"
     >
       <img
         src="assets/images/diagram.png"
         className="absolute top-0 right-0"
       ></img>
-      <div className="h-full flex flex-col items-center">
+      <div className="h-full flex flex-col items-center overflow-x-hidden overflow-y-scroll">
         <img src="assets/images/gold.png"></img>
         <span className="text-[38px] font-light leading-[46.3px] text-white max-w-[300px] text-center -mt-10">
           Earn Rewards Invite Friends

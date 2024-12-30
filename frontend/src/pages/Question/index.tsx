@@ -36,8 +36,8 @@ const Question = () => {
     >
       {step == 0 ? (
         <>
-          <img src="assets/images/tree.png"></img>
-          <span className="text-[16px] leading-[22px] tracking-[0.4px] font-bold text-white max-w-[1024px]">
+          <img src="assets/images/tree.png" alt="tree"></img>
+          <span className="text-[16px] leading-[22px] tracking-[0.4px] font-bold text-white max-w-[640px]">
             Q. You find yourself standing at the edge of a mysterious forest. A
             path splits into two directions. Which way do you go?
           </span>
@@ -70,8 +70,8 @@ const Question = () => {
         </>
       ) : step == 1 ? (
         <>
-          <img src="assets/images/forest.png"></img>
-          <span className="text-[16px] leading-[22px] tracking-[0.4px] font-bold text-white max-w-[1024px]">
+          <img src="assets/images/forest.png" alt="forest"></img>
+          <span className="text-[16px] leading-[22px] tracking-[0.4px] font-bold text-white max-w-[640px] mt-[-100px]">
             Q. Walking the sunny path, the warm forest welcomes you. Birds
             chirp, “This is nice, right?” A rustling in the bushes catches your
             ear. Do you:
@@ -105,8 +105,8 @@ const Question = () => {
         </>
       ) : (
         <>
-          <img src="assets/images/box.png"></img>
-          <span className="text-[16px] leading-[22px] tracking-[0.4px] font-bold text-white -mt-12 max-w-[1024px]">
+          <img src="assets/images/box.png" alt="box"></img>
+          <span className="text-[16px] leading-[22px] tracking-[0.4px] font-bold text-white -mt-12 max-w-[640px]">
             Q. You reach a beautiful clearing with a hidden treasure chest at
             its center. The sun shines, a fresh breeze whispers, "You made it,
             adventurer!" Do you:
@@ -142,7 +142,7 @@ const Question = () => {
         </>
       )}
       <ActionButton
-        className="gradient-bg w-[167px] h-[40px] flex justify-center items-center"
+        className="gradient-bg relative w-[167px] h-[40px] flex justify-center items-center z-20"
         onClick={handleClick}
       >
         {<span className="text-[14px] text-white">Next</span>}

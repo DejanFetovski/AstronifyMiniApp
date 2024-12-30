@@ -29,7 +29,7 @@ const Welcome = () => {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 1 }}
-      className="min-h-screen flex flex-col items-center justify-start gap-[42px] px-10 pt-10"
+      className="min-h-screen flex flex-col items-center justify-start gap-[42px] px-10 py-10"
       onClick={handleBgClick}
     >
       {step == 0 ? (

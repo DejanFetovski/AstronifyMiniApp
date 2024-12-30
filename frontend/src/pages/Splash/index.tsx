@@ -17,10 +17,10 @@ const Splash = () => {
     >
       <img src="assets/images/splash.png" className="w-[354px] h-[354px]"></img>
       <div className="flex flex-col items-center max-w-[300px] gap-4">
-        <p className="text-[35.5px] font-bold text-[#FFFFFFCC] text-center">
+        <p className="text-[35.5px] font-bold text-white text-center">
           Welcome to Astronify AI
         </p>
-        <p className="text-[16px] text-[#FFFFFFBF] text-center">
+        <p className="text-[16px] text-white text-center">
           Your cosmic cheat sheet for life’s chaos. Blame the stars, not
           yourself!
         </p>
