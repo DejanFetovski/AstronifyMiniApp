@@ -18,43 +18,83 @@ import Deposit from "./pages/Deposit";
 import AppContextProvider from "./providers/AppContextProvider";
 import TonConnectProvider from "./providers/TonProvider";
 import { THEME, TonConnectUIProvider } from "@tonconnect/ui-react";
-import WebApp from '@twa-dev/sdk'
+import WebApp from "@twa-dev/sdk";
+import { useState } from "react";
+import axios from "axios";
 
-interface TelegramUser {
-  id: number;
-  first_name: string;
-  last_name?: string;
-  username?: string;
-  language_code?: string;
-}
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const App: React.FC = () => {
-  const initDataHanler = async() => {
-    let initData, telegramId, username, telegramName, startParam
+  const [token, setToken] = useState(null);
 
-    if (typeof window !== 'undefined') {
-      const WebApp = (await import('@twa-dev/sdk')).default
-      WebApp.ready()
-      initData = WebApp.initData
-      telegramId = WebApp.initDataUnsafe.user?.id.toString()
-      username = WebApp.initDataUnsafe.user?.username || 'Unknown User'
-      telegramName = WebApp.initDataUnsafe.user?.first_name || 'Unknown User'
+  const getAuthenticatedUserInfo = async (telegramUserInfo: any) => {
+    console.log("main.tsx - UserID >>> ", telegramUserInfo.id, API_BASE_URL);
+    try {
+      const chatId = telegramUserInfo.id;
+      if (chatId == null || chatId == undefined) {
+        console.log(`main.tsx - error >>> ChatID is not defined`);
+        return;
+      }
 
-      startParam = WebApp.initDataUnsafe.start_param
+      // Send request to server and receive token from server
+      const { data } = await axios.post(
+        `${API_BASE_URL}/api/auth/getAuthentication`,
+        {
+          telegramUserInfo: telegramUserInfo,
+        }
+      );
+      console.log("main.tsx - authenticated user info >>> ", data);
+      if (data.token) {
+        localStorage.setItem("authorization", data.token);
+        setToken(token);
+      }
 
-      console.log("-----", telegramId)
+      // Get user info with token
+      // const { data: authenticatedUserinfo } = await axios.get(`${process.env.API_BASE_URL}/user/info`, {
+      //   headers: {
+      //     Authorization: `bearer ${data.token}`,
+      //   },
+      // });
+      // console.log("[Userinfo]", data);
+      // if (authenticatedUserinfo.state) setUserInfo(authenticatedUserinfo.data);
+      // if (authenticatedUserinfo.state && authenticatedUserinfo?.data?.setting) {
+      //   setSettingInfo(authenticatedUserinfo?.data?.setting);
+      // }
+    } catch (error) {
+      console.log(error);
     }
-    
-  }
+  };
 
+  const initDataHanler = async () => {
+    let initData, telegramId, username, telegramName, startParam;
+
+    if (typeof window !== "undefined") {
+      const WebApp = (await import("@twa-dev/sdk")).default;
+      WebApp.ready();
+      initData = WebApp.initData;
+      console.log("main.tsx - initData >>> ", initData);
+      telegramId = WebApp.initDataUnsafe.user?.id.toString();
+      username = WebApp.initDataUnsafe.user?.username || "Unknown User";
+      telegramName = WebApp.initDataUnsafe.user?.first_name || "Unknown User";
+
+      startParam = WebApp.initDataUnsafe.start_param;
+
+      const params = new URLSearchParams(initData);
+      const user: string | null = params.get("user");
+
+      getAuthenticatedUserInfo(JSON.parse(decodeURIComponent(user as string)));
+    }
+  };
 
   useEffect(() => {
+    console.log("---------------");
 
     initDataHanler();
     console.log("App initialized");
   }, []);
 
-  const manifestUrl: string = "https://ton-connect.github.io/demo-dapp-with-wallet/tonconnect-manifest.json";
+  const manifestUrl: string =
+    "https://ton-connect.github.io/demo-dapp-with-wallet/tonconnect-manifest.json";
 
   const walletsListConfiguration = {
     includeWallets: [
