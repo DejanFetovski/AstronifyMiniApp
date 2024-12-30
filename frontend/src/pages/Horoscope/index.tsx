@@ -40,13 +40,13 @@ const Horoscope = () => {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 1 }}
-      className="relative h-screen flex flex-col justify-start gap-[40px] px-6 pt-[30px] pb-[28px]"
+      className="relative h-screen flex flex-col justify-start gap-[40px] pt-[30px] pb-[100px]"
     >
       <img
         src="assets/images/diagram.png"
         className="absolute top-0 right-0"
       ></img>
-      <div className="flex flex-col justify-center min-h-screen gap-8">
+      <div className="h-full flex flex-col justify-start gap-8 px-6 overflow-x-hidden overflow-y-scroll py-5">
         <div className="grid grid-rows-2 gap-6">
           <div className="grid grid-cols-2 gap-6">
             <div
@@ -98,9 +98,9 @@ const Horoscope = () => {
           </div>
         </div>
 
-        <div className="px-[60px] flex justify-center">
-          <GradientBorder className="rounded-full w-[400px]" borderWidth={2}>
-            <div className="rounded-full gradient-bg flex items-center justify-between w-[400px] text-white px-4">
+        <div className="px-[60px] w-full flex justify-center">
+          <GradientBorder className="rounded-full w-[300px]" borderWidth={2}>
+            <div className="rounded-full gradient-bg flex items-center justify-between w-[300px] text-white px-4">
               <span className="text-[15px] leading-[15px] tracking-[0.4px]">
                 Rewards Points
               </span>
