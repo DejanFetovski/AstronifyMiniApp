@@ -1,22 +1,18 @@
 import express from 'express'
 import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'
-
-import * as C from '../utils/constant'
-import * as TapGame from '../core/tapgame'
-import * as TGBot from '../bot'
-import { EnergyDocument, energySchema } from '../models/user.model'
 dotenv.config()
 
 const router = express.Router()
 
 // @API: /getAuthentication
-// @request: userInfo
+// @request: telegramUserInfo
 // @response: token
 // @method: POST
 router.post('/getAuthentication', async (req, res) => {
+  console.log(`[auth.route.ts - getAuthentication]`)
   try {
-    const userInfo = req.body.webAppUserInfo
+    const userInfo = req.body.telegramUserInfo
     const chatId = userInfo.id
     // Create Token for user
     const token = jwt.sign({ chatId }, process.env.JWT_SECRET as string, {

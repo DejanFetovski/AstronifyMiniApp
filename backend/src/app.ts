@@ -1,5 +1,6 @@
 import express, { Express, NextFunction, Request, Response } from 'express'
 import cors from 'cors'
+
 require('dotenv').config()
 
 import routeAuth from './routes/auth.routes'
@@ -16,6 +17,9 @@ import {startWebSocketServer} from './socket'
 // import https from "https";
 import http from "http";
 import { Socket } from 'socket.io'
+
+
+// let clients: { [key: string]: WebSocket } = {};
 
 export const run = async (bot: any): Promise<void> => {
   const app: Express = express()
@@ -42,6 +46,10 @@ export const run = async (bot: any): Promise<void> => {
   app.use('/api/friend', routeFriend)
   app.use('/api/game', routeGame)
   app.use('/api/level', routeLevel)
+  // app.use('*', (req, res) => {
+  //   res.json("API is wokring")
+  //   console.log("API is working...")
+  // })
 
   const port = process.env.PORT
 

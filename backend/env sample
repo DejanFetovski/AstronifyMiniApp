@@ -1,0 +1,13 @@
+BOT_TITLE=Royal Coin Game
+BOT_USERNAME=royalcoinclicker_bot
+BOT_TOKEN=7757768898:AAH5Y8k01dGXgZfBmp870u0-Nzrw3Vs_HbU
+MONGODB_URI=mongodb://127.0.0.1:27017/RoyalCoin
+SOCKET_PORT=53536
+PORT=50000
+
+WEBAPP_URL=https://miniapp-store.org
+
+SSL_KEY_PATH=server.key
+SSL_CERT_PATH=server.cert
+
+JWT_SECRET=879a8890c78352a58a11d0c64bdc7afd1c93043071a431f677fb2df1e479e346
