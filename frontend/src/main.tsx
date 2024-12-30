@@ -18,12 +18,14 @@ import Deposit from "./pages/Deposit";
 import AppContextProvider from "./providers/AppContextProvider";
 import TonConnectProvider from "./providers/TonProvider";
 import { THEME, TonConnectUIProvider } from "@tonconnect/ui-react";
-import WebApp from "@twa-dev/sdk";
 import { useState } from "react";
 import axios from "axios";
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+import { WalletsListConfiguration } from '@tonconnect/ui';
 
+
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+  
 const App: React.FC = () => {
   const [token, setToken] = useState(null);
 
@@ -66,18 +68,13 @@ const App: React.FC = () => {
   };
 
   const initDataHanler = async () => {
-    let initData, telegramId, username, telegramName, startParam;
+    let initData
 
     if (typeof window !== "undefined") {
       const WebApp = (await import("@twa-dev/sdk")).default;
       WebApp.ready();
       initData = WebApp.initData;
       console.log("main.tsx - initData >>> ", initData);
-      telegramId = WebApp.initDataUnsafe.user?.id.toString();
-      username = WebApp.initDataUnsafe.user?.username || "Unknown User";
-      telegramName = WebApp.initDataUnsafe.user?.first_name || "Unknown User";
-
-      startParam = WebApp.initDataUnsafe.start_param;
 
       const params = new URLSearchParams(initData);
       const user: string | null = params.get("user");
@@ -96,7 +93,7 @@ const App: React.FC = () => {
   const manifestUrl: string =
     "https://ton-connect.github.io/demo-dapp-with-wallet/tonconnect-manifest.json";
 
-  const walletsListConfiguration = {
+  const walletsListConfiguration: WalletsListConfiguration  = {
     includeWallets: [
       {
         appName: "tonwallet",
