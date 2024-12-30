@@ -1,4 +1,4 @@
-import { StrictMode } from "react";
+import React, { StrictMode, useEffect } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { SkeletonTheme } from "react-loading-skeleton";
@@ -17,75 +17,101 @@ import Withdraw from "./pages/Withdraw";
 import Deposit from "./pages/Deposit";
 import AppContextProvider from "./providers/AppContextProvider";
 import TonConnectProvider from "./providers/TonProvider";
-
 import { THEME, TonConnectUIProvider } from "@tonconnect/ui-react";
+import WebApp from '@twa-dev/sdk'
 
-createRoot(document.getElementById("root")!).render(
-  <StrictMode>
+interface TelegramUser {
+  id: number;
+  first_name: string;
+  last_name?: string;
+  username?: string;
+  language_code?: string;
+}
+
+const App: React.FC = () => {
+  const initDataHanler = async() => {
+    let initData, telegramId, username, telegramName, startParam
+
+    if (typeof window !== 'undefined') {
+      const WebApp = (await import('@twa-dev/sdk')).default
+      WebApp.ready()
+      initData = WebApp.initData
+      telegramId = WebApp.initDataUnsafe.user?.id.toString()
+      username = WebApp.initDataUnsafe.user?.username || 'Unknown User'
+      telegramName = WebApp.initDataUnsafe.user?.first_name || 'Unknown User'
+
+      startParam = WebApp.initDataUnsafe.start_param
+
+      console.log("-----", telegramId)
+    }
+    
+  }
+
+
+  useEffect(() => {
+
+    initDataHanler();
+    console.log("App initialized");
+  }, []);
+
+  const manifestUrl: string = "https://ton-connect.github.io/demo-dapp-with-wallet/tonconnect-manifest.json";
+
+  const walletsListConfiguration = {
+    includeWallets: [
+      {
+        appName: "tonwallet",
+        name: "TON Wallet",
+        imageUrl: "https://wallet.ton.org/assets/ui/qr-logo.png",
+        aboutUrl:
+          "https://chrome.google.com/webstore/detail/ton-wallet/nphplpgoakhhjchkkhmiggakijnkhfnd",
+        universalLink: "https://wallet.ton.org/ton-connect",
+        jsBridgeKey: "tonwallet",
+        bridgeUrl: "https://bridge.tonapi.io/bridge",
+        platforms: ["chrome", "android"],
+      },
+      {
+        appName: "nicegramWallet",
+        name: "Nicegram Wallet",
+        imageUrl: "https://static.nicegram.app/icon.png",
+        aboutUrl: "https://nicegram.app",
+        universalLink: "https://nicegram.app/tc",
+        deepLink: "nicegram-tc://",
+        jsBridgeKey: "nicegramWallet",
+        bridgeUrl: "https://bridge.tonapi.io/bridge",
+        platforms: ["ios", "android"],
+      },
+      {
+        appName: "binanceTonWeb3Wallet",
+        name: "Binance Web3 Wallet",
+        imageUrl:
+          "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAiIGhlaWdodD0iMzAiIHZpZXdCb3g9IjAgMCAzMCAzMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMwIiBoZWlnaHQ9IjMwIiBmaWxsPSIjMEIwRTExIi8+CjxwYXRoIGQ9Ik01IDE1TDcuMjU4MDYgMTIuNzQxOUw5LjUxNjEzIDE1TDcuMjU4MDYgMTcuMjU4MUw1IDE1WiIgZmlsbD0iI0YwQjkwQiIvPgo8cGF0aCBkPSJNOC44NzA5NyAxMS4xMjlMMTUgNUwyMS4xMjkgMTEuMTI5TDE4Ljg3MSAxMy4zODcxTDE1IDkuNTE2MTNMMTEuMTI5IDEzLjM4NzFMOC44NzA5NyAxMS4xMjlaIiBmaWxsPSIjRjBCOTBCIi8+CjxwYXRoIGQ9Ik0xMi43NDE5IDE1TDE1IDEyLjc0MTlMMTcuMjU4MSAxNUwxNSAxNy4yNTgxTDEyLjc0MTkgMTVaIiBmaWxsPSIjRjBCOTBCIi8+CjxwYXRoIGQ9Ik0xMS4xMjkgMTYuNjEyOUw4Ljg3MDk3IDE4Ljg3MUwxNSAyNUwyMS4xMjkgMTguODcxTDE4Ljg3MSAxNi42MTI5TDE1IDIwLjQ4MzlMMTEuMTI5IDE2LjYxMjlaIiBmaWxsPSIjRjBCOTBCIi8+CjxwYXRoIGQ9Ik0yMC40ODM5IDE1TDIyLjc0MTkgMTIuNzQxOUwyNSAxNUwyMi43NDE5IDE3LjI1ODFMMjAuNDgzOSAxNVoiIGZpbGw9IiNGMEI5MEIiLz4KPC9zdmc+Cg==",
+        aboutUrl: "https://www.binance.com/en/web3wallet",
+        deepLink: "bnc://app.binance.com/cedefi/ton-connect",
+        bridgeUrl: "https://bridge.tonapi.io/bridge",
+        platforms: ["chrome", "safari", "ios", "android"],
+        universalLink: "https://app.binance.com/cedefi/ton-connect",
+      },
+      {
+        appName: "okxTonWallet2",
+        name: "New OKX Wallet",
+        imageUrl:
+          "https://static.okx.com/cdn/assets/imgs/247/58E63FEA47A2B7D7.png",
+        aboutUrl: "https://www.okx.com/web3",
+        universalLink: "https://www.okx.com/ul/uYJPB0",
+        bridgeUrl: "https://www.okx.com/tonbridge/discover/rpc/bridge",
+        jsBridgeKey: "okxTonWallet",
+        platforms: ["chrome", "safari", "firefox", "ios", "android"],
+      },
+    ],
+  };
+
+  return (
     <TonConnectUIProvider
-      manifestUrl="https://ton-connect.github.io/demo-dapp-with-wallet/tonconnect-manifest.json"
+      manifestUrl={manifestUrl}
       uiPreferences={{ theme: THEME.DARK }}
-      walletsListConfiguration={{
-        includeWallets: [
-          {
-            appName: "tonwallet",
-            name: "TON Wallet",
-            imageUrl: "https://wallet.ton.org/assets/ui/qr-logo.png",
-            aboutUrl:
-              "https://chrome.google.com/webstore/detail/ton-wallet/nphplpgoakhhjchkkhmiggakijnkhfnd",
-            universalLink: "https://wallet.ton.org/ton-connect",
-            jsBridgeKey: "tonwallet",
-            bridgeUrl: "https://bridge.tonapi.io/bridge",
-            platforms: ["chrome", "android"]
-          },
-          {
-            appName: "nicegramWallet",
-            name: "Nicegram Wallet",
-            imageUrl: "https://static.nicegram.app/icon.png",
-            aboutUrl: "https://nicegram.app",
-            universalLink: "https://nicegram.app/tc",
-            deepLink: "nicegram-tc://",
-            jsBridgeKey: "nicegramWallet",
-            bridgeUrl: "https://bridge.tonapi.io/bridge",
-            platforms: ["ios", "android"]
-          },
-          {
-            appName: "binanceTonWeb3Wallet",
-            name: "Binance Web3 Wallet",
-            imageUrl:
-              "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAiIGhlaWdodD0iMzAiIHZpZXdCb3g9IjAgMCAzMCAzMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMwIiBoZWlnaHQ9IjMwIiBmaWxsPSIjMEIwRTExIi8+CjxwYXRoIGQ9Ik01IDE1TDcuMjU4MDYgMTIuNzQxOUw5LjUxNjEzIDE1TDcuMjU4MDYgMTcuMjU4MUw1IDE1WiIgZmlsbD0iI0YwQjkwQiIvPgo8cGF0aCBkPSJNOC44NzA5NyAxMS4xMjlMMTUgNUwyMS4xMjkgMTEuMTI5TDE4Ljg3MSAxMy4zODcxTDE1IDkuNTE2MTNMMTEuMTI5IDEzLjM4NzFMOC44NzA5NyAxMS4xMjlaIiBmaWxsPSIjRjBCOTBCIi8+CjxwYXRoIGQ9Ik0xMi43NDE5IDE1TDE1IDEyLjc0MTlMMTcuMjU4MSAxNUwxNSAxNy4yNTgxTDEyLjc0MTkgMTVaIiBmaWxsPSIjRjBCOTBCIi8+CjxwYXRoIGQ9Ik0xMS4xMjkgMTYuNjEyOUw4Ljg3MDk3IDE4Ljg3MUwxNSAyNUwyMS4xMjkgMTguODcxTDE4Ljg3MSAxNi42MTI5TDE1IDIwLjQ4MzlMMTEuMTI5IDE2LjYxMjlaIiBmaWxsPSIjRjBCOTBCIi8+CjxwYXRoIGQ9Ik0yMC40ODM5IDE1TDIyLjc0MTkgMTIuNzQxOUwyNSAxNUwyMi43NDE5IDE3LjI1ODFMMjAuNDgzOSAxNVoiIGZpbGw9IiNGMEI5MEIiLz4KPC9zdmc+Cg==",
-            aboutUrl: "https://www.binance.com/en/web3wallet",
-            deepLink: "bnc://app.binance.com/cedefi/ton-connect",
-            bridgeUrl: "https://bridge.tonapi.io/bridge",
-            platforms: ["chrome", "safari", "ios", "android"],
-            universalLink: "https://app.binance.com/cedefi/ton-connect"
-          },
-          {
-            appName: "okxTonWallet2",
-            name: "New OKX Wallet",
-            imageUrl:
-              "https://static.okx.com/cdn/assets/imgs/247/58E63FEA47A2B7D7.png",
-            aboutUrl: "https://www.okx.com/web3",
-            universalLink: "https://www.okx.com/ul/uYJPB0",
-            bridgeUrl: "https://www.okx.com/tonbridge/discover/rpc/bridge",
-            jsBridgeKey: "okxTonWallet",
-            platforms: ["chrome", "safari", "firefox", "ios", "android"]
-          },
-          {
-            appName: "okxTonWalletTr2",
-            name: "New OKX TR Wallet",
-            imageUrl:
-              "https://static.okx.com/cdn/assets/imgs/247/587A8296F0BB640F.png",
-            aboutUrl: "https://tr.okx.com/web3",
-            universalLink: "https://tr.okx.com/ul/uYJPB0?entityId=5",
-            jsBridgeKey: "okxTonWallet",
-            bridgeUrl: "https://www.okx.com/tonbridge/discover/rpc/bridge",
-            platforms: ["chrome", "safari", "firefox", "ios", "android"]
-          }
-        ]
-      }}
+      walletsListConfiguration={walletsListConfiguration}
       actionsConfiguration={{
-        twaReturnUrl: "https://t.me/tc_twa_demo_bot/start"
+        twaReturnUrl: "https://t.me/tc_twa_demo_bot/start",
       }}
     >
       <AppContextProvider>
@@ -116,5 +142,15 @@ createRoot(document.getElementById("root")!).render(
         </TonConnectProvider>
       </AppContextProvider>
     </TonConnectUIProvider>
+  );
+};
+
+// Rendering the App
+const rootElement = document.getElementById("root");
+if (!rootElement) throw new Error("Root element not found");
+
+createRoot(rootElement).render(
+  <StrictMode>
+    <App />
   </StrictMode>
 );
