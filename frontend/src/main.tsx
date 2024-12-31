@@ -20,6 +20,7 @@ import TonConnectProvider from "./providers/TonProvider";
 import { THEME, TonConnectUIProvider } from "@tonconnect/ui-react";
 import { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 import { WalletsListConfiguration } from '@tonconnect/ui';
 
@@ -28,6 +29,7 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
   
 const App: React.FC = () => {
   const [token, setToken] = useState(null);
+  const navigate = useNavigate();
 
   const getAuthenticatedUserInfo = async (telegramUserInfo: any) => {
     console.log("main.tsx - UserID >>> ", telegramUserInfo.id, API_BASE_URL);
@@ -52,12 +54,19 @@ const App: React.FC = () => {
       }
 
       // Get user info with token
-      // const { data: authenticatedUserinfo } = await axios.get(`${process.env.API_BASE_URL}/user/info`, {
-      //   headers: {
-      //     Authorization: `bearer ${data.token}`,
-      //   },
-      // });
-      // console.log("[Userinfo]", data);
+      const res = await axios.get(`${API_BASE_URL}/api/user/info`, {
+        headers: {
+          Authorization: `bearer ${data.token}`,
+        },
+      });
+
+      console.log("[Userinfo]", res);
+
+      // if (res.data.state == false){
+
+      // } else {
+      //   navigate("/task");
+      // }
       // if (authenticatedUserinfo.state) setUserInfo(authenticatedUserinfo.data);
       // if (authenticatedUserinfo.state && authenticatedUserinfo?.data?.setting) {
       //   setSettingInfo(authenticatedUserinfo?.data?.setting);
