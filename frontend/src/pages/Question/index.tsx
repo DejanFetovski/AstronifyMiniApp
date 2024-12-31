@@ -1,5 +1,4 @@
 import { useState } from "react";
-import ActionButton from "../../components/ActionButton";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 
@@ -46,7 +45,10 @@ const Question = () => {
               className={`flex flex-col items-center justify-center border border-[#A6A6A6] ${
                 pathSelection == 1 ? "bg-[#F0F0F055]" : "bg-[#F0F0F026]"
               } rounded-[30px] max-w-[176px] p-4`}
-              onClick={() => handlePathSelection(1)}
+              onClick={() => {
+                handlePathSelection(1);
+                handleClick();
+              }}
             >
               <img
                 src="assets/images/left-path.png"
@@ -58,7 +60,10 @@ const Question = () => {
               className={`flex flex-col items-center justify-center border border-[#A6A6A6] ${
                 pathSelection == 2 ? "bg-[#F0F0F055]" : "bg-[#F0F0F026]"
               } rounded-[30px] max-w-[176px] p-4`}
-              onClick={() => handlePathSelection(2)}
+              onClick={() => {
+                handlePathSelection(2);
+                handleClick();
+              }}
             >
               <img
                 src="assets/images/right-path.png"
@@ -81,7 +86,10 @@ const Question = () => {
               className={`flex flex-col items-center justify-center border border-[#A6A6A6] ${
                 walkSelection == 1 ? "bg-[#F0F0F055]" : "bg-[#F0F0F026]"
               } rounded-[30px] max-w-[176px] p-4`}
-              onClick={() => handleWalkSelection(1)}
+              onClick={() => {
+                handleWalkSelection(1);
+                handleClick();
+              }}
             >
               <img
                 src="assets/images/investigate.png"
@@ -93,7 +101,10 @@ const Question = () => {
               className={`flex flex-col items-center justify-center border border-[#A6A6A6] ${
                 walkSelection == 2 ? "bg-[#F0F0F055]" : "bg-[#F0F0F026]"
               } rounded-[30px] max-w-[176px] p-4`}
-              onClick={() => handleWalkSelection(2)}
+              onClick={() => {
+                handleWalkSelection(2)
+                handleClick();
+              }}
             >
               <img
                 src="assets/images/keepwalking.png"
@@ -116,7 +127,10 @@ const Question = () => {
               className={`flex flex-col items-center justify-center border border-[#A6A6A6] ${
                 boxSelection == 1 ? "bg-[#F0F0F055]" : "bg-[#F0F0F026]"
               } rounded-[30px] max-w-[176px] p-4`}
-              onClick={() => setBoxSelection(1)}
+              onClick={() => {
+                setBoxSelection(1);
+                handleClick();
+              }}
             >
               <img
                 src="assets/images/openchest.png"
@@ -130,6 +144,7 @@ const Question = () => {
               } rounded-[30px] max-w-[176px] p-4`}
               onClick={() => {
                 setBoxSelection(2);
+                handleClick();
               }}
             >
               <img
@@ -141,12 +156,6 @@ const Question = () => {
           </div>
         </>
       )}
-      <ActionButton
-        className="gradient-bg relative w-[167px] h-[40px] flex justify-center items-center z-20"
-        onClick={handleClick}
-      >
-        {<span className="text-[14px] text-white">Next</span>}
-      </ActionButton>
 
       <div className=" absolute bottom-10 flex gap-[8px]">
         <div
