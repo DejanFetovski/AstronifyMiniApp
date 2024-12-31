@@ -4,14 +4,14 @@ import dotenv from 'dotenv'
 import { UserModel, UserTask, DailyGameTask } from '../models/user.model'
 import { DailyTaskModel } from '../models/dailyTask.model'
 import { TaskModel } from '../models/task.model'
-import { authenticateToken } from './user.routes'
+import { verifyToken } from '../middleware'
 import { isToday, isYesterday } from '../utils/methods'
 import { userInfoList } from '../core/tapgame'
 dotenv.config()
 
 const router = express.Router()
 // Route to get tasks
-router.get('/list', authenticateToken, async (req, res) => {
+router.get('/list', verifyToken, async (req, res) => {
   try {
     const { chatId } = req.body.user // Use query parameters for GET request
     let game = await UserModel.findOne({ chatId })
@@ -29,7 +29,7 @@ router.get('/list', authenticateToken, async (req, res) => {
 })
 
 // Route to get daily tasks
-router.get('/dailylist', authenticateToken, async (req, res) => {
+router.get('/dailylist', verifyToken, async (req, res) => {
   try {
     const { chatId } = req.query // Use query parameters for GET request
     let game = await UserModel.findOne({ chatId })
@@ -46,7 +46,7 @@ router.get('/dailylist', authenticateToken, async (req, res) => {
   }
 })
 
-router.post('/join', authenticateToken, async (req, res) => {
+router.post('/join', verifyToken, async (req, res) => {
   try {
     const { chatId, taskId } = req.body
 
@@ -71,7 +71,7 @@ router.post('/join', authenticateToken, async (req, res) => {
   }
 })
 
-router.post('/claim', authenticateToken, async (req, res) => {
+router.post('/claim', verifyToken, async (req, res) => {
   try {
     const { chatId, taskId } = req.body
 
@@ -96,7 +96,7 @@ router.post('/claim', authenticateToken, async (req, res) => {
   }
 })
 
-router.get('/daily/tasks', authenticateToken, async (req, res) => {
+router.get('/daily/tasks', verifyToken, async (req, res) => {
   try {
     let dailyTasks = await DailyTaskModel.find();
     return res.status(200).send({
@@ -109,7 +109,7 @@ router.get('/daily/tasks', authenticateToken, async (req, res) => {
   }
 })
 
-router.post('/daily/claim', authenticateToken, async (req, res) => {
+router.post('/daily/claim', verifyToken, async (req, res) => {
   try {
     const { chatId } = req.body.user;
     const { taskId, isPremium } = req.body

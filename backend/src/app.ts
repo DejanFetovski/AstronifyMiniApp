@@ -7,9 +7,7 @@ import routeAuth from './routes/auth.routes'
 import routeUser from './routes/user.routes'
 import routeFriend from './routes/friend.routes'
 import routeTask from './routes/task.routes'
-import routeLeaderboard from './routes/leaderboard.routes'
 import routeGame from './routes/game.routes'
-import routeLevel from './routes/level.routes'
 
 import {appInit} from './core/tapgame'
 import {startWebSocketServer} from './socket'
@@ -17,9 +15,8 @@ import {startWebSocketServer} from './socket'
 // import https from "https";
 import http from "http";
 import { Socket } from 'socket.io'
-
-
-// let clients: { [key: string]: WebSocket } = {};
+ 
+import { verifyToken } from './middleware/index'; // Adjust the import path as needed
 
 export const run = async (bot: any): Promise<void> => {
   const app: Express = express()
@@ -42,10 +39,9 @@ export const run = async (bot: any): Promise<void> => {
   app.use('/api/auth', routeAuth)
   app.use('/api/user', routeUser)
   app.use('/api/task', routeTask)
-  app.use('/api/leaderboard', routeLeaderboard)
   app.use('/api/friend', routeFriend)
   app.use('/api/game', routeGame)
-  app.use('/api/level', routeLevel)
+  
   // app.use('*', (req, res) => {
   //   res.json("API is wokring")
   //   console.log("API is working...")

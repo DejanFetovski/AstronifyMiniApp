@@ -9,7 +9,7 @@ import { UserModel } from '../models/user.model'
 import { LevelModel } from '../models/level.model'
 import { ItemModel } from '../models/item.model'
 import { LangModel } from '../models/lang.model'
-import { authenticateToken } from './user.routes'
+import { verifyToken } from '../middleware'
 import { TaskModel } from '../models/task.model'
 import { getTime } from '../core/tapgame'
 import { PresetModel } from '../models/preset.model'
@@ -22,7 +22,7 @@ const router = express.Router()
 // @request: bearer token
 // @response: user info & energy & score
 // @method: GET
-router.get('/info', authenticateToken, async (req, res) => {
+router.get('/info', verifyToken, async (req, res) => {
   try {
     const levels = await LevelModel.find()
     const items = await ItemModel.find()
@@ -43,7 +43,7 @@ router.get('/info', authenticateToken, async (req, res) => {
   }
 })
 
-router.get('/tasks', authenticateToken, async (req, res) => {
+router.get('/tasks', verifyToken, async (req, res) => {
   try {
     const chatId = req.body.user.chatId
     const game = await UserModel.findOne({ chatId })
@@ -62,7 +62,7 @@ router.get('/tasks', authenticateToken, async (req, res) => {
   }
 });
 
-router.get('/time', authenticateToken, async (req, res) => {
+router.get('/time', verifyToken, async (req, res) => {
   try {
     res.status(200).json({
       state: true,
@@ -73,7 +73,7 @@ router.get('/time', authenticateToken, async (req, res) => {
   }
 });
 
-router.get('/wheel-scores', authenticateToken, async (req, res) => {
+router.get('/wheel-scores', verifyToken, async (req, res) => {
   try {
     const wheelscores = await PresetModel.findOne({ key: "wheelScores" });
     if (!wheelscores) {
@@ -102,7 +102,7 @@ router.get('/wheel-scores', authenticateToken, async (req, res) => {
   }
 })
 
-router.get('/wheel-get-random-value', authenticateToken, async (req, res) => {
+router.get('/wheel-get-random-value', verifyToken, async (req, res) => {
   try {
     const chatId = req.body.user.chatId
     const wheelscores = await PresetModel.findOne({ key: "wheelScores" });
@@ -185,7 +185,7 @@ router.get('/wheel-get-random-value', authenticateToken, async (req, res) => {
   }
 })
 
-router.get('/wheel-get-confirmed', authenticateToken, async (req, res) => {
+router.get('/wheel-get-confirmed', verifyToken, async (req, res) => {
   try {
     const chatId = req.body.user.chatId
     const user = await UserModel.findOne({ chatId })
