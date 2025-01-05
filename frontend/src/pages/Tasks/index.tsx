@@ -45,7 +45,7 @@ const Tasks = () => {
             </span>
           </div>
         </div>
-        <div className="relative max-w-[400px]">
+        <div className="relative w-full h-full">
           <div className="absolute -top-3 left-0 w-full h-[50px] bg-gradient-to-r from-[rgba(254, 83, 187, 1)] to-[rgba(3, 177, 251, 1)] blur-3xl"></div>
           <img
             src="assets/images/tasks-bg.png"
