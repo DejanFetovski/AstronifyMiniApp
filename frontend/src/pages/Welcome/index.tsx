@@ -69,6 +69,8 @@ const Welcome = () => {
                 dateFormat="yyyy/MM/dd"
                 placeholderText="YYYY/MM/DD"
                 onChange={handleDateChange}
+                showYearDropdown
+                showMonthDropdown
                 className="w-full outline-none bg-[#00000075] rounded-full border-[1px] border-[#000000] text-[#FFFFFF99] cursor-pointer border-none text-[14px] leading-[22px] tracking-[-0.34px] font-light shadow-[0px_0px_0px_1px_#FFFFFF40]  py-2 px-3 h-[48px] "
               />
             </div>

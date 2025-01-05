@@ -18,7 +18,7 @@ const Tasks = () => {
       points: 750,
     },
     {
-      title: "Share with 1 friend",
+      title: "Invite 1 friend",
       points: 1200,
     },
   ];
