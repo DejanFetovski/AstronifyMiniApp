@@ -14,26 +14,26 @@ const Horoscope = () => {
     console.log("handleClickFinance");
     setType(1);
     setStartQuestion(
-      "Let’s unlock your financial secrets - Where should we start?"
+       "It’s time to take control of my financial journey—where do we start?"
     );
   };
   const handleClickCareer = () => {
     setType(2);
     setStartQuestion(
-      "Time to uncover your career magic - What’s on your mind?"
+      "I’m ready to explore my career possibilities—where should I begin?"
     );
   };
   const handleClickRelation = () => {
     setType(3);
     setStartQuestion(
-      "Let’s navigate your love life - What are you curious about?"
+      "Let’s figure out the next chapter in my love story—where do I begin?"
     );
   };
   const handleClickHealth = () => {
     setType(4);
-    setStartQuestion("Let’s explore your wellness journey.....");
+    setStartQuestion("It’s time to prioritize my health and wellness—how should I begin?");
   };
-
+ 
   return (
     <motion.div
       initial={{ opacity: 0 }}
