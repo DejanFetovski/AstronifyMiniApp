@@ -44,9 +44,9 @@ const Horoscope = () => {
     >
       <img
         src="assets/images/diagram.png"
-        className="absolute top-0 right-0"
+        className="absolute top-0 right-0 z-0"
       ></img>
-      <div className="h-full flex flex-col justify-start gap-8 px-6 overflow-x-hidden overflow-y-scroll py-5">
+      <div className="h-full flex flex-col justify-start gap-8 px-6 overflow-x-hidden overflow-y-scroll py-5 relative z-10">
         <div className="grid grid-rows-2 gap-6">
           <div className="grid grid-cols-2 gap-6">
             <div
