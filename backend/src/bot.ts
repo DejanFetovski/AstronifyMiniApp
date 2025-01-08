@@ -552,32 +552,32 @@ export async function init() {
     const text = message.text || ''
 
     // Extract the referral code from the message text
-    const startParamMatch = text.match(/\/start kentId(.+)/)
-    if (startParamMatch && startParamMatch[1]) {
-      console.log('----------This is invited visiting....................')
-      // Already loggin?
-      const existUser = await TapGame.findGame(chatId)
+    // const startParamMatch = text.match(/\/start kentId(.+)/)
+    // if (startParamMatch && startParamMatch[1]) {
+    //   console.log('----------This is invited visiting....................')
+    //   // Already loggin?
+    //   const existUser = await TapGame.findGame(chatId)
 
-      if (!existUser) {
-        // Who invited you?
-        const inviteId = startParamMatch[1]
+    //   if (!existUser) {
+    //     // Who invited you?
+    //     const inviteId = startParamMatch[1]
 
-        session = createSession(`${chatId}`)
-        console.log(
-          `>>>>>>>>>>[User ${chatId} created by invite]:  ${inviteId}`
-        )
-        await TapGame.findOrCreateGame(message.from, inviteId)
-      }
-    } else {
-      console.log('----------This is normal visition....................')
-    }
+    //     session = createSession(`${chatId}`)
+    //     console.log(
+    //       `>>>>>>>>>>[User ${chatId} created by invite]:  ${inviteId}`
+    //     )
+    //     await TapGame.findOrCreateUser(message.from, inviteId)
+    //   }
+    // } else {
+    //   console.log('----------This is normal visition....................')
+    // }
   })
 
   bot.on('message', async (message: any) => {
     console.log('Message Received...', message)
     if (message.text === '/start') {
-      const exist = await TapGame.findOrCreateGame(message.from)
-      if (exist) {
+      const existUser = await TapGame.findOrCreateUser(message.from)
+      if (existUser) {
         console.log(`User[${message.chat.id}] already existed...`)
       } else {
         console.log(`User[${message.chat.id}] created...`)

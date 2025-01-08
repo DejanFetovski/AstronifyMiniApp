@@ -17,6 +17,7 @@ export const verifyToken = (
       return res.status(401).send('Authorization failed. No access token.')
     }
   
+    console.log("TOKEN: ", token, authHeader)
     //Verifying if the token is valid.
     jwt.verify(token, process.env.JWT_SECRET as string, (err, user) => {
       if (err) {

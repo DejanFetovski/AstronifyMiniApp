@@ -8,32 +8,32 @@ export interface UserInfoDocument extends Document {
   allowWithPm?: boolean
 }
 // Define the schema corresponding to the document interface
-const userMetaInfoSchema = new Schema<UserInfoDocument>({
-  firstName: {
-    type: String,
-  },
-  lastName: {
-    type: String,
-  },
-  userName: {
-    type: String,
-  },
-  logo: {
-    type: String,
-  },
-  allowWithPm: {
-    type: Boolean,
-    default: true,
-  },
-})
+// const userMetaInfoSchema = new Schema<UserInfoDocument>({
+//   firstName: {
+//     type: String,
+//   },
+//   lastName: {
+//     type: String,
+//   },
+//   userName: {
+//     type: String,
+//   },
+//   logo: {
+//     type: String,
+//   },
+//   allowWithPm: {
+//     type: Boolean,
+//     default: true,
+//   },
+// })
 // -----------------------------------------------------------------------
  
 
 // User Setting------------------------------------------------------
 interface SettingDocument extends Document {
-  question1: string
-  question2: string
-  question3: string
+  question1: number
+  question2: number
+  question3: number
   pfName: string 
   birth: Date
   sex: string
@@ -41,16 +41,16 @@ interface SettingDocument extends Document {
 
 const settingSchema = new Schema<SettingDocument>({
   question1: {
-    type: String,
-    default: ''
+    type: Number,
+    default: 0
   },
   question2: {
-    type: String,
-    default: ''
+    type: Number,
+    default: 0
   },
   question3: {
-    type: String,
-    default: ''
+    type: Number,
+    default: 0
   },
   pfName: {
     type: String,

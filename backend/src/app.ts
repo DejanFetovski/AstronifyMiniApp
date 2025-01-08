@@ -5,11 +5,11 @@ require('dotenv').config()
 
 import routeAuth from './routes/auth.routes'
 import routeUser from './routes/user.routes'
-import routeFriend from './routes/friend.routes'
-import routeTask from './routes/task.routes'
-import routeGame from './routes/game.routes'
+// import routeFriend from './routes/friend.routes'
+// import routeTask from './routes/task.routes'
+// import routeGame from './routes/game.routes'
 
-import {appInit} from './core/tapgame'
+// import {appInit} from './core/tapgame'
 import {startWebSocketServer} from './socket'
 
 // import https from "https";
@@ -38,9 +38,9 @@ export const run = async (bot: any): Promise<void> => {
   
   app.use('/api/auth', routeAuth)
   app.use('/api/user', routeUser)
-  app.use('/api/task', routeTask)
-  app.use('/api/friend', routeFriend)
-  app.use('/api/game', routeGame)
+  // app.use('/api/task', routeTask)
+  // app.use('/api/friend', routeFriend)
+  // app.use('/api/game', routeGame)
   
   // app.use('*', (req, res) => {
   //   res.json("API is wokring")
@@ -69,6 +69,6 @@ export const run = async (bot: any): Promise<void> => {
     async (userId:string) =>{}
 
   // Schedule the task to run every day at 00:00 UTC (midnight)
-  appInit();
+  // appInit();
   
 }
