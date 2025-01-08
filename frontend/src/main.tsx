@@ -82,11 +82,11 @@ const App: React.FC = () => {
 
     console.log("[main.tsx - Userinfo]", res.data);
 
-    if (res.data.state == false || res.data?.isFirstLogin == true) {
-      // window.location.href = "/";
-    } else {
-      // window.location.href = "/profile";
-    }
+    // if (res.data.state == false || res.data?.isFirstLogin == true) {
+    //   // window.location.href = "/";
+    // } else {
+    //   // window.location.href = "/profile";
+    // }
 
     console.log("Set User Info>>>>>", res.data.data)
     setUserInfo(res.data.data);

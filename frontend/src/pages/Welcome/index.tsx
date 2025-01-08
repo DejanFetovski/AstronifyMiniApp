@@ -11,8 +11,6 @@ import axios from "axios";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve,ms))
-
 const Welcome = () => {
   const { userInfo, setUserInfo } = useContext(AppContext);
 
@@ -20,15 +18,16 @@ const Welcome = () => {
   const [name, setName] = useState("");
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [sexSelection, setSexSelection] = useState(0);
+  const [errorMessage, setErrorMessage] = useState(""); // State for error message
 
   const navigate = useNavigate();
 
   const userInfoChangeHandler = async () => {
     const token = localStorage.getItem("authorization");
     userInfo.isFirstLogin = false;
-    console.log("API_BASE_URL >>>", API_BASE_URL)
-    console.log("token >>>", token)
-    console.log("userInfo >>>", userInfo)
+    console.log("API_BASE_URL >>>", API_BASE_URL);
+    console.log("token >>>", token);
+    console.log("userInfo >>>", userInfo);
     try {
       const response = await axios.post(`${API_BASE_URL}/api/user/info`, 
       userInfo,
@@ -51,9 +50,7 @@ const Welcome = () => {
   };
 
   useEffect(() => {
-    // console.log("userInfo", userInfo.state == treu)
-    console.log("=----------------------------------Save to Database >>>> userInfo", userInfo)
-
+    // Save to database when the user info is complete
     if (
       userInfo &&
       userInfo?.setting != null &&
@@ -61,16 +58,23 @@ const Welcome = () => {
       userInfo?.setting?.question2 != null &&
       userInfo?.setting?.question3 != null &&
       userInfo?.setting?.sex != null &&
+      userInfo?.setting?.pfName != "" &&
       userInfo?.setting?.birth != null
     ) {
-      console.log("Save to Database >>>> userInfo", userInfo)
-
-      // Save to database
+      console.log("Save to Database >>>> userInfo", userInfo);
       userInfoChangeHandler();
     }
   }, [userInfo]);
 
   const handleNext = async () => {
+    // Validation: Check if name and birth date are provided
+    if (!name || !selectedDate) {
+      setErrorMessage("Please fill in both your name and birth date.");
+      return; // Don't proceed if validation fails
+    }
+    
+    // Proceed with saving user info
+    setErrorMessage(""); // Clear error message if validation passes
     setUserInfo((prev) => ({
       ...prev,
       setting: {
@@ -114,7 +118,7 @@ const Welcome = () => {
       ) : (
         <>
           <img src="assets/images/suns.png"></img>
-          <div className="flex flex-col gap-[18px] w-full  items-start max-w-[640px]">
+          <div className="flex flex-col gap-[18px] w-full items-start max-w-[640px]">
             <div className="flex flex-col w-full gap-1">
               <span className="text-[17px] leading-[22px] tracking-[-0.4px] text-[#FFFFFFBF]">
                 Your Name
@@ -125,7 +129,7 @@ const Welcome = () => {
                   placeholder="Enter your name here"
                   value={name}
                   onChange={handleInputChange}
-                ></input>
+                />
               </div>
             </div>
 
@@ -155,6 +159,7 @@ const Welcome = () => {
                     ? "bg-[rgb(254,83,187)] text-white"
                     : "bg-transparent text-[#737B84BF]"
                 } flex items-center p-2 rounded-full gap-2 pr-4 text-[16.7px] leading-[22px] tracking-[-0.34px] w- `}
+
                 onClick={() => setSexSelection(0)}
               >
                 <FemaleIcon active={sexSelection == 0 ? true : false} />
@@ -166,6 +171,7 @@ const Welcome = () => {
                     ? "bg-[rgb(254,83,187)] text-white"
                     : "bg-transparent text-[#737B84BF]"
                 } flex items-center justify-center p-2 rounded-full gap-2 pr-4 text-[16.7px] leading-[22px] tracking-[-0.34px] `}
+
                 onClick={() => setSexSelection(1)}
               >
                 <MaleIcon active={sexSelection == 1 ? true : false} />
@@ -173,12 +179,17 @@ const Welcome = () => {
               </div>
             </div>
 
+            {errorMessage && (
+              <div className="text-red-500 text-[14px] mt-2">{errorMessage}</div> // Show error message
+            )}
+
             <div className="w-full flex items-center justify-center mt-4">
               <ActionButton
                 className="gradient-bg w-[167px] h-[40px] flex justify-center items-center"
                 onClick={handleNext}
+                disabled={!name || !selectedDate} // Disable button if validation fails
               >
-                {<span className="text-[14px] text-white">Next</span>}
+                <span className="text-[14px] text-white">Next</span>
               </ActionButton>
             </div>
           </div>

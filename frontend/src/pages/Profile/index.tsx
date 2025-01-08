@@ -3,9 +3,12 @@ import BottomBar from "../../components/BottomBar";
 import TaskIcon from "../../svgs/TaskIcon";
 import WalletIcon from "../../svgs/WalletIcon";
 import { motion } from "framer-motion";
+import { useContext } from "react";
+import { AppContext } from "../../main";
 
 const Profile = () => {
   const navigate = useNavigate();
+  const { userInfo } = useContext(AppContext); // Get userInfo from context
 
   const handleClickWallet = () => {
     navigate("/wallet");
@@ -14,6 +17,14 @@ const Profile = () => {
   const handleClickTasks = () => {
     navigate("/tasks");
   };
+
+  // Format the birthdate for display (e.g., "February 19, 1989")
+  const formattedBirthdate = new Date(userInfo.setting.birth).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric"
+  });
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -38,10 +49,10 @@ const Profile = () => {
           ></img>
           <div className="flex flex-col gap-2">
             <span className="text-[16px] leading-[21.8px] text-white">
-              Romit Kapur
+              {userInfo.setting.pfName || "Romit Kapur"} {/* Default to "Romit Kapur" if name is empty */}
             </span>
             <span className="text-[12px] leading-[16.3px] text-[#FFFFFF99]">
-              February 19, 1989
+              {formattedBirthdate} {/* Display the formatted birthdate */}
             </span>
           </div>
         </div>
