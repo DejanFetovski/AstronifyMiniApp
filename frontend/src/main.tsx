@@ -88,12 +88,13 @@ const App: React.FC = () => {
       // window.location.href = "/profile";
     }
 
-    setUserInfo(res.data);
+    console.log("Set User Info>>>>>", res.data.data)
+    setUserInfo(res.data.data);
   };
 
   useEffect(() => {
     getTokenHandler();
-    console.log("App initialized");
+    // console.log("App initialized");
   }, []);
 
   useEffect(() => {

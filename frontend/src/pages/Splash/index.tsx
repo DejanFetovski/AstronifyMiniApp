@@ -10,12 +10,12 @@ const Splash = () => {
   const navigate = useNavigate();
   const handleNext = () => {
 
-    if (userInfo?.state == true && userInfo?.data?.isFirstLogin == false){
-      navigate("/profile");
-    } else  {
+    console.log("SPLAsh - Handle NExt - userInfo", userInfo)
+    if (userInfo && userInfo.isFirstLogin == true){
       navigate("/question");
+    } else  {
+      navigate("/profile");
     }
-    
   };
   return (
     <motion.div

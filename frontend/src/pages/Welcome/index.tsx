@@ -11,6 +11,8 @@ import axios from "axios";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
+const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve,ms))
+
 const Welcome = () => {
   const { userInfo, setUserInfo } = useContext(AppContext);
 
@@ -23,29 +25,37 @@ const Welcome = () => {
 
   const userInfoChangeHandler = async () => {
     const token = localStorage.getItem("authorization");
+    userInfo.isFirstLogin = false;
+    console.log("API_BASE_URL >>>", API_BASE_URL)
+    console.log("token >>>", token)
+    console.log("userInfo >>>", userInfo)
     try {
-      const response = await axios.post(`${API_BASE_URL}/api/user/info`, {
+      const response = await axios.post(`${API_BASE_URL}/api/user/info`, 
+      userInfo,
+      {
         headers: {
-          Authorization: `bearer ${token}`,
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json", // Ensure proper content type
         },
-        body: JSON.stringify(userInfo),
       });
 
-      if (response?.ok) {
+      if (response) {
         console.log("User info saved successfully!");
       } else {
-        console.error("Error saving user info:", await response.json());
+        console.error("Error saving user info:", await response);
       }
     } catch (error) {
       console.error("Error:", error);
     }
+    navigate("/profile"); // Navigate to the profile page
   };
 
   useEffect(() => {
     // console.log("userInfo", userInfo.state == treu)
+    console.log("=----------------------------------Save to Database >>>> userInfo", userInfo)
+
     if (
       userInfo &&
-      userInfo?.state == true &&
       userInfo?.setting != null &&
       userInfo?.setting?.question1 != null &&
       userInfo?.setting?.question2 != null &&
@@ -53,6 +63,8 @@ const Welcome = () => {
       userInfo?.setting?.sex != null &&
       userInfo?.setting?.birth != null
     ) {
+      console.log("Save to Database >>>> userInfo", userInfo)
+
       // Save to database
       userInfoChangeHandler();
     }
@@ -68,7 +80,6 @@ const Welcome = () => {
         birth: selectedDate,
       },
     }));
-    navigate("/profile"); // Navigate to the profile page
   };
 
   const handleInputChange = (event) => {

@@ -1,7 +1,7 @@
 import express from 'express'
 import dotenv from 'dotenv'
 
-import { UserModel  } from '../models/user.model'
+import { UserModel } from '../models/user.model'
 // import { checkRoyalTask } from '../core/tapgame'
 
 import { verifyToken } from '../middleware'
@@ -10,28 +10,12 @@ dotenv.config()
 
 const router = express.Router()
 
-// router.get('/reward', authenticateToken, async (req, res) => {
-//   try {
-//     const chatId = req.body.chatId
-//     let user = await UserModel.findOne({ chatId })
-//     if (user != null) {
-//       TapGame.disposeInviteReward(chatId)
-//     }
-//     res.status(200).json({
-//       state: true,
-//       data: 'successed user reward',
-//     })
-//   } catch (error) {
-//     res.status(500).end()
-//   }
-// })
-
 // @API: /info
 // @request: bearer token
 // @response: user info & energy & score
 // @method: GET
 router.get('/info', verifyToken, async (req, res) => {
-  console.log(`user.route.ts - info`)
+  console.log(`user.route.ts - get info`)
   try {
     const { chatId } = req.body.user
 
@@ -42,18 +26,52 @@ router.get('/info', verifyToken, async (req, res) => {
         data: user,
       })
     } else {
-      // get userdata from bot with chatId
-      // const user = {
-      //   firstName: "",
-      //   secondName,
-      //   userName,
-      //   logo,
-      // }
-      // create new game data
+      const newUser = new UserModel({
+        chatId,
+        setting: {
+          question1: 0,
+          question2: 0,
+          question3: 0,
+          pfName: "",
+          birth: new Date(),
+          sex: "male",
+        },
+        point: 0,
+        isFirstLogin: true,
+      });
 
-      // console.log('----new data insert----')
-      // await item.save()
-      res.json({ state: false, data: null }).status(200)
+      await newUser.save();
+      res.status(201).json({
+        state: true,
+        message: "New user created",
+        data: newUser,
+      });
+    }
+  } catch (error) {
+    res.status(500).end()
+  }
+})
+
+
+router.post('/info', verifyToken, async (req, res) => {
+  console.log(`user.route.ts - save info`)
+  try {
+    const { chatId } = req.body.user;
+    const data = req.body
+    const user = await UserModel.findOne({ chatId })
+    if (user != null || user != undefined) {
+
+      const updatedData = await UserModel.updateOne({ chatId }, { $set: data });
+
+      res.status(200).json({
+        state: true,
+        data: updatedData,
+      })
+    } else {
+      res.status(200).json({
+        state: false,
+        data: null,
+      })
     }
   } catch (error) {
     res.status(500).end()
