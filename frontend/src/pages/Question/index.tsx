@@ -1,30 +1,70 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { AppContext } from "../../main";
 
 const Question = () => {
+  const { userInfo, setUserInfo } = useContext(AppContext);
+  // console.log("Question - userInfo", userInfo);
+
   const [step, setStep] = useState(0);
+  const [pathSelection, setPathSelection] = useState(0);
+  const [walkSelection, setWalkSelection] = useState(0);
+  const [boxSelection, setBoxSelection] = useState(0);
+
   const navigate = useNavigate();
   const handleClick = () => {
-    if (step == 2) {
-      navigate("/welcome");
-    } else {
+      switch (step) {
+        case 0:
+          setUserInfo((prev) => ({
+            ...prev,
+            setting: {
+              ...prev.setting,
+              question1: pathSelection,
+            },
+          }));
+          console.log("Question-index.tsx - Option1 selected", userInfo);
+          break;
+        case 1:
+          setUserInfo((prev) => ({
+            ...prev,
+            setting: {
+              ...prev.setting,
+              question2: walkSelection,
+            },
+          }));
+          console.log("Question-index.tsx - Option2 selected", userInfo);
+          break;
+        case 2:
+          setUserInfo((prev) => ({
+            ...prev,
+            setting: {
+              ...prev.setting,
+              question3: boxSelection,
+            },
+          }));
+          console.log("Question-index.tsx - Option3 selected", userInfo);
+          navigate("/welcome");
+          return
+          break;
+      }
+
       setStep((prev) => prev + 1);
-    }
   };
 
-  const [pathSelection, setPathSelection] = useState(0);
   const handlePathSelection = (value: number) => {
     setPathSelection(value);
   };
 
-  const [walkSelection, setWalkSelection] = useState(0);
   const handleWalkSelection = (value: number) => {
     setWalkSelection(value);
   };
+  
+  const handleBoxSelection = (value: number) => {
+    setBoxSelection(value);
+  };
 
-  const [boxSelection, setBoxSelection] = useState(0);
-
+  
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -102,7 +142,7 @@ const Question = () => {
                 walkSelection == 2 ? "bg-[#F0F0F055]" : "bg-[#F0F0F026]"
               } rounded-[30px] max-w-[176px] p-4`}
               onClick={() => {
-                handleWalkSelection(2)
+                handleWalkSelection(2);
                 handleClick();
               }}
             >
@@ -128,7 +168,7 @@ const Question = () => {
                 boxSelection == 1 ? "bg-[#F0F0F055]" : "bg-[#F0F0F026]"
               } rounded-[30px] max-w-[176px] p-4`}
               onClick={() => {
-                setBoxSelection(1);
+                handleBoxSelection(1);
                 handleClick();
               }}
             >
@@ -143,7 +183,7 @@ const Question = () => {
                 boxSelection == 2 ? "bg-[#F0F0F055]" : "bg-[#F0F0F026]"
               } rounded-[30px] max-w-[176px] p-4`}
               onClick={() => {
-                setBoxSelection(2);
+                handleBoxSelection(2);
                 handleClick();
               }}
             >

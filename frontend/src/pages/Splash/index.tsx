@@ -1,11 +1,21 @@
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ActionButton from "../../components/ActionButton";
 import { motion } from "framer-motion";
+import { AppContext } from "../../main";
 
 const Splash = () => {
+  const { userInfo } = useContext(AppContext);
+
   const navigate = useNavigate();
-  const handleClick = () => {
-    navigate("/question");
+  const handleNext = () => {
+
+    if (userInfo?.state == true && userInfo?.data?.isFirstLogin == false){
+      navigate("/profile");
+    } else  {
+      navigate("/question");
+    }
+    
   };
   return (
     <motion.div
@@ -26,7 +36,7 @@ const Splash = () => {
         </p>
         <ActionButton
           className="gradient-bg w-[167px] h-[40px] flex justify-center items-center"
-          onClick={handleClick}
+          onClick={handleNext}
         >
           {<span className="text-[14px] text-white">Next</span>}
         </ActionButton>

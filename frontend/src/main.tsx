@@ -1,4 +1,4 @@
-import React, { StrictMode, useEffect } from "react";
+import React, { createContext, StrictMode, useEffect } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { SkeletonTheme } from "react-loading-skeleton";
@@ -15,23 +15,22 @@ import Horoscope from "./pages/Horoscope";
 import Agent from "./pages/Agent";
 import Withdraw from "./pages/Withdraw";
 import Deposit from "./pages/Deposit";
-import AppContextProvider from "./providers/AppContextProvider";
-import TonConnectProvider from "./providers/TonProvider";
 import { THEME, TonConnectUIProvider } from "@tonconnect/ui-react";
 import { useState } from "react";
 import axios from "axios";
 
-import { WalletsListConfiguration } from '@tonconnect/ui';
-
+import { WalletsListConfiguration } from "@tonconnect/ui";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-  
+
+export const AppContext = createContext();
+
 const App: React.FC = () => {
   const [token, setToken] = useState(null);
-  // const navigate = useNavigate();
+  const [userInfo, setUserInfo] = useState(null);
 
   const getAuthenticatedUserInfo = async (telegramUserInfo: any) => {
-    console.log("main.tsx - UserID >>> ", telegramUserInfo.id, API_BASE_URL);
+    console.log("main.tsx - UserID >>> ", telegramUserInfo.id, API_BASE_URL, `${API_BASE_URL}/api/auth/getAuthentication`);
     try {
       const chatId = telegramUserInfo.id;
       if (chatId == null || chatId == undefined) {
@@ -49,34 +48,15 @@ const App: React.FC = () => {
       console.log("main.tsx - authenticated user info >>> ", data);
       if (data.token) {
         localStorage.setItem("authorization", data.token);
-        setToken(token);
+        setToken(data.token);
       }
-
-      // Get user info with token
-      const res = await axios.get(`${API_BASE_URL}/api/user/info`, {
-        headers: {
-          Authorization: `bearer ${data.token}`,
-        },
-      });
-
-      console.log("[Userinfo]", res);
-
-      // if (res.data.state == false){
-
-      // } else {
-      //   navigate("/task");
-      // }
-      // if (authenticatedUserinfo.state) setUserInfo(authenticatedUserinfo.data);
-      // if (authenticatedUserinfo.state && authenticatedUserinfo?.data?.setting) {
-      //   setSettingInfo(authenticatedUserinfo?.data?.setting);
-      // }
     } catch (error) {
       console.log(error);
     }
   };
 
-  const initDataHanler = async () => {
-    let initData
+  const getTokenHandler = async () => {
+    let initData;
 
     if (typeof window !== "undefined") {
       const WebApp = (await import("@twa-dev/sdk")).default;
@@ -91,17 +71,47 @@ const App: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    console.log("---------------");
+  const getUserInfoHandler = async (token: any) => {
+    console.log("[main.tsx - getUserInfoHanlder]", token);
+    // Get user info with token
+    const res = await axios.get(`${API_BASE_URL}/api/user/info`, {
+      headers: {
+        Authorization: `bearer ${token}`,
+      },
+    });
 
-    initDataHanler();
+    console.log("[main.tsx - Userinfo]", res.data);
+
+    if (res.data.state == false || res.data?.isFirstLogin == true) {
+      // window.location.href = "/";
+    } else {
+      // window.location.href = "/profile";
+    }
+
+    setUserInfo(res.data);
+  };
+
+  useEffect(() => {
+    getTokenHandler();
     console.log("App initialized");
   }, []);
+
+  useEffect(() => {
+    if (userInfo) {
+      // console.log("Context --- Updated userInfo:", userInfo);
+    }
+  }, [userInfo]); // Runs whenever userInfo changes
+
+  useEffect(() => {
+    if (token) {
+      getUserInfoHandler(token);
+    }
+  }, [token]); // Runs whenever userInfo changes
 
   const manifestUrl: string =
     "https://ton-connect.github.io/demo-dapp-with-wallet/tonconnect-manifest.json";
 
-  const walletsListConfiguration: WalletsListConfiguration  = {
+  const walletsListConfiguration: WalletsListConfiguration = {
     includeWallets: [
       {
         appName: "tonwallet",
@@ -151,16 +161,20 @@ const App: React.FC = () => {
   };
 
   return (
-    <TonConnectUIProvider
-      manifestUrl={manifestUrl}
-      uiPreferences={{ theme: THEME.DARK }}
-      walletsListConfiguration={walletsListConfiguration}
-      actionsConfiguration={{
-        twaReturnUrl: "https://t.me/tc_twa_demo_bot/start",
+    <AppContext.Provider
+      value={{
+        userInfo,
+        setUserInfo
       }}
     >
-      <AppContextProvider>
-        <TonConnectProvider>
+      <TonConnectUIProvider
+        manifestUrl={manifestUrl}
+        uiPreferences={{ theme: THEME.DARK }}
+        walletsListConfiguration={walletsListConfiguration}
+        actionsConfiguration={{
+          twaReturnUrl: "https://t.me/tc_twa_demo_bot/start",
+        }}
+      >
           <BrowserRouter>
             <SkeletonTheme
               baseColor="#ffffff06"
@@ -184,9 +198,8 @@ const App: React.FC = () => {
               </Routes>
             </SkeletonTheme>
           </BrowserRouter>
-        </TonConnectProvider>
-      </AppContextProvider>
-    </TonConnectUIProvider>
+      </TonConnectUIProvider>
+    </AppContext.Provider>
   );
 };
 

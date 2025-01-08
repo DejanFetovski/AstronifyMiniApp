@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import MaleIcon from "../../svgs/MaleIcon";
 import FemaleIcon from "../../svgs/FemaleIcon";
 import ActionButton from "../../components/ActionButton";
@@ -6,18 +6,78 @@ import { useNavigate } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import { motion } from "framer-motion";
 import "react-datepicker/dist/react-datepicker.css";
+import { AppContext } from "../../main";
+import axios from "axios";
+
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const Welcome = () => {
+  const { userInfo, setUserInfo } = useContext(AppContext);
+
   const [step, setStep] = useState(0);
+  const [name, setName] = useState("");
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [sexSelection, setSexSelection] = useState(0);
+
   const navigate = useNavigate();
-  const handleClick = () => {
-    navigate("/profile");
+
+  const userInfoChangeHandler = async () => {
+    const token = localStorage.getItem("authorization");
+    try {
+      const response = await axios.post(`${API_BASE_URL}/api/user/info`, {
+        headers: {
+          Authorization: `bearer ${token}`,
+        },
+        body: JSON.stringify(userInfo),
+      });
+
+      if (response?.ok) {
+        console.log("User info saved successfully!");
+      } else {
+        console.error("Error saving user info:", await response.json());
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
   };
+
+  useEffect(() => {
+    // console.log("userInfo", userInfo.state == treu)
+    if (
+      userInfo &&
+      userInfo?.state == true &&
+      userInfo?.setting != null &&
+      userInfo?.setting?.question1 != null &&
+      userInfo?.setting?.question2 != null &&
+      userInfo?.setting?.question3 != null &&
+      userInfo?.setting?.sex != null &&
+      userInfo?.setting?.birth != null
+    ) {
+      // Save to database
+      userInfoChangeHandler();
+    }
+  }, [userInfo]);
+
+  const handleNext = async () => {
+    setUserInfo((prev) => ({
+      ...prev,
+      setting: {
+        ...prev.setting,
+        sex: sexSelection == 1 ? "male" : "female",
+        pfName: name,
+        birth: selectedDate,
+      },
+    }));
+    navigate("/profile"); // Navigate to the profile page
+  };
+
+  const handleInputChange = (event) => {
+    setName(event.target.value); // Update state with input value
+  };
+
   const handleBgClick = () => {
     setStep(1);
   };
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [sexSelection, setSexSelection] = useState(0);
 
   const handleDateChange = (date: Date | null) => {
     setSelectedDate(date);
@@ -52,6 +112,8 @@ const Welcome = () => {
                 <input
                   className="text-[#FFFFFF99] outline-none cursor-pointer bg-transparent border-none text-[14px] leading-[22px] font-light"
                   placeholder="Enter your name here"
+                  value={name}
+                  onChange={handleInputChange}
                 ></input>
               </div>
             </div>
@@ -103,7 +165,7 @@ const Welcome = () => {
             <div className="w-full flex items-center justify-center mt-4">
               <ActionButton
                 className="gradient-bg w-[167px] h-[40px] flex justify-center items-center"
-                onClick={handleClick}
+                onClick={handleNext}
               >
                 {<span className="text-[14px] text-white">Next</span>}
               </ActionButton>
