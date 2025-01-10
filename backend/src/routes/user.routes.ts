@@ -2,7 +2,7 @@ import express from 'express'
 import dotenv from 'dotenv'
 
 import { UserModel } from '../models/user.model'
-
+import { ReferralModel } from '../models/referral.model'
 import { verifyToken } from '../middleware'
 
 dotenv.config()
@@ -51,7 +51,6 @@ router.get('/info', verifyToken, async (req, res) => {
   }
 })
 
-
 router.post('/info', verifyToken, async (req, res) => {
   console.log(`user.route.ts - save info`)
   try {
@@ -77,6 +76,20 @@ router.post('/info', verifyToken, async (req, res) => {
   }
 })
 
+router.get('/referral', verifyToken, async(req, res) => {
+  try {
+    const { chatId } = req.body.user;
+    const referrals = await ReferralModel.find({inviterId: chatId})
+    res.status(200).json({
+      referrals: referrals
+    })
+
+    return referrals;
+  } catch (error) {
+    res.status(500).end()
+  }
+
+})
 router.post('/setting', verifyToken, async (req, res) => {
   const chatId = req.body.user?.chatId
   const { lang, animation, sound, music } = req.body

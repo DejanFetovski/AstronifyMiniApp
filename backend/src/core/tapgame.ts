@@ -71,7 +71,7 @@ export async function saveReferral(
 
   const referralData: any = {
     inviterId: invitedFrom, // Example chatId
-    friendId: userInfo.id,
+    userId: userInfo.id,
     state: true,
   };
 

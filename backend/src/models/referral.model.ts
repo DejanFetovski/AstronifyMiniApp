@@ -3,7 +3,7 @@ import { Schema, model, Document } from 'mongoose'
 // Define an interface representing a document in MongoDB
 export interface ReferralDocument extends Document {
     inviterId: string
-    friendId: string
+    userId: string
     state: Boolean // True: accepted, False: pending
 }
 
@@ -13,7 +13,7 @@ const referralSchema = new Schema<ReferralDocument>({
         type: String,
         required: true,
     },
-    friendId: {
+    userId: {
         type: String,
         required: true,
     },
