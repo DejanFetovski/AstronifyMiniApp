@@ -2,6 +2,12 @@ import React, { createContext, StrictMode, useEffect } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { SkeletonTheme } from "react-loading-skeleton";
+import { THEME, TonConnectUIProvider } from "@tonconnect/ui-react";
+import { useState } from "react";
+import axios from "axios";
+import { ToastContainer } from "react-toastify";
+
+import 'react-toastify/dist/ReactToastify.css';
 import "./styles/index.scss";
 import PageLayout from "./layouts/PageLayout";
 import Splash from "./pages/Splash";
@@ -15,9 +21,6 @@ import Horoscope from "./pages/Horoscope";
 import Agent from "./pages/Agent";
 import Withdraw from "./pages/Withdraw";
 import Deposit from "./pages/Deposit";
-import { THEME, TonConnectUIProvider } from "@tonconnect/ui-react";
-import { useState } from "react";
-import axios from "axios";
 
 import { WalletsListConfiguration } from "@tonconnect/ui";
 
@@ -30,7 +33,12 @@ const App: React.FC = () => {
   const [userInfo, setUserInfo] = useState(null);
 
   const getAuthenticatedUserInfo = async (telegramUserInfo: any) => {
-    console.log("main.tsx - UserID >>> ", telegramUserInfo.id, API_BASE_URL, `${API_BASE_URL}/api/auth/getAuthentication`);
+    console.log(
+      "main.tsx - UserID >>> ",
+      telegramUserInfo.id,
+      API_BASE_URL,
+      `${API_BASE_URL}/api/auth/getAuthentication`
+    );
     try {
       const chatId = telegramUserInfo.id;
       if (chatId == null || chatId == undefined) {
@@ -88,7 +96,7 @@ const App: React.FC = () => {
     //   // window.location.href = "/profile";
     // }
 
-    console.log("Set User Info>>>>>", res.data.data)
+    console.log("Set User Info>>>>>", res.data.data);
     setUserInfo(res.data.data);
   };
 
@@ -165,7 +173,7 @@ const App: React.FC = () => {
     <AppContext.Provider
       value={{
         userInfo,
-        setUserInfo
+        setUserInfo,
       }}
     >
       <TonConnectUIProvider
@@ -176,29 +184,29 @@ const App: React.FC = () => {
           twaReturnUrl: "https://t.me/tc_twa_demo_bot/start",
         }}
       >
-          <BrowserRouter>
-            <SkeletonTheme
-              baseColor="#ffffff06"
-              highlightColor="#ffffff10"
-              borderRadius="4px"
-            >
-              <Routes>
-                <Route path="/" element={<PageLayout />}>
-                  <Route index element={<Splash />} />
-                  <Route path="/question" element={<Question />} />
-                  <Route path="/welcome" element={<Welcome />} />
-                  <Route path="/profile" element={<Profile />} />
-                  <Route path="/horoscope" element={<Horoscope />} />
-                  <Route path="/agent" element={<Agent />} />
-                  <Route path="/wallet" element={<Wallet />} />
-                  <Route path="/withdraw" element={<Withdraw />} />
-                  <Route path="/deposit" element={<Deposit />} />
-                  <Route path="/tasks" element={<Tasks />} />
-                  <Route path="/invite" element={<Invite />} />
-                </Route>
-              </Routes>
-            </SkeletonTheme>
-          </BrowserRouter>
+        <BrowserRouter>
+          <SkeletonTheme
+            baseColor="#ffffff06"
+            highlightColor="#ffffff10"
+            borderRadius="4px"
+          >
+            <Routes>
+              <Route path="/" element={<PageLayout />}>
+                <Route index element={<Splash />} />
+                <Route path="/question" element={<Question />} />
+                <Route path="/welcome" element={<Welcome />} />
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/horoscope" element={<Horoscope />} />
+                <Route path="/agent" element={<Agent />} />
+                <Route path="/wallet" element={<Wallet />} />
+                <Route path="/withdraw" element={<Withdraw />} />
+                <Route path="/deposit" element={<Deposit />} />
+                <Route path="/tasks" element={<Tasks />} />
+                <Route path="/invite" element={<Invite />} />
+              </Route>
+            </Routes>
+          </SkeletonTheme>
+        </BrowserRouter>
       </TonConnectUIProvider>
     </AppContext.Provider>
   );
@@ -211,5 +219,13 @@ if (!rootElement) throw new Error("Root element not found");
 createRoot(rootElement).render(
   <StrictMode>
     <App />
+    <ToastContainer
+      theme="light"
+      position="top-center"
+      pauseOnFocusLoss={false}
+      autoClose={2500}
+      pauseOnHover={false}
+      stacked
+    />
   </StrictMode>
 );

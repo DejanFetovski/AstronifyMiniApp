@@ -1,24 +1,40 @@
-import {
-  useTonConnectUI,
-  useTonWallet,
-  // useTonAddress,
-} from "@tonconnect/ui-react";
+import { useContext } from "react";
+import { motion } from "framer-motion";
+import { toast } from "react-toastify";
 
 import BottomBar from "../../components/BottomBar";
 import CopyIcon from "../../svgs/CopyIcon";
 import SearchIcon from "../../svgs/SearchIcon";
-import { motion } from "framer-motion";
+import { AppContext } from "../../main";
+
+const INVITE_BOT_URL = import.meta.env.VITE_BOT_URL;
 
 const Invite = () => {
-  const [tonConnectUI] = useTonConnectUI();
-  const wallet = useTonWallet();
-  // const walletAddress = useTonAddress();
+  const { userInfo } = useContext(AppContext);
+
+  const tele = (window as any).Telegram.WebApp;
+  const userID = tele.initDataUnsafe?.user?.id;
+  const inviteCode = `${INVITE_BOT_URL}?start=inviteId${userID}`;
+
+  console.log("[Invite - userID ]", userID);
 
   const handleClickInvite = () => {
     console.log("handleClickInvite");
-    if (!wallet) tonConnectUI.openModal();
+    tele.openTelegramLink(
+      `https://t.me/share/url?url=${inviteCode}&text="Welcome to Astronify App. You can realize your position in space"`
+    );
   };
 
+  const handleCopyReferralLink = () => {
+    if (inviteCode) {
+      console.log('Text copied to clipboard');
+      toast.success('InviteCode copied');
+    } else {
+      console.error('Could not copy text');
+      toast.error(`Could not copy InviteCode`);
+    }
+  }
+  
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -47,7 +63,10 @@ const Invite = () => {
             </div>
             <img src="assets/images/telegram.png"></img>
           </div>
-          <div className="text-white px-[20px] py-[8px] flex items-center justify-between gap-4 bg-gradient-to-r from-[rgba(255,83,188,0.15)] to-[rgba(10,252,212,0.15)] border border-[#FE53BB] rounded-full">
+          <div
+            className="text-white px-[20px] py-[8px] flex items-center justify-between gap-4 bg-gradient-to-r from-[rgba(255,83,188,0.15)] to-[rgba(10,252,212,0.15)] border border-[#FE53BB] rounded-full"
+            onClick={handleCopyReferralLink}
+          >
             <div className="flex flex-col">
               <span className="text-[12px] leading-[16px]">Copy</span>
               <span className="text-[16px] leading-[22px]">Referral Link</span>
