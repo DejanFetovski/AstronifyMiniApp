@@ -121,3 +121,12 @@ body {
     rgba(10, 252, 212, 0.15) 87.01%
   );
 }
+
+.astronify {
+  width: 385px;
+  height: 244px;
+  background-image: url("assets/images/back.webp");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
