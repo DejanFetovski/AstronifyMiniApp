@@ -544,7 +544,6 @@ export async function init() {
   })
 
   bot.onText(/\/start (.+)/, async (message: any) => {
-    console.log('=== start ====')
     const chatId = message.chat.id
     let session = sessions.get(chatId)
     if (session) return
@@ -552,25 +551,27 @@ export async function init() {
     const text = message.text || ''
 
     // Extract the referral code from the message text
-    // const startParamMatch = text.match(/\/start kentId(.+)/)
-    // if (startParamMatch && startParamMatch[1]) {
-    //   console.log('----------This is invited visiting....................')
-    //   // Already loggin?
-    //   const existUser = await TapGame.findGame(chatId)
+    const startParamMatch = text.match(/\/start inviteId(.+)/)
+    if (startParamMatch && startParamMatch[1]) {
+      console.log('----------This is invited visiting....................')
+      // Already loggin?
+      const existUser = await TapGame.findUser(chatId)
 
-    //   if (!existUser) {
-    //     // Who invited you?
-    //     const inviteId = startParamMatch[1]
+      if (!existUser) {
+        // Who invited you?
+        const inviteId = startParamMatch[1]
 
-    //     session = createSession(`${chatId}`)
-    //     console.log(
-    //       `>>>>>>>>>>[User ${chatId} created by invite]:  ${inviteId}`
-    //     )
-    //     await TapGame.findOrCreateUser(message.from, inviteId)
-    //   }
-    // } else {
-    //   console.log('----------This is normal visition....................')
-    // }
+        session = createSession(`${chatId}`)
+        console.log(
+          `>>>>>>>>>>[User ${chatId} created by invite]:  ${inviteId}`
+        )
+        await TapGame.findOrCreateUser(message.from, inviteId)
+
+        await TapGame.saveReferral(message.from, inviteId)
+      }
+    } else {
+      console.log('----------This is normal visition....................')
+    }
   })
 
   bot.on('message', async (message: any) => {

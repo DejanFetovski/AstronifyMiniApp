@@ -1,5 +1,6 @@
 require('dotenv').config()
 import { UserModel } from '../models/user.model'
+import { ReferralModel } from '../models/referral.model';
 
 export let scoreTempValue: { [key: string]: number } = {};
 export let spinWheelInfo: { [key: string]: { count: number, timestamp: number } } = {};
@@ -36,16 +37,14 @@ export async function findOrCreateUser(
       logo: 'logo.png',
     }
 
-    const inviteCode = generateInviteCode(userInfo.id)
-    
     const userData: any = {
-      chatId: '1234567890', // Example chatId
+      chatId: userInfo.id, // Example chatId
       setting: {
-        question1: 'What is your favorite color?',
-        question2: 'What is your favorite food?',
-        question3: 'What is your favorite movie?',
-        pfName: 'JohnDoe',
-        birth: new Date('1990-01-01'),
+        question1: 0,
+        question2: 0,
+        question3: 0,
+        pfName: null,
+        birth: null,
         sex: 'male',
       },
       point: 0,
@@ -64,48 +63,19 @@ export async function findOrCreateUser(
   }
   return user
 }
- 
-// Generate Invite code and save
-const generateInviteCode = (chatId: string) => {
-  return `https://t.me/${process.env.BOT_USERNAME}?start=kentId${chatId}`
+
+export async function saveReferral(
+  userInfo: any,
+  invitedFrom: string = ''
+): Promise<any> {
+
+  const referralData: any = {
+    inviterId: invitedFrom, // Example chatId
+    friendId: userInfo.id,
+    state: true,
+  };
+
+  const referral = new ReferralModel(referralData);
+  // Save the referral data to the database
+  await referral.save();
 }
-
-// export async function addReferral(
-//   inviterChatId: string,
-//   referralChatId: string
-// ) {
-//   try {
-//     const exist = await UserModel.findOne({ chatId: inviterChatId })
-//     if (exist) {
-//       const referral = {
-//         chatId: referralChatId,
-//         logo: '',
-//         name: '',
-//         isAccept: true,
-//         senderLevel: exist?.levelId,
-//         score: 0,
-//       }
-
-//       const result = await UserModel.findOneAndUpdate(
-//         { chatId: inviterChatId },
-//         { $push: { referrals: referral } },
-//         { new: true, upsert: true } // upsert: true will create the document if it doesn't exist
-//       ).exec()
-//       if (!result) {
-//         console.log(
-//           `User with chatId ${inviterChatId} or referral with chatId ${referralChatId} not found.`
-//         )
-//         return null
-//       }
-//       return result
-//     }
-
-//     return null
-//   } catch (error) {
-//     console.error(
-//       `Error updating referral isAccepted for user with chatId ${inviterChatId}:`,
-//       error
-//     )
-//     throw error
-//   }
-// }

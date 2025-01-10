@@ -2,7 +2,6 @@ import express from 'express'
 import dotenv from 'dotenv'
 
 import { UserModel } from '../models/user.model'
-// import { checkRoyalTask } from '../core/tapgame'
 
 import { verifyToken } from '../middleware'
 
