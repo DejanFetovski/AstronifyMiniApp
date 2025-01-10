@@ -3,13 +3,18 @@ import BottomBar from "../../components/BottomBar";
 import TaskIcon from "../../svgs/TaskIcon";
 import WalletIcon from "../../svgs/WalletIcon";
 import { motion } from "framer-motion";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { AppContext } from "../../main";
 import GradientBorder from "../../components/GradientBorder";
 
 const Profile = () => {
   const navigate = useNavigate();
   const { userInfo } = useContext(AppContext); // Get userInfo from context
+  // const [astronfyImage, setAstronfyImage] = useState();
+  // const [astronfyNumber, setAstronfyNumber] = useState();
+  // const [astronfyTime, setAstronfyTime] = useState();
+  // const [astronfyElement, setAstronfyElement] = useState();
+  // const [astronfyMoonSign, setAstronfyMoonSign] = useState();
 
   const handleClickWallet = () => {
     navigate("/wallet");
@@ -19,6 +24,48 @@ const Profile = () => {
     navigate("/tasks");
   };
 
+  useEffect(() => {
+
+    console.log("---------------------------fetchAstrologyData", userInfo)
+
+    fetchAstrologyData()
+  }, [userInfo])
+
+  const fetchAstrologyData = async () => {
+    // var api = "numero_fav_time";
+    // var userId = "633754";
+    // var apiKey = "4a83d366b861f26551db7af1cb94325b934bd46b";
+    // var language = "English"; // By default it is set to en
+    // var data = {
+    //   day: 6,
+    //   month: 1,
+    //   year: 2000,
+    //   name: "Kevin",
+    // };
+
+    // var auth = "Basic " + Buffer.from(userId + ":" + apiKey).toString("base64");
+
+    // try {
+    //   const response = await fetch(`https://json.astrologyapi.com/v1/${api}`, {
+    //     method: "POST",
+    //     headers: {
+    //       Authorization: auth,
+    //       "Content-Type": "application/json", // Adjust as needed
+    //       "Accept-Language": language,
+    //     },
+    //     body: JSON.stringify(data)
+    //   });
+
+    //   if (!response.ok) {
+    //     throw new Error(`HTTP error! Status: ${response.status}`);
+    //   }
+
+    //   console.log(response); // Use the data as needed
+    // } catch (error) {
+    //   console.error("Error fetching astrology data:", error);
+    // }
+  };
+ 
   // Format the birthdate for display (e.g., "February 19, 1989")
   const formattedBirthdate = new Date(
     userInfo.setting.birth
@@ -52,9 +99,7 @@ const Profile = () => {
           ></img>
           <div className="flex flex-col gap-2">
             <span className="text-[16px] leading-[21.8px] text-white">
-              {userInfo.setting.pfName || "Romit Kapur"}{" "}
-              {/*Default to "Romit Kapur" if name is empty*/}
-              "Romit Kapur"
+              {userInfo.setting.pfName || "Undefined"}{" "}
             </span>
             <span className="text-[12px] leading-[16.3px] text-[#FFFFFF99]">
               {formattedBirthdate}
@@ -189,13 +234,13 @@ const Profile = () => {
                         fill="none"
                         xmlns="http://www.w3.org/2000/svg"
                       >
-                        <g clip-path="url(#clip0_2_815)">
+                        <g clipPath="url(#clip0_2_815)">
                           <path
                             d="M2.5 8.89832H8M8 8.89832H13.5M8 8.89832V14.3983M8 8.89832V3.39832"
                             stroke="#03B1FB"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
                           />
                         </g>
                         <defs>
