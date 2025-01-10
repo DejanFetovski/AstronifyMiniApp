@@ -70,9 +70,9 @@ const Invite = () => {
     >
       <img
         src="assets/images/diagram.png"
-        className="absolute top-0 right-0"
+        className="absolute top-0 right-0 z-0"
       ></img>
-      <div className="h-full flex flex-col items-center overflow-x-hidden overflow-y-scroll">
+      <div className="h-full flex flex-col items-center overflow-x-hidden overflow-y-scroll relative z-10">
         <img src="assets/images/gold.png"></img>
         <span className="text-[38px] font-light leading-[46.3px] text-white max-w-[300px] text-center -mt-10">
           Earn Rewards Invite Friends

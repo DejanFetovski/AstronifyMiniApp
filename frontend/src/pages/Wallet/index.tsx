@@ -15,9 +15,9 @@ const Wallet = () => {
     >
       <img
         src="assets/images/diagram.png"
-        className="absolute top-0 right-0"
+        className="absolute top-0 right-0 z-0"
       ></img>
-      <div className="h-full flex flex-col justify-start gap-[42px] px-6 overflow-x-hidden overflow-y-scroll">
+      <div className="h-full flex flex-col justify-start gap-[42px] px-6 overflow-x-hidden overflow-y-scroll relative z-10">
         <div className="flex justify-between z-10">
           <h1 className="text-[24px] leading-[43px] tracking-[0.4px] text-white">
             Connect Wallet

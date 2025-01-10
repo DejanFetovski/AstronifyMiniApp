@@ -32,9 +32,9 @@ const Tasks = () => {
     >
       <img
         src="assets/images/diagram.png"
-        className="absolute top-0 right-0"
+        className="absolute top-0 right-0 z-0"
       ></img>
-      <div className="h-full flex flex-col justify-start items-center gap-[40px] overflow-x-hidden overflow-y-scroll">
+      <div className="h-full flex flex-col justify-start items-center gap-[40px] overflow-x-hidden overflow-y-scroll relative z-10">
         <div className="flex flex-col">
           <div className="flex flex-col items-center gap-[6px]">
             <span className="text-[20px] leading-[28px] text-white">

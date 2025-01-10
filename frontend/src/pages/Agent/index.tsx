@@ -68,12 +68,12 @@ const Agent = () => {
     >
       <img
         src="assets/images/diagram.png"
-        className="absolute top-0 right-0"
+        className="absolute top-0 right-0 z-0"
       ></img>
       <div className="" onClick={handleBack}>
         <BackIcon />
       </div>
-      <div className="relative flex flex-col gap-4 overflow-auto flex-grow">
+      <div className="relative flex flex-col gap-4 overflow-auto flex-grow z-20">
         {allMessages.map((msg, index) => {
           if (msg.type == 1)
             return (
@@ -85,7 +85,7 @@ const Agent = () => {
             );
         })}
       </div>
-      <div className="flex flex-col gap-5">
+      <div className="flex flex-col gap-5 relative z-10">
         <div className="flex flex-wrap gap-2">
           {type == 0
             ? sampleQuestions_agent.map((ques, index) => (

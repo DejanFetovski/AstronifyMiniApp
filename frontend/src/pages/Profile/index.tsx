@@ -85,9 +85,9 @@ const Profile = () => {
     >
       <img
         src="assets/images/diagram.png"
-        className="absolute top-0 right-0"
+        className="absolute top-0 right-0 z-0"
       ></img>
-      <div className="flex flex-col gap-[20px] h-full overflow-x-hidden overflow-y-scroll">
+      <div className="flex flex-col gap-[20px] h-full overflow-x-hidden overflow-y-scroll relative z-10">
         <h1 className="text-[24px] leading-[43px] tracking-[0.4px] text-white">
           Daily Horoscope
         </h1>
