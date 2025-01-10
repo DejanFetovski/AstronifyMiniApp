@@ -56,8 +56,8 @@ const Tasks = () => {
           </div>
           <div className="relative w-full flex flex-col p-5 pt-20 gap-4 z-10">
             {tasks.map((task, index) => (
-              <>
-                <div className="flex justify-between" key={index}>
+              <div key={index}>
+                <div className="flex justify-between">
                   <div className="flex flex-col justify-between">
                     <span className="text-white text-[14.7px] leading-[20px]">
                       {task.title}
@@ -69,12 +69,17 @@ const Tasks = () => {
                   <img
                     src="assets/images/start-btn.png"
                     onClick={() => {
-                      navigate("/horoscope");
+                      if (task.title === "Invite 1 friend") {
+                        navigate("/invite");
+                      } else {
+                        navigate("/profile");
+                      }
                     }}
-                  ></img>
+                    alt="Start"
+                  />
                 </div>
                 <div className="colorDivider"></div>
-              </>
+              </div>
             ))}
           </div>
         </div>
