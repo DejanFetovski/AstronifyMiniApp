@@ -20,11 +20,13 @@ const Profile = () => {
   };
 
   // Format the birthdate for display (e.g., "February 19, 1989")
-  // const formattedBirthdate = new Date(userInfo.setting.birth).toLocaleDateString("en-US", {
-  //   year: "numeric",
-  //   month: "long",
-  //   day: "numeric"
-  // });
+  const formattedBirthdate = new Date(
+    userInfo.setting.birth
+  ).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
 
   return (
     <motion.div
@@ -50,11 +52,13 @@ const Profile = () => {
           ></img>
           <div className="flex flex-col gap-2">
             <span className="text-[16px] leading-[21.8px] text-white">
-              {/* {userInfo.setting.pfName || "Romit Kapur"} Default to "Romit Kapur" if name is empty */}
+              {userInfo.setting.pfName || "Romit Kapur"}{" "}
+              {/*Default to "Romit Kapur" if name is empty*/}
               "Romit Kapur"
             </span>
             <span className="text-[12px] leading-[16.3px] text-[#FFFFFF99]">
-              {/* {formattedBirthdate} Display the formatted birthdate */}
+              {formattedBirthdate}
+              {/*  Display the formatted birthdate */}
             </span>
           </div>
         </div>
