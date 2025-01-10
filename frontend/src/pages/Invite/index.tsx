@@ -1,6 +1,7 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
+import axios from "axios";
 
 import BottomBar from "../../components/BottomBar";
 import CopyIcon from "../../svgs/CopyIcon";
@@ -8,15 +9,15 @@ import SearchIcon from "../../svgs/SearchIcon";
 import { AppContext } from "../../main";
 
 const INVITE_BOT_URL = import.meta.env.VITE_BOT_URL;
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const Invite = () => {
-  const { userInfo } = useContext(AppContext);
+  // const { userInfo } = useContext(AppContext);
+  const [invitedUsers, setInvitedUsers] = useState([]); // State for invited users
 
   const tele = (window as any).Telegram.WebApp;
   const userID = tele.initDataUnsafe?.user?.id;
   const inviteCode = `${INVITE_BOT_URL}?start=inviteId${userID}`;
-
-  console.log("[Invite - userID ]", userID);
 
   const handleClickInvite = () => {
     console.log("handleClickInvite");
@@ -27,14 +28,38 @@ const Invite = () => {
 
   const handleCopyReferralLink = () => {
     if (inviteCode) {
-      console.log('Text copied to clipboard');
-      toast.success('InviteCode copied');
+      console.log("Text copied to clipboard");
+      toast.success("InviteCode copied");
     } else {
-      console.error('Could not copy text');
+      console.error("Could not copy text");
       toast.error(`Could not copy InviteCode`);
     }
-  }
-  
+  };
+
+  useEffect(() => {
+    const fetchInviteData = async () => {
+      const token = localStorage.getItem("authorization");
+      try {
+        const response = await axios.get(`${API_BASE_URL}/api/user/referral`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json", // Ensure proper content type
+          },
+        });
+        console.log("response >>>> ", response.data);
+        setInvitedUsers(response.data);
+      } catch (error) {
+        console.error("Error fetching invite data:", error);
+        toast.error("Failed to load invite data");
+      }
+    };
+
+    console.log("USERID>>>", userID);
+    if (userID) {
+      fetchInviteData();
+    }
+  }, [userID]);
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
