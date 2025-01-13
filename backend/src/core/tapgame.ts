@@ -19,26 +19,41 @@ export async function findUser(chatId: string): Promise<any> {
   return user
 }
 
+export async function createUser(userInfo: any, avatar: string): Promise<any> {
+  const userData: any = {
+    chatId: userInfo?.id, // Example chatId
+    avatar: avatar,
+    setting: {
+      question1: 0,
+      question2: 0,
+      question3: 0,
+      pfName: null,
+      birth: null,
+      sex: 'male',
+    },
+    point: 0,
+    isFirstLogin: true,
+  };
+
+  // Create a new user instance
+  const user = new UserModel(userData);
+
+  // Save the user to the database
+  await user.save();
+}
+
 export async function findOrCreateUser(
   userInfo: any,
-  invitedFrom: string = ''
+  avatar: string = ''
 ): Promise<any> {
-  console.log('>>>>>>>>>>>>>>>>>>>>>', invitedFrom)
   let user = await UserModel.findOne({ chatId: userInfo.id })
 
   if (user == null || user == undefined) {
     console.log('>>>>>>>>User register...')
 
-    // create new user item
-    let metaInfo = {
-      firstName: userInfo.first_name,
-      lastName: userInfo.last_name,
-      userName: userInfo.username,
-      logo: 'logo.png',
-    }
-
     const userData: any = {
       chatId: userInfo.id, // Example chatId
+      avatar: avatar,
       setting: {
         question1: 0,
         question2: 0,
@@ -56,7 +71,7 @@ export async function findOrCreateUser(
 
     // Save the user to the database
     await user.save();
-
+    return null;
     // Save to friend table
 
 

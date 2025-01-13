@@ -25,17 +25,14 @@ const Welcome = () => {
   const userInfoChangeHandler = async () => {
     const token = localStorage.getItem("authorization");
     userInfo.isFirstLogin = false;
-    console.log("API_BASE_URL >>>", API_BASE_URL);
-    console.log("token >>>", token);
-    console.log("userInfo >>>", userInfo);
     try {
       const response = await axios.post(`${API_BASE_URL}/api/user/info`, 
-      userInfo,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json", // Ensure proper content type
-        },
+        userInfo,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json", // Ensure proper content type
+          },
       });
 
       if (response) {
@@ -72,21 +69,27 @@ const Welcome = () => {
       setErrorMessage("Please fill in both your name and birth date.");
       return; // Don't proceed if validation fails
     }
-    
+
     // Proceed with saving user info
     setErrorMessage(""); // Clear error message if validation passes
-    setUserInfo((prev) => ({
+
+    const year = selectedDate.getFullYear();
+    const month = String(selectedDate.getMonth() + 1).padStart(2, "0"); // Add padding to month
+    const day = String(selectedDate.getDate()).padStart(2, "0"); // Add padding to day
+    const formattedDate = `${year}-${month}-${day}`;
+
+    setUserInfo((prev: any) => ({
       ...prev,
       setting: {
         ...prev.setting,
         sex: sexSelection == 1 ? "male" : "female",
         pfName: name,
-        birth: selectedDate,
+        birth: formattedDate,
       },
     }));
   };
 
-  const handleInputChange = (event) => {
+  const handleInputChange = (event: any) => {
     setName(event.target.value); // Update state with input value
   };
 
@@ -159,7 +162,6 @@ const Welcome = () => {
                     ? "bg-[rgb(254,83,187)] text-white"
                     : "bg-transparent text-[#737B84BF]"
                 } flex items-center p-2 rounded-full gap-2 pr-4 text-[16.7px] leading-[22px] tracking-[-0.34px] w- `}
-
                 onClick={() => setSexSelection(0)}
               >
                 <FemaleIcon active={sexSelection == 0 ? true : false} />
@@ -171,7 +173,6 @@ const Welcome = () => {
                     ? "bg-[rgb(254,83,187)] text-white"
                     : "bg-transparent text-[#737B84BF]"
                 } flex items-center justify-center p-2 rounded-full gap-2 pr-4 text-[16.7px] leading-[22px] tracking-[-0.34px] `}
-
                 onClick={() => setSexSelection(1)}
               >
                 <MaleIcon active={sexSelection == 1 ? true : false} />
@@ -180,7 +181,9 @@ const Welcome = () => {
             </div>
 
             {errorMessage && (
-              <div className="text-red-500 text-[14px] mt-2">{errorMessage}</div> // Show error message
+              <div className="text-red-500 text-[14px] mt-2">
+                {errorMessage}
+              </div> // Show error message
             )}
 
             <div className="w-full flex items-center justify-center mt-4">

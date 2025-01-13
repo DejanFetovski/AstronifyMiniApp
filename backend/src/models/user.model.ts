@@ -70,6 +70,7 @@ const settingSchema = new Schema<SettingDocument>({
 // Define an interface representing a document in MongoDB
 export interface UserDocument extends Document {
   chatId: string
+  avatar: string
   setting: SettingDocument
   point: number
   isFirstLogin: Boolean
@@ -80,6 +81,10 @@ const userSchema = new Schema<UserDocument>({
   chatId: {
     type: String,
     required: true,
+  },
+  avatar: {
+    type: String,
+    default: "default.png",
   },
   setting: settingSchema,
   point: {

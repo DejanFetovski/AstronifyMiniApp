@@ -6,9 +6,10 @@ import * as teleBot from './core/telegram'
 import * as global from './global'
 
 import * as TapGame from './core/tapgame'
-import dotenv from 'dotenv'
-import { UserModel } from './models/user.model'
-dotenv.config()
+import * as dotenv from 'dotenv';
+dotenv.config();
+
+import axios from 'axios';
 
 export const COMMAND_START = 'start'
 
@@ -508,16 +509,16 @@ export function showSessionLog(session: any) {
     console.log(
       `@${session.username} user${
         session.wallet
-          ? ' joined'
-          : "'s session has been created (" + session.chatId + ')'
+        ? ' joined'
+        : "'s session has been created (" + session.chatId + ')'
       }`
     )
   } else if (session.type === 'group') {
     console.log(
       `@${session.username} group${
         session.wallet
-          ? ' joined'
-          : "'s session has been created (" + session.chatId + ')'
+        ? ' joined'
+        : "'s session has been created (" + session.chatId + ')'
       }`
     )
   } else if (session.type === 'channel') {
@@ -577,11 +578,40 @@ export async function init() {
   bot.on('message', async (message: any) => {
     console.log('Message Received...', message)
     if (message.text === '/start') {
-      const existUser = await TapGame.findOrCreateUser(message.from)
+
+      const existUser = await TapGame.findUser(message.from.id);
       if (existUser) {
         console.log(`User[${message.chat.id}] already existed...`)
       } else {
-        console.log(`User[${message.chat.id}] created...`)
+        let avatar: string = '';
+        const profileData = await bot.getUserProfilePhotos(message.from.id)
+
+        if (profileData?.total_count == 0) {
+          // Use AI-image generate.
+          avatar = ""
+        } else {
+          const fileId = profileData.photos[0][0]?.file_id;
+          const url = `https://api.telegram.org/bot${process.env.BOT_TOKEN}/getFile?file_id=${fileId}`;
+
+          try {
+            // const response = await fetch(url);
+            const response = await axios.get(url)
+            const data: any = response
+
+            if (response.status == 200 && response.data.ok) {
+              // Construct the file download URL
+              const filePath = response.data.result.file_path;
+              avatar = `https://api.telegram.org/file/bot${process.env.BOT_TOKEN}/${filePath}`;
+            } else {
+              avatar = "default.png"
+            }
+          } catch (error) {
+            console.error("Error fetching file information:", error);
+            avatar = "default.png"
+          }
+        }
+        // Save user 
+        await TapGame.createUser(message.from, avatar)
       }
     }
 

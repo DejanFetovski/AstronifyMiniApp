@@ -39,6 +39,7 @@ const Profile = () => {
   const { userInfo } = useContext(AppContext); // Get userInfo from context
   const [logo, setLogo] = useState("")
   const [zodiac, setZodiac] = useState("");
+  const [avatar, setAvatar] = useState("")
   const handleClickWallet = () => {
     navigate("/wallet");
   };
@@ -50,20 +51,16 @@ const Profile = () => {
   useEffect(() => {
     // Get Birthday from UserInof
     const date = new Date(userInfo?.setting.birth);
-    console.log("LOGO >>>>>>>>>>", date)
-
+  
     // Extract year, month, and day
     const year = date.getUTCFullYear(); // Get the year
     const month = date.getUTCMonth() + 1; // Get the month (0-based, so add 1)
     const day = date.getUTCDate(); // Get the day of the month
-    console.log("LOGO >>>>>>>>>>", day, month)
-
 
     const zodiac = getZodiacSign(day, month)
     setLogo(`assets/astronify/${zodiac.toLowerCase()}.png`)
     setZodiac(zodiac)
-    
-    console.log("LOGO >>>>>>>>>>", zodiac.toLowerCase())
+    setAvatar(userInfo?.avatar)
   }, []);
 
   const fetchAstrologyData = async () => {
@@ -125,7 +122,7 @@ const Profile = () => {
 
         <div className="flex items-center gap-2">
           <img
-            src="assets/images/avatar.png"
+            src={avatar}
             className="rounded-full w-[55px] h-[55px]"
           ></img>
           <div className="flex flex-col gap-2">
