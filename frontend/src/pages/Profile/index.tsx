@@ -3,19 +3,42 @@ import BottomBar from "../../components/BottomBar";
 import TaskIcon from "../../svgs/TaskIcon";
 import WalletIcon from "../../svgs/WalletIcon";
 import { motion } from "framer-motion";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../../main";
 import GradientBorder from "../../components/GradientBorder";
+
+function getZodiacSign(day: number, month: number) {
+  const zodiacSigns = [
+      { name: "Capricorn", start: { day: 22, month: 12 }, end: { day: 19, month: 1 } },
+      { name: "Aquarius", start: { day: 20, month: 1 }, end: { day: 18, month: 2 } },
+      { name: "Pisces", start: { day: 19, month: 2 }, end: { day: 20, month: 3 } },
+      { name: "Aries", start: { day: 21, month: 3 }, end: { day: 19, month: 4 } },
+      { name: "Taurus", start: { day: 20, month: 4 }, end: { day: 20, month: 5 } },
+      { name: "Gemini", start: { day: 21, month: 5 }, end: { day: 20, month: 6 } },
+      { name: "Cancer", start: { day: 21, month: 6 }, end: { day: 22, month: 7 } },
+      { name: "Leo", start: { day: 23, month: 7 }, end: { day: 22, month: 8 } },
+      { name: "Virgo", start: { day: 23, month: 8 }, end: { day: 22, month: 9 } },
+      { name: "Libra", start: { day: 23, month: 9 }, end: { day: 22, month: 10 } },
+      { name: "Scorpio", start: { day: 23, month: 10 }, end: { day: 21, month: 11 } },
+      { name: "Sagittarius", start: { day: 22, month: 11 }, end: { day: 21, month: 12 } }
+  ];
+
+  for (const sign of zodiacSigns) {
+      if (
+          (month === sign.start.month && day >= sign.start.day) ||
+          (month === sign.end.month && day <= sign.end.day)
+      ) {
+          return sign.name;
+      }
+  }
+  return "Unknown"; // In case the input doesn't match
+}
 
 const Profile = () => {
   const navigate = useNavigate();
   const { userInfo } = useContext(AppContext); // Get userInfo from context
-  // const [astronfyImage, setAstronfyImage] = useState();
-  // const [astronfyNumber, setAstronfyNumber] = useState();
-  // const [astronfyTime, setAstronfyTime] = useState();
-  // const [astronfyElement, setAstronfyElement] = useState();
-  // const [astronfyMoonSign, setAstronfyMoonSign] = useState();
-
+  const [logo, setLogo] = useState("")
+  const [zodiac, setZodiac] = useState("");
   const handleClickWallet = () => {
     navigate("/wallet");
   };
@@ -25,11 +48,23 @@ const Profile = () => {
   };
 
   useEffect(() => {
+    // Get Birthday from UserInof
+    const date = new Date(userInfo?.setting.birth);
+    console.log("LOGO >>>>>>>>>>", date)
 
-    console.log("---------------------------fetchAstrologyData", userInfo)
+    // Extract year, month, and day
+    const year = date.getUTCFullYear(); // Get the year
+    const month = date.getUTCMonth() + 1; // Get the month (0-based, so add 1)
+    const day = date.getUTCDate(); // Get the day of the month
+    console.log("LOGO >>>>>>>>>>", day, month)
 
-    fetchAstrologyData()
-  }, [userInfo])
+
+    const zodiac = getZodiacSign(day, month)
+    setLogo(`assets/astronify/${zodiac.toLowerCase()}.png`)
+    setZodiac(zodiac)
+    
+    console.log("LOGO >>>>>>>>>>", zodiac.toLowerCase())
+  }, []);
 
   const fetchAstrologyData = async () => {
     // var api = "numero_fav_time";
@@ -42,9 +77,7 @@ const Profile = () => {
     //   year: 2000,
     //   name: "Kevin",
     // };
-
     // var auth = "Basic " + Buffer.from(userId + ":" + apiKey).toString("base64");
-
     // try {
     //   const response = await fetch(`https://json.astrologyapi.com/v1/${api}`, {
     //     method: "POST",
@@ -55,17 +88,15 @@ const Profile = () => {
     //     },
     //     body: JSON.stringify(data)
     //   });
-
     //   if (!response.ok) {
     //     throw new Error(`HTTP error! Status: ${response.status}`);
     //   }
-
     //   console.log(response); // Use the data as needed
     // } catch (error) {
     //   console.error("Error fetching astrology data:", error);
     // }
   };
- 
+
   // Format the birthdate for display (e.g., "February 19, 1989")
   const formattedBirthdate = new Date(
     userInfo.setting.birth
@@ -123,7 +154,7 @@ const Profile = () => {
         <div className="w-full flex justify-center">
           <div className="astronify flex justify-center items-center relative">
             <img
-              src="assets/astronify/leo.png"
+              src={logo}
               className="w-[115px] h-auto mr-1"
             ></img>
             <div className="absolute top-0 left-0 w-full h-full flex flex-col justify-between">
@@ -273,7 +304,7 @@ const Profile = () => {
         </div>
 
         <span className="text-[24px] leading-[43px] tracking-[0.4px] font-bold text-white text-center">
-          Pisces
+          {zodiac}
         </span>
 
         <div className="divider border-[1px] border-[#8B8B8B80] opacity-40 px-[20px]"></div>
