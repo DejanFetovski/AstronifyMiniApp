@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import BottomBar from "../../components/BottomBar";
 import TaskIcon from "../../svgs/TaskIcon";
 import WalletIcon from "../../svgs/WalletIcon";
@@ -6,6 +7,8 @@ import { motion } from "framer-motion";
 import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../../main";
 import GradientBorder from "../../components/GradientBorder";
+
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function getZodiacSign(day: number, month: number) {
   const zodiacSigns = [
@@ -76,6 +79,13 @@ const Profile = () => {
   const [logo, setLogo] = useState("");
   const [zodiac, setZodiac] = useState("");
   const [avatar, setAvatar] = useState("");
+  const [sunSign, setSunSign] = useState("");
+  const [moonSign, setMoonSign] = useState("");
+  const [risingSign, setRisingSign] = useState("");
+  const [element, setElement] = useState("");
+  const [luckyNo, setLuckyNo] = useState("");
+  const [luckyTime, setLuckyTime] = useState("");
+
   const handleClickWallet = () => {
     navigate("/wallet");
   };
@@ -97,42 +107,56 @@ const Profile = () => {
     setLogo(`assets/astronify/${zodiac.toLowerCase()}.png`);
     setZodiac(zodiac);
     setAvatar(userInfo?.avatar);
+
+    fetchAstrologyData()
+    //
   }, []);
 
   const editProfile = () => {
-    localStorage.setItem("isEdit", 'true')
+    localStorage.setItem("isEdit", "true");
     navigate("/welcome"); // Navigate to the profile page
+  };
 
-  }
   const fetchAstrologyData = async () => {
-    // var api = "numero_fav_time";
-    // var userId = "633754";
-    // var apiKey = "4a83d366b861f26551db7af1cb94325b934bd46b";
-    // var language = "English"; // By default it is set to en
-    // var data = {
-    //   day: 6,
-    //   month: 1,
-    //   year: 2000,
-    //   name: "Kevin",
-    // };
-    // var auth = "Basic " + Buffer.from(userId + ":" + apiKey).toString("base64");
-    // try {
-    //   const response = await fetch(`https://json.astrologyapi.com/v1/${api}`, {
-    //     method: "POST",
-    //     headers: {
-    //       Authorization: auth,
-    //       "Content-Type": "application/json", // Adjust as needed
-    //       "Accept-Language": language,
-    //     },
-    //     body: JSON.stringify(data)
-    //   });
-    //   if (!response.ok) {
-    //     throw new Error(`HTTP error! Status: ${response.status}`);
-    //   }
-    //   console.log(response); // Use the data as needed
-    // } catch (error) {
-    //   console.error("Error fetching astrology data:", error);
-    // }
+    console.log("fetchAstrologyData>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+    const token = localStorage.getItem("authorization");
+
+    const data = {
+      day: 19,
+      month: 2,
+      year: 1989,
+      hour: 7,
+      min: 45,
+      lat: 19.132,
+      lon: 72.342,
+      tzone: 5.5,
+    };
+    const response: any = await axios.post(
+      `${API_BASE_URL}/api/astronology/planets`,
+      data,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json", // Ensure proper content type
+        },
+      }
+    );
+
+    console.log("response>>>>>>>>>>>>>>>>>>>>>>>>>>>>",response)
+
+    if (response?.data?.state === true) {
+      const signs: string[] = response?.data?.data
+        ?.filter((item: any) => item.name === 'Sun' || item.name === 'Moon' || item.name === 'Ascendant')
+        .map((item: any) => item.sign) || []; // Ensure default empty array if data is undefined or null
+
+        console.log("Signs >>>>>>>>", signs)
+        setSunSign(signs[0])
+        setMoonSign(signs[1])
+        setRisingSign(signs[2])
+
+    }
+
+
   };
 
   // Format the birthdate for display (e.g., "February 19, 1989")
@@ -141,7 +165,7 @@ const Profile = () => {
   ).toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
-    day: "numeric",
+    day: "numeric"
   });
 
   return (
@@ -162,10 +186,7 @@ const Profile = () => {
         </h1>
 
         <div className="flex items-center gap-2">
-          <img
-            src={avatar}
-            className="rounded-full w-[55px] h-[55px]"
-          ></img>
+          <img src={avatar} className="rounded-full w-[55px] h-[55px]"></img>
           <div className="flex flex-col gap-2">
             <span className="text-[16px] leading-[21.8px] text-white">
               {userInfo.setting.pfName || "Undefined"}{" "}
@@ -206,10 +227,7 @@ const Profile = () => {
 
         <div className="w-full flex justify-center">
           <div className="astronify flex justify-center items-center relative">
-            <img
-              src={logo}
-              className="w-[115px] h-auto mr-1"
-            ></img>
+            <img src={logo} className="w-[115px] h-auto mr-1"></img>
             <div className="absolute top-0 left-0 w-full h-full flex flex-col justify-between">
               <div className="w-full flex justify-between items-center px-8">
                 <GradientBorder className="" borderWidth={1}>
@@ -219,7 +237,7 @@ const Profile = () => {
                     </span>
                     <div className="flex gap-[4px] items-center">
                       <span className="text-white text-[10px] leading-[16px]">
-                        Gemini
+                        {sunSign || " "}
                       </span>
                       <svg
                         width="16"
@@ -273,7 +291,7 @@ const Profile = () => {
                     </span>
                     <div className="flex gap-[4px] items-center">
                       <span className="text-white text-[10px] leading-[16px]">
-                        Cancer
+                        {moonSign}
                       </span>
                       <svg
                         width="16"
@@ -309,7 +327,7 @@ const Profile = () => {
                     </span>
                     <div className="flex gap-[4px] items-center">
                       <span className="text-white text-[10px] leading-[16px]">
-                        Find Out
+                        {risingSign}
                       </span>
                       <svg
                         width="16"

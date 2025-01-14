@@ -594,7 +594,6 @@ export async function init() {
           const url = `https://api.telegram.org/bot${process.env.BOT_TOKEN}/getFile?file_id=${fileId}`;
 
           try {
-            // const response = await fetch(url);
             const response = await axios.get(url)
             const data: any = response
 

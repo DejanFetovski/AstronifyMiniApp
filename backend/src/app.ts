@@ -5,6 +5,7 @@ require('dotenv').config()
 
 import routeAuth from './routes/auth.routes'
 import routeUser from './routes/user.routes'
+import routerAstronology from './routes/astronology.routes'
 // import routeFriend from './routes/friend.routes'
 // import routeTask from './routes/task.routes'
 // import routeGame from './routes/game.routes'
@@ -38,6 +39,7 @@ export const run = async (bot: any): Promise<void> => {
   
   app.use('/api/auth', routeAuth)
   app.use('/api/user', routeUser)
+  app.use('/api/astronology', routerAstronology)
   // app.use('/api/task', routeTask)
   // app.use('/api/friend', routeFriend)
   // app.use('/api/game', routeGame)
