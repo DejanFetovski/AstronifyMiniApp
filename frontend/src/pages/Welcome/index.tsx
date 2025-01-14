@@ -8,6 +8,8 @@ import { motion } from "framer-motion";
 import "react-datepicker/dist/react-datepicker.css";
 import { AppContext } from "../../main";
 import axios from "axios";
+import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
+import { ChevronDownIcon } from "@heroicons/react/20/solid";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -19,6 +21,7 @@ const Welcome = () => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [sexSelection, setSexSelection] = useState(0);
   const [errorMessage, setErrorMessage] = useState(""); // State for error message
+  const [isOpen, setIsOpen] = useState(false);
 
   const navigate = useNavigate();
 
@@ -47,20 +50,25 @@ const Welcome = () => {
   };
 
   useEffect(() => {
-    // Save to database when the user info is complete
-    if (
-      userInfo &&
-      userInfo?.setting != null &&
-      userInfo?.setting?.question1 != null &&
-      userInfo?.setting?.question2 != null &&
-      userInfo?.setting?.question3 != null &&
-      userInfo?.setting?.sex != null &&
-      userInfo?.setting?.pfName != "" &&
-      userInfo?.setting?.birth != null
-    ) {
-      console.log("Save to Database >>>> userInfo", userInfo);
-      userInfoChangeHandler();
+    if (localStorage.getItem("isEdit") == "false") {
+      if (
+        userInfo &&
+        userInfo?.setting != null &&
+        userInfo?.setting?.question1 != null &&
+        userInfo?.setting?.question2 != null &&
+        userInfo?.setting?.question3 != null &&
+        userInfo?.setting?.sex != null &&
+        userInfo?.setting?.pfName != "" &&
+        userInfo?.setting?.birth != null
+      ) {
+        // Save to database when the user info is complete
+        console.log("Save to Database >>>> userInfo", userInfo);
+        userInfoChangeHandler();
+      }
+    } else {
+      localStorage.setItem("isEdit", "false")
     }
+
   }, [userInfo]);
 
   const handleNext = async () => {
@@ -154,6 +162,127 @@ const Welcome = () => {
                 className="w-full outline-none bg-[#00000075] rounded-full border-[1px] border-[#000000] text-[#FFFFFF99] cursor-pointer border-none text-[14px] leading-[22px] tracking-[-0.34px] font-light shadow-[0px_0px_0px_1px_#FFFFFF40]  py-2 px-3 h-[48px] "
               />
             </div>
+            {/* Location */}
+            <Menu as="div" className="flex flex-col gap-1 w-full">
+              <label
+                className="text-[17px] leading-[22px] tracking-[-0.4px] text-[#FFFFFFBF]"
+                htmlFor="location"
+              >
+                Location
+              </label>
+              <div>
+                <MenuButton className="w-full flex flex-between outline-none bg-[#00000075] rounded-full border-[1px] border-[#000000] text-[#FFFFFF99] cursor-pointer border-none text-[14px] leading-[22px] tracking-[-0.34px] font-light shadow-[0px_0px_0px_1px_#FFFFFF40]  py-2 px-3 h-[48px] ">
+                  Your Location
+                  <ChevronDownIcon
+                    aria-hidden="true"
+                    className="-mr-1 size-5 text-gray-400"
+                  />
+                </MenuButton>
+              </div>
+
+              <MenuItems
+                transition
+                className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
+              >
+                <div className="py-1">
+                  <MenuItem>
+                    <a
+                      href="#"
+                      className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:text-gray-900 data-[focus]:outline-none"
+                    >
+                      Account settings
+                    </a>
+                  </MenuItem>
+                  <MenuItem>
+                    <a
+                      href="#"
+                      className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:text-gray-900 data-[focus]:outline-none"
+                    >
+                      Support
+                    </a>
+                  </MenuItem>
+                  <MenuItem>
+                    <a
+                      href="#"
+                      className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:text-gray-900 data-[focus]:outline-none"
+                    >
+                      License
+                    </a>
+                  </MenuItem>
+                  <form action="#" method="POST">
+                    <MenuItem>
+                      <button
+                        type="submit"
+                        className="block w-full px-4 py-2 text-left text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:text-gray-900 data-[focus]:outline-none"
+                      >
+                        Sign out
+                      </button>
+                    </MenuItem>
+                  </form>
+                </div>
+              </MenuItems>
+            </Menu>
+
+            {/* Time */}
+            <Menu as="div" className="flex flex-col gap-1 w-full">
+              <label
+                className="text-[17px] leading-[22px] tracking-[-0.4px] text-[#FFFFFFBF]"
+                htmlFor="location"
+              >
+                Time
+              </label>
+              <div>
+                <MenuButton className="w-full flex flex-between outline-none bg-[#00000075] rounded-full border-[1px] border-[#000000] text-[#FFFFFF99] cursor-pointer border-none text-[14px] leading-[22px] tracking-[-0.34px] font-light shadow-[0px_0px_0px_1px_#FFFFFF40]  py-2 px-3 h-[48px] ">
+                  Time of Birth
+                  <ChevronDownIcon
+                    aria-hidden="true"
+                    className="-mr-1 size-5 text-gray-400"
+                  />
+                </MenuButton>
+              </div>
+
+              <MenuItems
+                transition
+                className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
+              >
+                <div className="py-1">
+                  <MenuItem>
+                    <a
+                      href="#"
+                      className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:text-gray-900 data-[focus]:outline-none"
+                    >
+                      Account settings
+                    </a>
+                  </MenuItem>
+                  <MenuItem>
+                    <a
+                      href="#"
+                      className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:text-gray-900 data-[focus]:outline-none"
+                    >
+                      Support
+                    </a>
+                  </MenuItem>
+                  <MenuItem>
+                    <a
+                      href="#"
+                      className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:text-gray-900 data-[focus]:outline-none"
+                    >
+                      License
+                    </a>
+                  </MenuItem>
+                  <form action="#" method="POST">
+                    <MenuItem>
+                      <button
+                        type="submit"
+                        className="block w-full px-4 py-2 text-left text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:text-gray-900 data-[focus]:outline-none"
+                      >
+                        Sign out
+                      </button>
+                    </MenuItem>
+                  </form>
+                </div>
+              </MenuItems>
+            </Menu>
 
             <div className="bg-[#00000066] border-[1px] border-black [box-shadow: 0px_0px_0px_1px_rgba(187, 167, 167, 0.15)] rounded-full grid grid-cols-2 p-1 gap-3">
               <div

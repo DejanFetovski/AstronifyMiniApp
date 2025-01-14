@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@headlessui/react": "^2.2.0",
+    "@heroicons/react": "^2.2.0",
     "@tonconnect/ui-react": "^2.0.9",
     "@twa-dev/sdk": "^8.0.1",
     "axios": "^1.7.9",
@@ -18,6 +20,7 @@
     "express": "^4.21.2",
     "framer-motion": "^11.15.0",
     "from": "^0.1.7",
+    "heroicons": "^2.2.0",
     "http": "*",
     "import": "^0.0.6",
     "node-telegram-bot-api": "^0.63.0",

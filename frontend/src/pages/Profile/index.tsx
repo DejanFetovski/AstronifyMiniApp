@@ -9,27 +9,63 @@ import GradientBorder from "../../components/GradientBorder";
 
 function getZodiacSign(day: number, month: number) {
   const zodiacSigns = [
-      { name: "Capricorn", start: { day: 22, month: 12 }, end: { day: 19, month: 1 } },
-      { name: "Aquarius", start: { day: 20, month: 1 }, end: { day: 18, month: 2 } },
-      { name: "Pisces", start: { day: 19, month: 2 }, end: { day: 20, month: 3 } },
-      { name: "Aries", start: { day: 21, month: 3 }, end: { day: 19, month: 4 } },
-      { name: "Taurus", start: { day: 20, month: 4 }, end: { day: 20, month: 5 } },
-      { name: "Gemini", start: { day: 21, month: 5 }, end: { day: 20, month: 6 } },
-      { name: "Cancer", start: { day: 21, month: 6 }, end: { day: 22, month: 7 } },
-      { name: "Leo", start: { day: 23, month: 7 }, end: { day: 22, month: 8 } },
-      { name: "Virgo", start: { day: 23, month: 8 }, end: { day: 22, month: 9 } },
-      { name: "Libra", start: { day: 23, month: 9 }, end: { day: 22, month: 10 } },
-      { name: "Scorpio", start: { day: 23, month: 10 }, end: { day: 21, month: 11 } },
-      { name: "Sagittarius", start: { day: 22, month: 11 }, end: { day: 21, month: 12 } }
+    {
+      name: "Capricorn",
+      start: { day: 22, month: 12 },
+      end: { day: 19, month: 1 },
+    },
+    {
+      name: "Aquarius",
+      start: { day: 20, month: 1 },
+      end: { day: 18, month: 2 },
+    },
+    {
+      name: "Pisces",
+      start: { day: 19, month: 2 },
+      end: { day: 20, month: 3 },
+    },
+    { name: "Aries", start: { day: 21, month: 3 }, end: { day: 19, month: 4 } },
+    {
+      name: "Taurus",
+      start: { day: 20, month: 4 },
+      end: { day: 20, month: 5 },
+    },
+    {
+      name: "Gemini",
+      start: { day: 21, month: 5 },
+      end: { day: 20, month: 6 },
+    },
+    {
+      name: "Cancer",
+      start: { day: 21, month: 6 },
+      end: { day: 22, month: 7 },
+    },
+    { name: "Leo", start: { day: 23, month: 7 }, end: { day: 22, month: 8 } },
+    { name: "Virgo", start: { day: 23, month: 8 }, end: { day: 22, month: 9 } },
+    {
+      name: "Libra",
+      start: { day: 23, month: 9 },
+      end: { day: 22, month: 10 },
+    },
+    {
+      name: "Scorpio",
+      start: { day: 23, month: 10 },
+      end: { day: 21, month: 11 },
+    },
+    {
+      name: "Sagittarius",
+      start: { day: 22, month: 11 },
+      end: { day: 21, month: 12 },
+    },
   ];
 
   for (const sign of zodiacSigns) {
-      if (
-          (month === sign.start.month && day >= sign.start.day) ||
-          (month === sign.end.month && day <= sign.end.day)
-      ) {
-          return sign.name;
-      }
+    if (
+      (month === sign.start.month && day >= sign.start.day) ||
+      (month === sign.end.month && day <= sign.end.day)
+    ) {
+      return sign.name;
+    }
   }
   return "Unknown"; // In case the input doesn't match
 }
@@ -37,9 +73,9 @@ function getZodiacSign(day: number, month: number) {
 const Profile = () => {
   const navigate = useNavigate();
   const { userInfo } = useContext(AppContext); // Get userInfo from context
-  const [logo, setLogo] = useState("")
+  const [logo, setLogo] = useState("");
   const [zodiac, setZodiac] = useState("");
-  const [avatar, setAvatar] = useState("")
+  const [avatar, setAvatar] = useState("");
   const handleClickWallet = () => {
     navigate("/wallet");
   };
@@ -51,18 +87,23 @@ const Profile = () => {
   useEffect(() => {
     // Get Birthday from UserInof
     const date = new Date(userInfo?.setting.birth);
-  
+
     // Extract year, month, and day
     const year = date.getUTCFullYear(); // Get the year
     const month = date.getUTCMonth() + 1; // Get the month (0-based, so add 1)
     const day = date.getUTCDate(); // Get the day of the month
 
-    const zodiac = getZodiacSign(day, month)
-    setLogo(`assets/astronify/${zodiac.toLowerCase()}.png`)
-    setZodiac(zodiac)
-    setAvatar(userInfo?.avatar)
+    const zodiac = getZodiacSign(day, month);
+    setLogo(`assets/astronify/${zodiac.toLowerCase()}.png`);
+    setZodiac(zodiac);
+    setAvatar(userInfo?.avatar);
   }, []);
 
+  const editProfile = () => {
+    localStorage.setItem("isEdit", 'true')
+    navigate("/welcome"); // Navigate to the profile page
+
+  }
   const fetchAstrologyData = async () => {
     // var api = "numero_fav_time";
     // var userId = "633754";
@@ -133,6 +174,21 @@ const Profile = () => {
               {formattedBirthdate}
               {/*  Display the formatted birthdate */}
             </span>
+          </div>
+          <div>
+            <button
+              className="rounded-full w-[55px] h-[55px] scale-50 relative"
+              onClick={editProfile}
+            >
+              <img
+                src="assets/images/editbox.png"
+                className="rounded-full w-[55px] h-[55px] scale-75"
+              ></img>
+              <img
+                src="assets/images/edit.png"
+                className="absolute top-0 center rounded-full w-[55px] h-[55px] scale-75"
+              ></img>
+            </button>
           </div>
         </div>
 
