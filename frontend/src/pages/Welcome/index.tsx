@@ -29,14 +29,16 @@ const Welcome = () => {
     const token = localStorage.getItem("authorization");
     userInfo.isFirstLogin = false;
     try {
-      const response = await axios.post(`${API_BASE_URL}/api/user/info`, 
+      const response = await axios.post(
+        `${API_BASE_URL}/api/user/info`,
         userInfo,
         {
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json", // Ensure proper content type
           },
-      });
+        }
+      );
 
       if (response) {
         console.log("User info saved successfully!");
@@ -66,9 +68,8 @@ const Welcome = () => {
         userInfoChangeHandler();
       }
     } else {
-      localStorage.setItem("isEdit", "false")
+      localStorage.setItem("isEdit", "false");
     }
-
   }, [userInfo]);
 
   const handleNext = async () => {
@@ -136,7 +137,7 @@ const Welcome = () => {
               </span>
               <div className="border-[1px] border-black bg-[#00000075] [box-shadow:0px_0px_0px_1px_rgba(255,255,255,0.25)] rounded-full py-2 px-3 h-[48px] w-full">
                 <input
-                  className="text-[#FFFFFF99] outline-none cursor-pointer bg-transparent border-none text-[14px] leading-[22px] font-light"
+                  className="w-full text-[#FFFFFF99] outline-none cursor-pointer bg-transparent border-none text-[14px] leading-[22px] font-light"
                   placeholder="Enter your name here"
                   value={name}
                   onChange={handleInputChange}

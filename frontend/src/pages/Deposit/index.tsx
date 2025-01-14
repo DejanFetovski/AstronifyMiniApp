@@ -37,7 +37,7 @@ const Deposit = () => {
             </span>
             <div className="flex justify-around w-full mt-4">
               <GradientBorder className={``} borderWidth={2} radius={24}>
-                <div className="gradient-bg flex flex-col items-center justify-center p-4 rounded-[24px] gap-1 w-[71px] h-[71px]">
+                <div className="gradient-bg flex flex-col items-center justify-center p-4 rounded-[24px] gap-1 w-[71px] h-[71px] hover:opacity-50">
                   <CopyIcon />
                   <span className="text-[16px] leading-[21.8px] text-white">
                     Copy
@@ -46,7 +46,7 @@ const Deposit = () => {
               </GradientBorder>
 
               <GradientBorder className={``} borderWidth={2} radius={24}>
-                <div className="gradient-bg flex flex-col items-center justify-center p-4 bg-gradient-to-r from-[rgba(255,83,188,0.15)] to-[rgba(10,252,212,0.15)] rounded-[24px] gap-1 w-[71px] h-[71px]">
+                <div className="gradient-bg flex flex-col items-center justify-center p-4 bg-gradient-to-r from-[rgba(255,83,188,0.15)] to-[rgba(10,252,212,0.15)] rounded-[24px] gap-1 w-[71px] h-[71px] hover:opacity-50">
                   <img src="assets/images/share.png"></img>
                   <span className="text-[16px] leading-[21.8px] text-white">
                     Share

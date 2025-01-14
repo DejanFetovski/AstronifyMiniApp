@@ -48,8 +48,8 @@ const Withdraw = () => {
                   Withdraw Address
                 </span>
                 <GradientBorder className="rounded-full w-full" borderWidth={2}>
-                  <div className="h-[52px] text-white px-[10px] py-[4px] flex items-center justify-between gap-4 gradient-bg rounded-full">
-                    <input className="text-[20px] leading-[43px] tracking-[0.4px] outline-none bg-transparent"></input>
+                  <div className="w-full h-[52px] text-white px-[10px] py-[4px] flex items-center justify-between gap-4 gradient-bg rounded-full">
+                    <input className="w-full text-[20px] leading-[43px] tracking-[0.4px] outline-none bg-transparent"></input>
                     <div>
                       <CopyAddressIcon />
                     </div>
@@ -62,7 +62,7 @@ const Withdraw = () => {
                   AstroX Amount
                 </span>
                 <GradientBorder className="rounded-full w-full" borderWidth={2}>
-                  <div className="h-[52px] text-white px-[10px] py-[4px] flex items-center justify-between gap-4 gradient-bg rounded-full">
+                  <div className="h-[52px] text-white px-[10px] py-[4px] flex items-center justify-between gap-4 gradient-bg rounded-full hover:opacity-50">
                     <input className="text-[20px] leading-[43px] tracking-[0.4px] outline-none bg-transparent"></input>
                     <button className="blueButton h-[40px] w-[86px] px-[10px] text-[14px] leading-[19px] rounded-full">
                       Max
@@ -89,7 +89,7 @@ const Withdraw = () => {
                 </GradientBorder>
               </div>
 
-              <button className="h-[43px] bg-gradient-to-r from-[#9B54DD] to-[#3C94D7F2] rounded-full flex items-center justify-center mt-[10px]">
+              <button className="h-[43px] bg-gradient-to-r from-[#9B54DD] to-[#3C94D7F2] rounded-full flex items-center justify-center mt-[10px] hover:opacity-50">
                 <span className="text-[16.8px] leading-[22px] tracking-[-0.3px] text-[#FFFFFFBF] mb-1">
                   Withdraw
                 </span>
