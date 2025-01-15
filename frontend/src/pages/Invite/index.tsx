@@ -14,10 +14,16 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const Invite = () => {
   // const { userInfo } = useContext(AppContext);
   const [invitedUsers, setInvitedUsers] = useState([]); // State for invited users
+  const [searchKeyword, setSearchKeyword] = useState("");
 
   const tele = (window as any).Telegram.WebApp;
   const userID = tele.initDataUnsafe?.user?.id;
   const inviteCode = `${INVITE_BOT_URL}?start=inviteId${userID}`;
+
+  // Filter users based on the search keyword
+  const filteredUsers = invitedUsers.filter((user) =>
+    user.userName.toLowerCase().includes(searchKeyword.toLowerCase())
+  );
 
   const handleClickInvite = () => {
     console.log("handleClickInvite");
@@ -104,12 +110,14 @@ const Invite = () => {
             <input
               className="text-[24px] leading-[32.7px] text-white bg-transparent outline-none w-full"
               placeholder="Invite a friend"
-            ></input>
+              value={searchKeyword}
+              onChange={(e) => setSearchKeyword(e.target.value)}
+            />
             <SearchIcon />
           </div>
           <div className="flex flex-col max-h-[300px] overflow-scroll gap-4">
-            {invitedUsers.length > 0 ? (
-              invitedUsers.map((user, index) => (
+            {filteredUsers.length > 0 ? (
+              filteredUsers.map((user, index) => (
                 <div key={index} className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <img
