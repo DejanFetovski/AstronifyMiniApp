@@ -47,14 +47,13 @@ const Invite = () => {
           },
         });
         console.log("response >>>> ", response.data);
-        setInvitedUsers(response.data);
+        setInvitedUsers(response.data.referrals);
       } catch (error) {
         console.error("Error fetching invite data:", error);
         toast.error("Failed to load invite data");
       }
     };
 
-    console.log("USERID>>>", userID);
     if (userID) {
       fetchInviteData();
     }
@@ -109,68 +108,32 @@ const Invite = () => {
             <SearchIcon />
           </div>
           <div className="flex flex-col max-h-[300px] overflow-scroll gap-4">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <img src="assets/images/avatar.png"></img>
-                <span className="text-[16px] leading-[21.8px] text-white">
-                  Tongkun Lee
-                </span>
-              </div>
-              <button className="bg-[#03B1FB] p-3 rounded-2xl">Invite</button>
-            </div>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <img src="assets/images/avatar-2.png"></img>
-                <span className="text-[16px] leading-[21.8px] text-white">
-                  Rehmem Khihal
-                </span>
-              </div>
-              <button className="bg-[#03B1FB] p-3 rounded-2xl">Invite</button>
-            </div>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <img src="assets/images/avatar-3.png"></img>
-                <span className="text-[16px] leading-[21.8px] text-white">
-                  Fazur Nalim
-                </span>
-              </div>
-              <button className="bg-[#03B1FB] p-3 rounded-2xl opacity-50">
-                Accepted
-              </button>
-            </div>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <img src="assets/images/avatar-3.png"></img>
-                <span className="text-[16px] leading-[21.8px] text-white">
-                  Fazur Nalim
-                </span>
-              </div>
-              <button className="bg-[#03B1FB] p-3 rounded-2xl opacity-50">
-                Accepted
-              </button>
-            </div>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <img src="assets/images/avatar-3.png"></img>
-                <span className="text-[16px] leading-[21.8px] text-white">
-                  Fazur Nalim
-                </span>
-              </div>
-              <button className="bg-[#03B1FB] p-3 rounded-2xl opacity-50">
-                Accepted
-              </button>
-            </div>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <img src="assets/images/avatar-3.png"></img>
-                <span className="text-[16px] leading-[21.8px] text-white">
-                  Fazur Nalim
-                </span>
-              </div>
-              <button className="bg-[#03B1FB] p-3 rounded-2xl opacity-50">
-                Accepted
-              </button>
-            </div>
+            {invitedUsers.length > 0 ? (
+              invitedUsers.map((user, index) => (
+                <div key={index} className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <img
+                      src={user.avatar || "assets/images/avatar.png"} // Fallback for avatar
+                      alt={`${user.avatar || "User"} Avatar`}
+                    />
+                    <span className="text-[16px] leading-[21.8px] text-white">
+                      {user.userName || `User ${index + 1}`}
+                    </span>
+                  </div>
+                  <button
+                    className={`bg-[#03B1FB] p-3 rounded-2xl ${
+                      user.status === true ? "opacity-50" : ""
+                    }`}
+                  >
+                    {user?.state === true ? "Accepted" : "Invite"}
+                  </button>
+                </div>
+              ))
+            ) : (
+              <span className="text-white text-center mt-4">
+                No invited users yet
+              </span>
+            )}
           </div>
         </div>
       </div>

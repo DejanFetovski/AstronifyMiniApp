@@ -105,7 +105,7 @@ const Horoscope = () => {
                 Rewards Points
               </span>
               <span className="text-[19px] leading-[43px] tracking-[0.4px]">
-                1000
+                10000
               </span>
             </div>
           </GradientBorder>
