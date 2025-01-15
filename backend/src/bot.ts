@@ -576,7 +576,7 @@ export async function init() {
   })
 
   bot.on('message', async (message: any) => {
-    console.log('Message Received...', message)
+    // console.log('Message Received...', message)
     if (message.text === '/start') {
 
       const existUser = await TapGame.findUser(message.from.id);

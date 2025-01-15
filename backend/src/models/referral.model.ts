@@ -4,6 +4,9 @@ import { Schema, model, Document } from 'mongoose'
 export interface ReferralDocument extends Document {
     inviterId: string
     userId: string
+    userFirstName: string
+    userLastName: string
+    userName: string
     state: Boolean // True: accepted, False: pending
 }
 
@@ -14,6 +17,18 @@ const referralSchema = new Schema<ReferralDocument>({
         required: true,
     },
     userId: {
+        type: String,
+        required: true,
+    },
+    userFirstName: {
+        type: String,
+        default: ''
+    },
+    userLastName: {
+        type: String,
+        default: ''
+    },
+    userName:{
         type: String,
         required: true,
     },
