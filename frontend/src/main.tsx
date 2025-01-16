@@ -17,6 +17,8 @@ import Wallet from "./pages/Wallet";
 import Tasks from "./pages/Tasks";
 import Invite from "./pages/Invite";
 import Profile from "./pages/Profile";
+import ProfileEdit from "./pages/ProfileEdit";
+
 import Horoscope from "./pages/Horoscope";
 import Agent from "./pages/Agent";
 import Withdraw from "./pages/Withdraw";
@@ -196,6 +198,7 @@ const App: React.FC = () => {
                 <Route path="/question" element={<Question />} />
                 <Route path="/welcome" element={<Welcome />} />
                 <Route path="/profile" element={<Profile />} />
+                <Route path="/profileedit" element={<ProfileEdit />} />
                 <Route path="/horoscope" element={<Horoscope />} />
                 <Route path="/agent" element={<Agent />} />
                 <Route path="/wallet" element={<Wallet />} />

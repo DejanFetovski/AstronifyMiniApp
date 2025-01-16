@@ -36,6 +36,9 @@ interface SettingDocument extends Document {
   question3: number
   pfName: string 
   birth: Date
+  birthTime: string
+  country: string
+  state: string
   sex: string
 }
 
@@ -59,6 +62,18 @@ const settingSchema = new Schema<SettingDocument>({
   birth: {
     type: Date,
     default: Date.now,
+  },
+  birthTime: {
+    type: String,
+    default: '00:00',
+  },
+  country: {
+    type: String,
+    default: '',
+  },
+  state: {
+    type: String,
+    default: '',
   },
   sex: {
     type: String,

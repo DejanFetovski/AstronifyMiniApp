@@ -113,8 +113,7 @@ const Profile = () => {
   }, []);
 
   const editProfile = () => {
-    localStorage.setItem("isEdit", "true");
-    navigate("/welcome"); // Navigate to the profile page
+    navigate("/profileedit"); // Navigate to the profile page
   };
 
   const fetchAstrologyData = async () => {
