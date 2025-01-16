@@ -133,11 +133,12 @@ const ProfileEdit = () => {
       selectedState,
       selectedCountry
     );
+    
     if (
       pfName == "" ||
       birthDate == null ||
       birthTime == "" ||
-      selectedState == ""
+      selectedCountry == ""
     ) {
       toast.warning("Please fill all of the item");
       return;
@@ -170,7 +171,8 @@ const ProfileEdit = () => {
   };
 
   const handleDateChange = (date: Date | null) => {
-    // setSelectedDate(date);
+    console.log("date  ", date)
+    setBirthDate(date);
   };
 
   const handleSelectChange = (event: any) => {

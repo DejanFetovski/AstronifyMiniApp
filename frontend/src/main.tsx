@@ -27,8 +27,12 @@ import Deposit from "./pages/Deposit";
 import { WalletsListConfiguration } from "@tonconnect/ui";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+interface AppContextType {
+  userInfo: null | object; // Replace `object` with the actual type of userInfo
+  setUserInfo: React.Dispatch<React.SetStateAction<null | object>>;
+}
 
-export const AppContext = createContext();
+export const AppContext = createContext<AppContextType | null>(null)
 
 const App: React.FC = () => {
   const [token, setToken] = useState(null);
