@@ -17,7 +17,7 @@ const Welcome = () => {
   const { userInfo, setUserInfo } = useContext(AppContext);
 
   const [step, setStep] = useState(0);
-  
+
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
   const [countries, setCountries] = useState([]);
@@ -89,7 +89,6 @@ const Welcome = () => {
     }
   }, [locationInfo]);
 
-  
   useEffect(() => {
     if (selectedCountry == "") return;
     console.log("selectedCountry>>>>>>>>>>>", selectedCountry);
@@ -228,11 +227,19 @@ const Welcome = () => {
             </div>
 
             {/* Location */}
-            <Menu as="div" className="flex flex-col gap-1 w-full">
-              <div className="flex justify-between">
+            {/* <Menu as="div" className="flex flex-col gap-1 w-full"> */}
+            <div className="flex flex-col gap-1 w-full">
+              <label
+                className="text-[17px] leading-[22px] tracking-[-0.4px] text-[#FFFFFFBF]"
+                htmlFor="datepicker"
+              >
+                Location of birth
+              </label>
+              <div className="flex justify-between gap-2">
                 <select
                   id="countries"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  // className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className="w-full outline-none bg-[#00000075] rounded-full border-[1px] border-[#000000] text-[#FFFFFF99] cursor-pointer border-none text-[14px] leading-[22px] tracking-[-0.34px] font-light shadow-[0px_0px_0px_1px_#FFFFFF40]  py-2 px-3 h-[48px] "
                   onChange={handleSelectChange}
                 >
                   <option selected>Choose a country</option>
@@ -250,9 +257,10 @@ const Welcome = () => {
                 <select
                   id="states"
                   place-holder="Choose a location"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-e-lg border-s-gray-100 dark:border-s-gray-700 border-s-2 focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className="w-full outline-none bg-[#00000075] rounded-full border-[1px] border-[#000000] text-[#FFFFFF99] cursor-pointer border-none text-[14px] leading-[22px] tracking-[-0.34px] font-light shadow-[0px_0px_0px_1px_#FFFFFF40]  py-2 px-3 h-[48px] "
                   onChange={handleSelectedState}
                 >
+                  <option selected>Choose a state</option>
                   {states.length > 0 ? (
                     states.map((item, index) => (
                       <option key={index} value={index}>
@@ -260,56 +268,34 @@ const Welcome = () => {
                       </option>
                     ))
                   ) : (
-                    <option>No State Select</option>
+                    // <option>No State Select</option>
+                    <></>
                   )}
                 </select>
               </div>
-            </Menu>
+            </div>
+            {/* </Menu> */}
 
             {/* Time */}
             <div className="flex flex-col gap-1 w-full">
               <label
                 className="text-[17px] leading-[22px] tracking-[-0.4px] text-[#FFFFFFBF]"
-                htmlFor="location"
+                htmlFor="datepicker"
               >
-                Time
-              </label>
-
-              <label
-                htmlFor="time"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Time of Birth:
+                Time of Birth
               </label>
               <div className="flex">
                 {/* Time Input */}
                 <input
                   type="time"
                   id="time"
-                  className="rounded-none rounded-s-lg bg-gray-50 border text-gray-900 leading-none focus:ring-blue-500 focus:border-blue-500 block flex-1 w-full text-sm border-gray-300 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  min="09:00"
-                  max="18:00"
+                  className="w-full outline-none bg-[#00000075] rounded-full border-[1px] border-[#000000] text-[#FFFFFF99] cursor-pointer border-none text-[14px] leading-[22px] tracking-[-0.34px] font-light shadow-[0px_0px_0px_1px_#FFFFFF40]  py-2 px-3 h-[48px] "
+                  // min="09:00"
+                  // max="18:00"
                   value={birthTime}
                   onChange={handleTimeChange}
-                  required
+                  // required
                 />
-
-                {/* Icon */}
-                <span className="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border rounded-s-0 border-s-0 border-gray-300 rounded-e-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
-                  <svg
-                    className="w-4 h-4 text-gray-500 dark:text-gray-400"
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                </span>
               </div>
             </div>
 
@@ -346,6 +332,11 @@ const Welcome = () => {
               >
                 <span className="text-[14px] text-white">Next</span>
               </ActionButton>
+            </div>
+
+            <div className="text-[#ffffff] text-[14px] mt-4 text-center">
+              Providing insufficient or incorrect details could result in
+              inaccuracies
             </div>
           </div>
         </>
