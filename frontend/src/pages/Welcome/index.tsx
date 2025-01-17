@@ -218,8 +218,8 @@ const Welcome = () => {
               <DatePicker
                 id="datepicker"
                 selected={selectedDate}
-                dateFormat="yyyy/MM/dd"
-                placeholderText="YYYY/MM/DD"
+                dateFormat="dd/MM/yyyy"
+                placeholderText="DD/MM/YYYY"
                 onChange={handleDateChange}
                 showYearDropdown
                 showMonthDropdown

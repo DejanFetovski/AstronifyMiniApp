@@ -76,6 +76,46 @@ router.post('/info', verifyToken, async (req, res) => {
   }
 })
 
+router.put('/info', verifyToken, async (req, res) => {
+  console.log(`user.route.ts - update info`)
+  try {
+    const { chatId } = req.body.user;
+    const data = req.body;
+    
+    // Find the user by chatId
+    const user = await UserModel.findOne({ chatId });
+
+    if (user != null && user != undefined) {
+      // Update the user with the new data
+      const updatedData = await UserModel.updateOne({ chatId }, { $set: data });
+
+      if (updatedData.modifiedCount > 0) {
+        res.status(200).json({
+          state: true,
+          message: "User information updated successfully.",
+          data: updatedData,
+        });
+      } else {
+        res.status(200).json({
+          state: false,
+          message: "No data was changed. The information might be the same.",
+        });
+      }
+    } else {
+      res.status(404).json({
+        state: false,
+        message: "User not found.",
+      });
+    }
+  } catch (error) {
+    console.error("Error updating user:", error);
+    res.status(500).json({
+      state: false,
+      message: "An error occurred while updating user information.",
+    });
+  }
+});
+
 router.get('/referral', verifyToken, async(req, res) => {
   try {
     const { chatId } = req.body.user;

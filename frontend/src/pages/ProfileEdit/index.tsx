@@ -79,7 +79,7 @@ const ProfileEdit = () => {
   const userInfoChangeHandler = async () => {
     const token = localStorage.getItem("authorization");
     try {
-      const response = await axios.patch(
+      const response = await axios.put(
         `${API_BASE_URL}/api/user/info`,
         userInfo,
         {
@@ -133,7 +133,7 @@ const ProfileEdit = () => {
       selectedState,
       selectedCountry
     );
-    
+
     if (
       pfName == "" ||
       birthDate == null ||
@@ -190,7 +190,8 @@ const ProfileEdit = () => {
       event.target.value == "No State found"
     )
       return;
-    setSelectedState(event.target.value);
+    setSelectedState(states[event.target.value]['name']);
+    console.log("State >>>>>>", event.target.value, states[event.target.value]['name'])
   };
 
   return (

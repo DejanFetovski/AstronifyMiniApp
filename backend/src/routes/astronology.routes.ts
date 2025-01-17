@@ -45,4 +45,25 @@ router.post('/planets', verifyToken, async (req, res) => {
     }
 })
 
+router.post('/get_details', verifyToken, async(req, res) => {
+    console.log(`Astronology  - get details`)
+    try {
+        const { chatId } = req.body.user
+
+        const api = "geo_details"
+        const data = req.body
+        
+        const astronologyData = await astronologyAPI(api, data)
+        if( astronologyData?.status == 200 && astronologyData?.data != null) {
+            res.status(200).json({
+                state: true,
+                data: astronologyData?.data,
+            })
+        }
+
+    } catch (error) {
+        res.status(500).end()
+    }
+})
+
 export default router

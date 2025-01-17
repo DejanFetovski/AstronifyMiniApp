@@ -97,7 +97,7 @@ const Profile = () => {
   useEffect(() => {
     // Get Birthday from UserInof
     const date = new Date(userInfo?.setting.birth);
-
+  
     // Extract year, month, and day
     const year = date.getUTCFullYear(); // Get the year
     const month = date.getUTCMonth() + 1; // Get the month (0-based, so add 1)
@@ -108,30 +108,31 @@ const Profile = () => {
     setZodiac(zodiac);
     setAvatar(userInfo?.avatar);
 
-    fetchAstrologyData()
+    fetchAstrologyData(userInfo)
     //
-  }, []);
+  }, [userInfo]);
 
   const editProfile = () => {
     navigate("/profileedit"); // Navigate to the profile page
   };
 
-  const fetchAstrologyData = async () => {
-    console.log("fetchAstrologyData>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-    const token = localStorage.getItem("authorization");
+  const fetchAstrologyData = async (userInfo: any) => {
+    if(userInfo == null)
+      return
 
+    const token = localStorage.getItem("authorization");
+    const birthDate = new Date(userInfo?.setting.birth);
+    const birthTime = userInfo?.setting.birthTime;
+    const [hour, min] = birthTime.split(':')
+
+    // lat, lon
     const data = {
-      day: 19,
-      month: 2,
-      year: 1989,
-      hour: 7,
-      min: 45,
-      lat: 19.132,
-      lon: 72.342,
-      tzone: 5.5,
-    };
+      "place": userInfo?.setting?.state,
+      "maxRows": 7
+  }
+
     const response: any = await axios.post(
-      `${API_BASE_URL}/api/astronology/planets`,
+      `${API_BASE_URL}/api/astronology/get_details`,
       data,
       {
         headers: {
@@ -141,10 +142,34 @@ const Profile = () => {
       }
     );
 
-    console.log("response>>>>>>>>>>>>>>>>>>>>>>>>>>>>",response)
+    console.log("GEO_DETAILS >>>>> ", response)  
+    
+    const data1 = {
+      day: birthDate.getUTCDate(),
+      month: birthDate.getUTCMonth() + 1,
+      year: birthDate.getUTCFullYear(),
+      hour: hour,
+      min: min,
+      lat: 19.132,
+      lon: 72.342,
+      tzone: 5.5,
+    };
 
-    if (response?.data?.state === true) {
-      const signs: string[] = response?.data?.data
+    const response1: any = await axios.post(
+      `${API_BASE_URL}/api/astronology/planets`,
+      data1,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json", // Ensure proper content type
+        },
+      }
+    );
+
+    console.log("response>>>>>>>>>>>>>>>>>>>>>>>>>>>>",response1)
+
+    if (response1?.data?.state === true) {
+      const signs: string[] = response1?.data?.data
         ?.filter((item: any) => item.name === 'Sun' || item.name === 'Moon' || item.name === 'Ascendant')
         .map((item: any) => item.sign) || []; // Ensure default empty array if data is undefined or null
 
@@ -390,8 +415,8 @@ const Profile = () => {
             <span>Tasks</span>
           </div>
           <div
-            className="flex items-center justify-center gap-2 bg-gradient-to-r from-[rgba(134,134,134,0.5)] to-[rgba(88,88,88,0.5)] border border-[#77777766] rounded-[20px] py-[14px] backdrop-blur-[42px] hover:opacity-50"
-            onClick={handleClickWallet}
+            className="flex items-center justify-center gap-2 bg-gradient-to-r from-[rgba(134,134,134,0.5)] to-[rgba(88,88,88,0.5)] border border-[#77777766] rounded-[20px] py-[14px] cursor-not-allowed" /*backdrop-blur-[42px] hover:opacity-50 */
+            // onClick={handleClickWallet}
           >
             <div>
               <WalletIcon />
