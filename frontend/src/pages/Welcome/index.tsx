@@ -227,7 +227,6 @@ const Welcome = () => {
             </div>
 
             {/* Location */}
-            {/* <Menu as="div" className="flex flex-col gap-1 w-full"> */}
             <div className="flex flex-col gap-1 w-full">
               <label
                 className="text-[17px] leading-[22px] tracking-[-0.4px] text-[#FFFFFFBF]"
@@ -268,13 +267,11 @@ const Welcome = () => {
                       </option>
                     ))
                   ) : (
-                    // <option>No State Select</option>
                     <></>
                   )}
                 </select>
               </div>
             </div>
-            {/* </Menu> */}
 
             {/* Time */}
             <div className="flex flex-col gap-1 w-full">
@@ -290,11 +287,8 @@ const Welcome = () => {
                   type="time"
                   id="time"
                   className="w-full outline-none bg-[#00000075] rounded-full border-[1px] border-[#000000] text-[#FFFFFF99] cursor-pointer border-none text-[14px] leading-[22px] tracking-[-0.34px] font-light shadow-[0px_0px_0px_1px_#FFFFFF40]  py-2 px-3 h-[48px] "
-                  // min="09:00"
-                  // max="18:00"
                   value={birthTime}
                   onChange={handleTimeChange}
-                  // required
                 />
               </div>
             </div>

@@ -17,11 +17,12 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const ProfileEdit = () => {
   const { userInfo, setUserInfo } = useContext(AppContext);
- 
-  const [isLoading, setIsLoading] = useState(true)
+
+  const [isLoading, setIsLoading] = useState(true);
 
   const [countries, setCountries] = useState([]);
   const [states, setStates] = useState([]);
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
   const [selectedCountry, setSelectedCountry] = useState("");
   const [selectedState, setSelectedState] = useState("");
@@ -106,14 +107,14 @@ const ProfileEdit = () => {
     if (isLoading) {
       console.log("UserInfo >>>>>>>>", userInfo);
       setPfName(userInfo?.setting?.pfName);
-      setBirthDate(new Date(userInfo?.setting?.birth));
+      setSelectedDate(new Date(userInfo?.setting?.birth));
       setBirthTime(userInfo?.setting?.birthTime);
 
       setSelectedCountry(
         userInfo?.setting?.country !== "" ? userInfo?.setting?.country : ""
       );
       setSelectedState(
-        userInfo?.setting?.state !== "" ?  states[userInfo?.setting?.state] : ""
+        userInfo?.setting?.state !== "" ? states[userInfo?.setting?.state] : ""
       );
       setGenderSelection(userInfo?.setting?.sex !== "male" ? 0 : 1);
     }
@@ -128,7 +129,7 @@ const ProfileEdit = () => {
     console.log(
       "Current States: ",
       pfName,
-      birthDate,
+      selectedDate,
       birthTime,
       selectedState,
       selectedCountry
@@ -136,7 +137,7 @@ const ProfileEdit = () => {
 
     if (
       pfName == "" ||
-      birthDate == null ||
+      selectedDate == null ||
       birthTime == "" ||
       selectedCountry == ""
     ) {
@@ -144,9 +145,9 @@ const ProfileEdit = () => {
       return;
     }
 
-    const year = birthDate.getFullYear();
-    const month = String(birthDate.getMonth() + 1).padStart(2, "0"); // Add padding to month
-    const day = String(birthDate.getDate()).padStart(2, "0"); // Add padding to day
+    const year = selectedDate.getFullYear();
+    const month = String(selectedDate.getMonth() + 1).padStart(2, "0"); // Add padding to month
+    const day = String(selectedDate.getDate()).padStart(2, "0"); // Add padding to day
 
     const formattedDate = `${year}-${month}-${day}`;
 
@@ -163,7 +164,7 @@ const ProfileEdit = () => {
       },
     }));
 
-    setIsLoading(false)
+    setIsLoading(false);
   };
 
   const handleInputChange = (event: any) => {
@@ -171,8 +172,8 @@ const ProfileEdit = () => {
   };
 
   const handleDateChange = (date: Date | null) => {
-    console.log("date  ", date)
-    setBirthDate(date);
+    console.log("date  ", date);
+    setSelectedDate(date);
   };
 
   const handleSelectChange = (event: any) => {
@@ -190,8 +191,12 @@ const ProfileEdit = () => {
       event.target.value == "No State found"
     )
       return;
-    setSelectedState(states[event.target.value]['name']);
-    console.log("State >>>>>>", event.target.value, states[event.target.value]['name'])
+    setSelectedState(states[event.target.value]["name"]);
+    console.log(
+      "State >>>>>>",
+      event.target.value,
+      states[event.target.value]["name"]
+    );
   };
 
   return (
@@ -229,9 +234,9 @@ const ProfileEdit = () => {
           </label>
           <DatePicker
             id="datepicker"
-            selected={birthDate}
-            dateFormat="yyyy/MM/dd"
-            placeholderText="YYYY/MM/DD"
+            selected={selectedDate}
+            dateFormat="dd/MM/yyyy"
+            placeholderText="DD/MM/YYYY"
             onChange={handleDateChange}
             showYearDropdown
             showMonthDropdown
@@ -240,11 +245,18 @@ const ProfileEdit = () => {
         </div>
 
         {/* Location */}
-        <Menu as="div" className="flex flex-col gap-1 w-full">
-          <div className="flex justify-between">
+        <div className="flex flex-col gap-1 w-full">
+          <label
+            className="text-[17px] leading-[22px] tracking-[-0.4px] text-[#FFFFFFBF]"
+            htmlFor="datepicker"
+          >
+            Location of birth
+          </label>
+          <div className="flex justify-between gap-2">
             <select
               id="countries"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              // className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="w-full outline-none bg-[#00000075] rounded-full border-[1px] border-[#000000] text-[#FFFFFF99] cursor-pointer border-none text-[14px] leading-[22px] tracking-[-0.34px] font-light shadow-[0px_0px_0px_1px_#FFFFFF40]  py-2 px-3 h-[48px] "
               onChange={handleSelectChange}
             >
               <option selected>Choose a country</option>
@@ -262,9 +274,10 @@ const ProfileEdit = () => {
             <select
               id="states"
               place-holder="Choose a location"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-e-lg border-s-gray-100 dark:border-s-gray-700 border-s-2 focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="w-full outline-none bg-[#00000075] rounded-full border-[1px] border-[#000000] text-[#FFFFFF99] cursor-pointer border-none text-[14px] leading-[22px] tracking-[-0.34px] font-light shadow-[0px_0px_0px_1px_#FFFFFF40]  py-2 px-3 h-[48px] "
               onChange={handleSelectedState}
             >
+              <option selected>Choose a state</option>
               {states.length > 0 ? (
                 states.map((item, index) => (
                   <option key={index} value={index}>
@@ -272,105 +285,32 @@ const ProfileEdit = () => {
                   </option>
                 ))
               ) : (
-                <option>No State Select</option>
+                // <option>No State Select</option>
+                <></>
               )}
             </select>
           </div>
-        </Menu>
+        </div>
 
         {/* Time */}
-        <Menu as="div" className="flex flex-col gap-1 w-full">
+        <div className="flex flex-col gap-1 w-full">
           <label
             className="text-[17px] leading-[22px] tracking-[-0.4px] text-[#FFFFFFBF]"
-            htmlFor="location"
+            htmlFor="datepicker"
           >
-            Time
+            Time of Birth
           </label>
-          <div>
-            {/* <MenuButton className="w-full flex flex-between outline-none bg-[#00000075] rounded-full border-[1px] border-[#000000] text-[#FFFFFF99] cursor-pointer border-none text-[14px] leading-[22px] tracking-[-0.34px] font-light shadow-[0px_0px_0px_1px_#FFFFFF40]  py-2 px-3 h-[48px] ">
-              Time of Birth
-              
-            </MenuButton> */}
-            <label
-              htmlFor="time"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >
-              Time of Birth:
-            </label>
-            <div className="flex">
-              {/* Time Input */}
-              <input
-                type="time"
-                id="time"
-                className="rounded-none rounded-s-lg bg-gray-50 border text-gray-900 leading-none focus:ring-blue-500 focus:border-blue-500 block flex-1 w-full text-sm border-gray-300 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                min="09:00"
-                max="18:00"
-                value={birthTime}
-                onChange={handleTimeChange}
-                required
-              />
-
-              {/* Icon */}
-              <span className="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border rounded-s-0 border-s-0 border-gray-300 rounded-e-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
-                <svg
-                  className="w-4 h-4 text-gray-500 dark:text-gray-400"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </span>
-            </div>
+          <div className="flex">
+            {/* Time Input */}
+            <input
+              type="time"
+              id="time"
+              className="w-full outline-none bg-[#00000075] rounded-full border-[1px] border-[#000000] text-[#FFFFFF99] cursor-pointer border-none text-[14px] leading-[22px] tracking-[-0.34px] font-light shadow-[0px_0px_0px_1px_#FFFFFF40]  py-2 px-3 h-[48px] "
+              value={birthTime}
+              onChange={handleTimeChange}
+            />
           </div>
-
-          <MenuItems
-            transition
-            className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
-          >
-            <div className="py-1">
-              <MenuItem>
-                <a
-                  href="#"
-                  className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:text-gray-900 data-[focus]:outline-none"
-                >
-                  Account settings
-                </a>
-              </MenuItem>
-              <MenuItem>
-                <a
-                  href="#"
-                  className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:text-gray-900 data-[focus]:outline-none"
-                >
-                  Support
-                </a>
-              </MenuItem>
-              <MenuItem>
-                <a
-                  href="#"
-                  className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:text-gray-900 data-[focus]:outline-none"
-                >
-                  License
-                </a>
-              </MenuItem>
-              <form action="#" method="POST">
-                <MenuItem>
-                  <button
-                    type="submit"
-                    className="block w-full px-4 py-2 text-left text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:text-gray-900 data-[focus]:outline-none"
-                  >
-                    Sign out
-                  </button>
-                </MenuItem>
-              </form>
-            </div>
-          </MenuItems>
-        </Menu>
+        </div>
 
         <div className="bg-[#00000066] border-[1px] border-black [box-shadow: 0px_0px_0px_1px_rgba(187, 167, 167, 0.15)] rounded-full grid grid-cols-2 p-1 gap-3">
           <div
