@@ -3,7 +3,7 @@ import AskInput from "../../components/AskInput";
 import BackIcon from "../../svgs/BackIcon";
 import BubbleMessage from "../../components/BubbleMessage";
 import SampleQuestion from "./SampleQuestion";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef  } from "react";
 import { motion } from "framer-motion";
 import axios from "axios";
 interface Message {
@@ -47,6 +47,14 @@ const Agent = () => {
   const [type, setType] = useState(1);
   const [allMessages, setAllMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState("");
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    if (containerRef.current) {
+      containerRef.current.scrollTop = containerRef.current.scrollHeight;
+    }
+  }, [allMessages]);
+
   useEffect(() => {
     const { type, question } = location.state;
     setType(type);
@@ -60,10 +68,10 @@ const Agent = () => {
 
   const chatGptResponse = async (prompt: any) => {
     const token = localStorage.getItem("authorization");
-    
+
     const response: any = await axios.post(
       `${API_BASE_URL}/api/chatgpt/chat`,
-      { prompt: prompt, categoryId: 1},
+      { prompt: prompt, categoryId: 1 },
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -93,7 +101,10 @@ const Agent = () => {
       <div className="" onClick={handleBack}>
         <BackIcon />
       </div>
-      <div className="relative flex flex-col gap-4 overflow-auto flex-grow z-20">
+      <div
+        className="relative flex flex-col gap-4 overflow-auto flex-grow z-20"
+        ref={containerRef}
+      >
         {allMessages.map((msg, index) => {
           if (msg.type == 1)
             return (
