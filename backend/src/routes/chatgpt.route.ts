@@ -17,8 +17,6 @@ router.post('/chat', verifyToken, async (req, res) => {
     try {
         const { chatId } = req.body.user;
         const { prompt, categoryId } = req.body;
-        console.log("Prompt................................", prompt)
-        console.log("categoryId............................", categoryId)
 
         // Save chat session to database
         await ChatSessionModel.create({
@@ -29,7 +27,6 @@ router.post('/chat', verifyToken, async (req, res) => {
         });
 
         const session = await ChatSessionModel.find({ chatId, categoryId, role:'user' })
-        console.log("Session Data................................", session)
 
         let promptMessages: any[] = session.map(obj => ({
             role: obj.role,

@@ -86,7 +86,6 @@ const json_url_buttonItem = (text: string, url: string) => {
 }
 
 const json_webapp_buttonItem = (text: string, url: any, chatId: string) => {
-  // console.log('[WEB URL]:', url)
   return {
     text: text,
     web_app: {
@@ -554,7 +553,6 @@ export async function init() {
     // Extract the referral code from the message text
     const startParamMatch = text.match(/\/start inviteId(.+)/)
     if (startParamMatch && startParamMatch[1]) {
-      console.log('----------This is invited visiting....................')
       // Already loggin?
       const existUser = await TapGame.findUser(chatId)
 
@@ -571,7 +569,6 @@ export async function init() {
         await TapGame.saveReferral(message.from, inviteId)
       }
     } else {
-      console.log('----------This is normal visition....................')
     }
   })
 
