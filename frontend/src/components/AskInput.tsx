@@ -6,13 +6,11 @@ interface Props {
   text: string;
   onChange: (value: string) => void;
   onSendMessage: () => void;
+  onKeyDown: (value: any) => void;
 }
-const AskInput = ({ text, onChange, onSendMessage }: Props) => {
+const AskInput = ({ text, onChange, onSendMessage, onKeyDown}: Props) => {
   const [isFocused, setIsFocused] = useState(false);
-  // const handleSendMessage = () => {
-  //   console.log("handleSendMessage");
-  //   onSendMessage();
-  // };
+
   return (
     <div
       className={`${
@@ -30,6 +28,9 @@ const AskInput = ({ text, onChange, onSendMessage }: Props) => {
           value={text}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
+          onKeyDown={(event) => {
+            onKeyDown(event)
+          }}
         ></input>
       </div>
       <img

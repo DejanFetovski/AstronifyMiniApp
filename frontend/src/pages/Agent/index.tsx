@@ -84,60 +84,77 @@ const Agent = () => {
         })}
       </div>
       <div className="flex flex-col gap-5 relative z-10">
-        <div className="flex flex-wrap gap-2">
-          {type == 0
-            ? sampleQuestions_agent.map((ques, index) => (
-                <div
-                  onClick={() => handleSelectSampleQuestion(ques)}
-                  key={index}
-                >
-                  <SampleQuestion question={ques}></SampleQuestion>
-                </div>
-              ))
-            : type == 1
-            ? sampleQuestions_finance.map((ques, index) => (
-                <div
-                  onClick={() => handleSelectSampleQuestion(ques)}
-                  key={index}
-                >
-                  <SampleQuestion question={ques}></SampleQuestion>
-                </div>
-              ))
-            : type == 2
-            ? sampleQuestions_career.map((ques, index) => (
-                <div
-                  onClick={() => handleSelectSampleQuestion(ques)}
-                  key={index}
-                >
-                  <SampleQuestion question={ques}></SampleQuestion>
-                </div>
-              ))
-            : type == 3
-            ? sampleQuestions_relationship.map((ques, index) => (
-                <div
-                  onClick={() => handleSelectSampleQuestion(ques)}
-                  key={index}
-                >
-                  <SampleQuestion question={ques}></SampleQuestion>
-                </div>
-              ))
-            : sampleQuestions_health.map((ques, index) => (
-                <div
-                  onClick={() => handleSelectSampleQuestion(ques)}
-                  key={index}
-                >
-                  <SampleQuestion question={ques}></SampleQuestion>
-                </div>
-              ))}
-        </div>
+        {allMessages.length === 0 && (
+          <div className="flex flex-wrap gap-2">
+            {type == 0
+              ? sampleQuestions_agent.map((ques, index) => (
+                  <div
+                    onClick={() => handleSelectSampleQuestion(ques)}
+                    key={index}
+                  >
+                    <SampleQuestion question={ques}></SampleQuestion>
+                  </div>
+                ))
+              : type == 1
+              ? sampleQuestions_finance.map((ques, index) => (
+                  <div
+                    onClick={() => handleSelectSampleQuestion(ques)}
+                    key={index}
+                  >
+                    <SampleQuestion question={ques}></SampleQuestion>
+                  </div>
+                ))
+              : type == 2
+              ? sampleQuestions_career.map((ques, index) => (
+                  <div
+                    onClick={() => handleSelectSampleQuestion(ques)}
+                    key={index}
+                  >
+                    <SampleQuestion question={ques}></SampleQuestion>
+                  </div>
+                ))
+              : type == 3
+              ? sampleQuestions_relationship.map((ques, index) => (
+                  <div
+                    onClick={() => handleSelectSampleQuestion(ques)}
+                    key={index}
+                  >
+                    <SampleQuestion question={ques}></SampleQuestion>
+                  </div>
+                ))
+              : sampleQuestions_health.map((ques, index) => (
+                  <div
+                    onClick={() => handleSelectSampleQuestion(ques)}
+                    key={index}
+                  >
+                    <SampleQuestion question={ques}></SampleQuestion>
+                  </div>
+                ))}
+          </div>
+        )}
         <AskInput
           text={inputMessage}
           onChange={(message: string) => {
             setInputMessage(message);
           }}
-          onSendMessage={() => {
-            const newMessage = { type: 1, message: inputMessage }
+          onSendMessage={async () => {
+            const newMessage = { type: 1, message: inputMessage };
             setAllMessages((prevMessages) => [...prevMessages, newMessage]);
+            setInputMessage("");
+            // const replyMessage = await chatGptResponse();
+          }}
+          onKeyDown={(event: React.KeyboardEvent) => {
+            if (event.key === "Enter") {
+              event.preventDefault(); // Prevent any default Enter key behavior (e.g., form submission)
+              if (inputMessage.trim()) {
+                // Only send if inputMessage is not empty
+                setInputMessage(""); // Clear the input after sending
+                const newMessage = { type: 1, message: inputMessage };
+                setAllMessages((prevMessages) => [...prevMessages, newMessage]);
+                // Optionally, handle reply logic here
+                // await chatGptResponse();
+              }
+            }
           }}
         />
       </div>
