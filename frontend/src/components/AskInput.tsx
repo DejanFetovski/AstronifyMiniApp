@@ -9,10 +9,10 @@ interface Props {
 }
 const AskInput = ({ text, onChange, onSendMessage }: Props) => {
   const [isFocused, setIsFocused] = useState(false);
-  const handleSendMessage = () => {
-    console.log("handleSendMessage");
-    onSendMessage();
-  };
+  // const handleSendMessage = () => {
+  //   console.log("handleSendMessage");
+  //   onSendMessage();
+  // };
   return (
     <div
       className={`${
@@ -34,7 +34,7 @@ const AskInput = ({ text, onChange, onSendMessage }: Props) => {
       </div>
       <img
         src="assets/images/telegram-1.png"
-        onClick={() => handleSendMessage()}
+        onClick={() => onSendMessage()}
       ></img>
     </div>
   );

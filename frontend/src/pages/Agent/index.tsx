@@ -47,8 +47,6 @@ const Agent = () => {
   const [inputMessage, setInputMessage] = useState("");
   useEffect(() => {
     const { type, question } = location.state;
-    console.log("start type = ", type);
-    console.log("start question = ", question);
     setType(type);
   }, [location]);
   const handleBack = () => {
@@ -138,11 +136,8 @@ const Agent = () => {
             setInputMessage(message);
           }}
           onSendMessage={() => {
-            console.log("agent page, onSendMessage");
-            setAllMessages((prev) => {
-              prev.push({ type: 1, message: inputMessage });
-              return prev;
-            });
+            const newMessage = { type: 1, message: inputMessage }
+            setAllMessages((prevMessages) => [...prevMessages, newMessage]);
           }}
         />
       </div>
