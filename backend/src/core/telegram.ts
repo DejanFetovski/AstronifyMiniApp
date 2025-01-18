@@ -45,7 +45,6 @@ export const procMessage = async (message: any, database: any) => {
     command = command.slice(1);
 
     if (command === instance.COMMAND_START) {
-      console.log("----------")
       await instance.executeCommand(chatId, messageId, undefined, {
         c: C.OptionCode.MAIN_MENU,
         k: 1,

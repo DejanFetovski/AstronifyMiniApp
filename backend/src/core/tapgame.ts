@@ -49,7 +49,6 @@ export async function findOrCreateUser(
   let user = await UserModel.findOne({ chatId: userInfo.id })
 
   if (user == null || user == undefined) {
-    console.log('>>>>>>>>User register...')
 
     const userData: any = {
       chatId: userInfo.id, // Example chatId

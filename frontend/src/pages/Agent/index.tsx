@@ -5,11 +5,13 @@ import BubbleMessage from "../../components/BubbleMessage";
 import SampleQuestion from "./SampleQuestion";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-
+import axios from "axios";
 interface Message {
   type: number;
   message: string;
 }
+
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const Agent = () => {
   const sampleQuestions_agent = [
@@ -54,6 +56,26 @@ const Agent = () => {
   };
   const handleSelectSampleQuestion = (question: string) => {
     setInputMessage(question);
+  };
+
+  const chatGptResponse = async (prompt: any) => {
+    const token = localStorage.getItem("authorization");
+    
+    const response: any = await axios.post(
+      `${API_BASE_URL}/api/chatgpt/chat`,
+      { prompt: prompt, categoryId: 1},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json", // Ensure proper content type
+        },
+      }
+    );
+
+    if (response.status == 200) {
+      console.log("[REPLY] >>>>>>>>>>>>>", response.data.replyMessage);
+      return response.data.replyMessage;
+    }
   };
 
   return (
@@ -141,9 +163,18 @@ const Agent = () => {
             const newMessage = { type: 1, message: inputMessage };
             setAllMessages((prevMessages) => [...prevMessages, newMessage]);
             setInputMessage("");
-            // const replyMessage = await chatGptResponse();
+
+            const gptResponse = await chatGptResponse(inputMessage);
+
+            if (gptResponse !== "" && gptResponse !== null) {
+              const gptReplyMessage = { type: 2, message: gptResponse };
+              setAllMessages((prevMessages) => [
+                ...prevMessages,
+                gptReplyMessage,
+              ]);
+            }
           }}
-          onKeyDown={(event: React.KeyboardEvent) => {
+          onKeyDown={async (event: React.KeyboardEvent) => {
             if (event.key === "Enter") {
               event.preventDefault(); // Prevent any default Enter key behavior (e.g., form submission)
               if (inputMessage.trim()) {
@@ -152,7 +183,15 @@ const Agent = () => {
                 const newMessage = { type: 1, message: inputMessage };
                 setAllMessages((prevMessages) => [...prevMessages, newMessage]);
                 // Optionally, handle reply logic here
-                // await chatGptResponse();
+                const gptResponse = await chatGptResponse(inputMessage);
+
+                if (gptResponse !== "" && gptResponse !== null) {
+                  const gptReplyMessage = { type: 2, message: gptResponse };
+                  setAllMessages((prevMessages) => [
+                    ...prevMessages,
+                    gptReplyMessage,
+                  ]);
+                }
               }
             }
           }}

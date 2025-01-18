@@ -1,4 +1,6 @@
 import express, { Express, NextFunction, Request, Response } from 'express'
+import session from 'express-session';
+
 import cors from 'cors'
 
 require('dotenv').config()
@@ -6,17 +8,17 @@ require('dotenv').config()
 import routeAuth from './routes/auth.routes'
 import routeUser from './routes/user.routes'
 import routerAstronology from './routes/astronology.routes'
-// import routeFriend from './routes/friend.routes'
+import routeGPT from './routes/chatgpt.route'
 // import routeTask from './routes/task.routes'
 // import routeGame from './routes/game.routes'
 
 // import {appInit} from './core/tapgame'
-import {startWebSocketServer} from './socket'
+import { startWebSocketServer } from './socket'
 
 // import https from "https";
 import http from "http";
 import { Socket } from 'socket.io'
- 
+
 import { verifyToken } from './middleware/index'; // Adjust the import path as needed
 
 export const run = async (bot: any): Promise<void> => {
@@ -36,13 +38,11 @@ export const run = async (bot: any): Promise<void> => {
 
   app.use(express.json())
   app.use(express.urlencoded({ extended: true }))
-  
+
   app.use('/api/auth', routeAuth)
   app.use('/api/user', routeUser)
   app.use('/api/astronology', routerAstronology)
-  // app.use('/api/task', routeTask)
-  // app.use('/api/friend', routeFriend)
-  // app.use('/api/game', routeGame)
+  app.use('/api/chatgpt', routeGPT)
   
   // app.use('*', (req, res) => {
   //   res.json("API is wokring")
@@ -57,20 +57,20 @@ export const run = async (bot: any): Promise<void> => {
   //   cert: fs.readFileSync(process.env.SSL_CERT_PATH || 'server.cert'),
   // }
   // let server = https.createServer(sslOptions, app);
-  
+
   let server = http.createServer(app);
   server.listen(port, () => {
     console.log(`Server up and running on port ${port} with HTTPS!`)
   })
 
   // Start socket server 
-  startWebSocketServer(server, 
+  startWebSocketServer(server,
     async (socket: Socket) => {
-      socket.emit("Hello", JSON.stringify({message: "OK"}))
+      socket.emit("Hello", JSON.stringify({ message: "OK" }))
     }),
-    async (userId:string) =>{}
+    async (userId: string) => { }
 
   // Schedule the task to run every day at 00:00 UTC (midnight)
   // appInit();
-  
+
 }

@@ -86,7 +86,7 @@ const json_url_buttonItem = (text: string, url: string) => {
 }
 
 const json_webapp_buttonItem = (text: string, url: any, chatId: string) => {
-  console.log('[WEB URL]:', url)
+  // console.log('[WEB URL]:', url)
   return {
     text: text,
     web_app: {
