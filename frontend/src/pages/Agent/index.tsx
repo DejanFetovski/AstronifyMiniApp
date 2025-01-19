@@ -44,7 +44,7 @@ const Agent = () => {
 
   const navigate = useNavigate();
   const location = useLocation();
-  const [type, setType] = useState(1);
+  const [category, setCategory] = useState(0);
   const [allMessages, setAllMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState("");
   const containerRef = useRef(null);
@@ -57,7 +57,9 @@ const Agent = () => {
 
   useEffect(() => {
     const { type, question } = location.state;
-    setType(type);
+    
+    setInputMessage(question);
+    setCategory(type);
   }, [location]);
   const handleBack = () => {
     navigate("/horoscope");
@@ -71,7 +73,7 @@ const Agent = () => {
 
     const response: any = await axios.post(
       `${API_BASE_URL}/api/chatgpt/chat`,
-      { prompt: prompt, categoryId: 1 },
+      { prompt: prompt, categoryId: category },
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -119,7 +121,7 @@ const Agent = () => {
       <div className="flex flex-col gap-5 relative z-10">
         {allMessages.length === 0 && (
           <div className="flex flex-wrap gap-2">
-            {type == 0
+            {category == 0
               ? sampleQuestions_agent.map((ques, index) => (
                   <div
                     onClick={() => handleSelectSampleQuestion(ques)}
@@ -128,7 +130,7 @@ const Agent = () => {
                     <SampleQuestion question={ques}></SampleQuestion>
                   </div>
                 ))
-              : type == 1
+              : category == 1
               ? sampleQuestions_finance.map((ques, index) => (
                   <div
                     onClick={() => handleSelectSampleQuestion(ques)}
@@ -137,7 +139,7 @@ const Agent = () => {
                     <SampleQuestion question={ques}></SampleQuestion>
                   </div>
                 ))
-              : type == 2
+              : category == 2
               ? sampleQuestions_career.map((ques, index) => (
                   <div
                     onClick={() => handleSelectSampleQuestion(ques)}
@@ -146,7 +148,7 @@ const Agent = () => {
                     <SampleQuestion question={ques}></SampleQuestion>
                   </div>
                 ))
-              : type == 3
+              : category == 3
               ? sampleQuestions_relationship.map((ques, index) => (
                   <div
                     onClick={() => handleSelectSampleQuestion(ques)}

@@ -116,7 +116,8 @@ const Horoscope = () => {
             setStartQuestion(message);
           }}
           onSendMessage={() => {
-            console.log("onSendMessage");
+            console.log(`category: ${type} question: ${startQuestion}`);
+
             navigate("/agent", {
               state: { type: type, question: startQuestion },
             });
