@@ -173,6 +173,8 @@ const Agent = () => {
             setInputMessage(message);
           }}
           onSendMessage={async () => {
+            if(inputMessage == "")
+              return;
             const newMessage = { type: 1, message: inputMessage };
             setAllMessages((prevMessages) => [...prevMessages, newMessage]);
             setInputMessage("");
