@@ -8,74 +8,36 @@ import { motion } from "framer-motion";
 import "react-datepicker/dist/react-datepicker.css";
 import { AppContext } from "../../main";
 import axios from "axios";
-import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
-import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { toast } from "react-toastify";
+import CountryCitySelector from "../../components/CountryCitySelector";
 
-const LOCATION_GET = "https://countriesnow.space/api/v0.1/countries/states";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const ProfileEdit = () => {
-  const { userInfo, setUserInfo } = useContext(AppContext);
+  const navigate = useNavigate();
 
+  const { userInfo, setUserInfo } = useContext(AppContext);
   const [isLoading, setIsLoading] = useState(true);
 
-  const [countries, setCountries] = useState([]);
-  const [states, setStates] = useState([]);
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [country, setCountry] = useState("");
+  const [location, setLocation] = useState("");
+  const [timeZoneId, setTimeZoneId] = useState<string | null>(null);
 
-  const [selectedCountry, setSelectedCountry] = useState("");
-  const [selectedState, setSelectedState] = useState("");
-
-  const [birthDate, setBirthDate] = useState<Date | null>(null);
+  // Profile Name
   const [pfName, setPfName] = useState("");
+
+  // Gender
   const [genderSelection, setGenderSelection] = useState(0);
+
+  // BirthTime
+  const [birthDate, setBirthDate] = useState<Date | null>(null);
   const [birthTime, setBirthTime] = useState("09:00"); // Default value within min-max range
-  const [locationInfo, setLocationInfo] = useState([]);
-
-  const fetchLocationData = async () => {
-    try {
-      const response = await axios.get(`${LOCATION_GET}`, {
-        headers: {
-          "Content-Type": "application/json", // Ensure proper content type
-        },
-      });
-
-      // Sum up all location
-      setLocationInfo(response.data.data);
-      console.log("location>>>>>>>>>>>>>>>>>", response.data.data);
-    } catch (error) {
-      console.error("Error fetching invite data:", error);
-      setLocationInfo([]);
-    }
-  };
-
-  useEffect(() => {
-    if (locationInfo?.length) {
-      const countriesData: any = locationInfo.map((item) => item?.name); // Map over the array
-      setCountries(countriesData); // Update state
-    }
-  }, [locationInfo]);
-
-  useEffect(() => {
-    if (selectedCountry == "") return;
-    console.log("selectedCountry>>>>>>>>>>>", selectedCountry);
-
-    const country = locationInfo.find((item) => item?.name === selectedCountry);
-    setStates(country ? country?.states : []);
-  }, [selectedCountry]);
-
-  useEffect(() => {
-    fetchLocationData();
-  }, []);
 
   // Handle time changes
   const handleTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setBirthTime(e.target.value);
     console.log("Birth Time >>> ", e.target.value);
   };
-
-  const navigate = useNavigate();
 
   const userInfoChangeHandler = async () => {
     const token = localStorage.getItem("authorization");
@@ -105,16 +67,15 @@ const ProfileEdit = () => {
   useEffect(() => {
     // Loading
     if (isLoading) {
-      console.log("UserInfo >>>>>>>>", userInfo);
       setPfName(userInfo?.setting?.pfName);
-      setSelectedDate(new Date(userInfo?.setting?.birth));
+      setBirthDate(new Date(userInfo?.setting?.birth));
       setBirthTime(userInfo?.setting?.birthTime);
 
-      setSelectedCountry(
+      setCountry(
         userInfo?.setting?.country !== "" ? userInfo?.setting?.country : ""
       );
-      setSelectedState(
-        userInfo?.setting?.state !== "" ? states[userInfo?.setting?.state] : ""
+      setLocation(
+        userInfo?.setting?.location !== "" ? userInfo?.setting?.location : ""
       );
       setGenderSelection(userInfo?.setting?.sex !== "male" ? 0 : 1);
     }
@@ -129,25 +90,20 @@ const ProfileEdit = () => {
     console.log(
       "Current States: ",
       pfName,
-      selectedDate,
+      birthDate,
       birthTime,
-      selectedState,
-      selectedCountry
+      location,
+      country
     );
 
-    if (
-      pfName == "" ||
-      selectedDate == null ||
-      birthTime == "" ||
-      selectedCountry == ""
-    ) {
+    if (pfName == "" || birthDate == null || birthTime == "" || country == "") {
       toast.warning("Please fill all of the item");
       return;
     }
 
-    const year = selectedDate.getFullYear();
-    const month = String(selectedDate.getMonth() + 1).padStart(2, "0"); // Add padding to month
-    const day = String(selectedDate.getDate()).padStart(2, "0"); // Add padding to day
+    const year = birthDate.getFullYear();
+    const month = String(birthDate.getMonth() + 1).padStart(2, "0"); // Add padding to month
+    const day = String(birthDate.getDate()).padStart(2, "0"); // Add padding to day
 
     const formattedDate = `${year}-${month}-${day}`;
 
@@ -159,8 +115,9 @@ const ProfileEdit = () => {
         pfName: pfName,
         birth: formattedDate,
         birthTime: birthTime,
-        country: selectedCountry,
-        state: selectedState,
+        country: country,
+        location: location,
+        timeZoneId: timeZoneId,
       },
     }));
 
@@ -172,31 +129,7 @@ const ProfileEdit = () => {
   };
 
   const handleDateChange = (date: Date | null) => {
-    console.log("date  ", date);
-    setSelectedDate(date);
-  };
-
-  const handleSelectChange = (event: any) => {
-    if (
-      event.target.value == "Choose a country" ||
-      event.target.value == "No locations found"
-    )
-      return;
-    setSelectedCountry(event.target.value);
-  };
-
-  const handleSelectedState = (event: any) => {
-    if (
-      event.target.value == "Choose a state" ||
-      event.target.value == "No State found"
-    )
-      return;
-    setSelectedState(states[event.target.value]["name"]);
-    console.log(
-      "State >>>>>>",
-      event.target.value,
-      states[event.target.value]["name"]
-    );
+    setBirthDate(date);
   };
 
   return (
@@ -234,7 +167,7 @@ const ProfileEdit = () => {
           </label>
           <DatePicker
             id="datepicker"
-            selected={selectedDate}
+            selected={birthDate}
             dateFormat="dd/MM/yyyy"
             placeholderText="DD/MM/YYYY"
             onChange={handleDateChange}
@@ -245,52 +178,14 @@ const ProfileEdit = () => {
         </div>
 
         {/* Location */}
-        <div className="flex flex-col gap-1 w-full">
-          <label
-            className="text-[17px] leading-[22px] tracking-[-0.4px] text-[#FFFFFFBF]"
-            htmlFor="datepicker"
-          >
-            Location of birth
-          </label>
-          <div className="flex justify-between gap-2">
-            <select
-              id="countries"
-              // className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              className="w-full outline-none bg-[#00000075] rounded-full border-[1px] border-[#000000] text-[#FFFFFF99] cursor-pointer border-none text-[14px] leading-[22px] tracking-[-0.34px] font-light shadow-[0px_0px_0px_1px_#FFFFFF40]  py-2 px-3 h-[48px] "
-              onChange={handleSelectChange}
-            >
-              <option selected>Choose a country</option>
-              {countries.length > 0 ? (
-                countries.map((country, index) => (
-                  <option key={index} value={country}>
-                    {country}
-                  </option>
-                ))
-              ) : (
-                <option>No locations found</option>
-              )}
-            </select>
-
-            <select
-              id="states"
-              place-holder="Choose a location"
-              className="w-full outline-none bg-[#00000075] rounded-full border-[1px] border-[#000000] text-[#FFFFFF99] cursor-pointer border-none text-[14px] leading-[22px] tracking-[-0.34px] font-light shadow-[0px_0px_0px_1px_#FFFFFF40]  py-2 px-3 h-[48px] "
-              onChange={handleSelectedState}
-            >
-              <option selected>Choose a state</option>
-              {states.length > 0 ? (
-                states.map((item, index) => (
-                  <option key={index} value={index}>
-                    {item?.name}
-                  </option>
-                ))
-              ) : (
-                // <option>No State Select</option>
-                <></>
-              )}
-            </select>
-          </div>
-        </div>
+        <CountryCitySelector
+          timeZoneId={timeZoneId}
+          setTimeZoneId={setTimeZoneId}
+          country={country}
+          setCountry={setCountry}
+          location={location}
+          setLocation={setLocation}
+        />
 
         {/* Time */}
         <div className="flex flex-col gap-1 w-full">

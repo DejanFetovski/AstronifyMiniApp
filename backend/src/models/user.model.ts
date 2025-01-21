@@ -38,7 +38,8 @@ interface SettingDocument extends Document {
   birth: Date
   birthTime: string
   country: string
-  state: string
+  location: string
+  timeZoneId: string
   sex: string
 }
 
@@ -71,7 +72,11 @@ const settingSchema = new Schema<SettingDocument>({
     type: String,
     default: '',
   },
-  state: {
+  location: {
+    type: String,
+    default: '',
+  },
+  timeZoneId: {
     type: String,
     default: '',
   },
