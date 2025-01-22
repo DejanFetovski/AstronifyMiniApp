@@ -77,6 +77,9 @@ const ProfileEdit = () => {
       setLocation(
         userInfo?.setting?.location !== "" ? userInfo?.setting?.location : ""
       );
+      setTimeZoneId(
+        userInfo?.setting?.timeZoneId !== "" ? userInfo?.setting?.timeZoneId : ""
+      )
       setGenderSelection(userInfo?.setting?.sex !== "male" ? 0 : 1);
     }
     // Saving

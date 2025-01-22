@@ -24,11 +24,23 @@ const CountryCitySelector: React.FC<CountryCitySelectorProps> = ({
   location,
   setLocation,
 }) => {
+  console.log("TimeZoneId >>>", timeZoneId);
   const [countries, setCountries] = useState<CountryOption[]>([]);
   const [selectedCountry, setSelectedCountry] = useState<CountryOption | null>(
     null
   );
 
+  useEffect(() => {
+    if(country !== "") {
+
+      const select: CountryOption | undefined = countries.find(
+        (item) => item.value === country
+      );
+      setSelectedCountry(select || null);
+      setCountry(country || "");
+    }
+  }, [countries])
+  
   const handleInputChange = (event: any) => {
     setLocation(event.target.value); // Update state with input value
   };
@@ -50,23 +62,27 @@ const CountryCitySelector: React.FC<CountryCitySelectorProps> = ({
       (country) => country.value === selectedValue
     );
     setSelectedCountry(country || null);
-    setCountry(country?.label || "")
+    setCountry(country?.label || "");
   };
 
   useEffect(() => {
     if (selectedCountry) {
       console.log("selectedCountry >>>", selectedCountry);
-      const input = document.getElementById("cityInput") as HTMLInputElement;
+      let input = document.getElementById("cityInput") as HTMLInputElement;
 
       if (typeof google !== "undefined") {
         const autocomplete = new google.maps.places.Autocomplete(input, {
           types: ["(cities)"],
           componentRestrictions: { country: selectedCountry.abbreviation },
+          language: "en",
+          fields: ["geometry", "name"] // Specify fields to avoid postal codes
         });
 
         autocomplete.addListener("place_changed", () => {
           const place = autocomplete.getPlace();
           if (place.geometry) {
+            console.log("Place: ", place);
+
             const lat = place.geometry.location.lat();
             const lng = place.geometry.location.lng();
 
@@ -77,8 +93,11 @@ const CountryCitySelector: React.FC<CountryCitySelectorProps> = ({
             axios
               .get(timezoneApiUrl)
               .then((response) => {
-                setLocation(place.formatted_address)
+                setLocation(place.name);
                 setTimeZoneId(response.data.timeZoneId);
+
+                console.log("Place: ", place.formatted_address);
+                console.log("TimeZone: ", response.data.timeZoneId);
               })
               .catch((error) => {
                 console.error("Error fetching timezone:", error);
@@ -97,7 +116,7 @@ const CountryCitySelector: React.FC<CountryCitySelectorProps> = ({
         id="countries"
         className="w-full outline-none bg-[#00000075] rounded-full border-[1px] border-[#000000] text-[#FFFFFF99] cursor-pointer border-none text-[14px] leading-[22px] tracking-[-0.34px] font-light shadow-[0px_0px_0px_1px_#FFFFFF40]  py-2 px-3 h-[48px] "
         onChange={handleCountryChange}
-        value={country ? country : 'Choose a country'}  
+        value={country ? country : "Choose a country"}
       >
         {/* <option selected>Choose a country</option> */}
         {countries.length > 0 ? (
@@ -116,7 +135,7 @@ const CountryCitySelector: React.FC<CountryCitySelectorProps> = ({
         className="w-full outline-none bg-[#00000075] rounded-full border-[1px] border-[#000000] text-[#FFFFFF99] cursor-pointer border-none text-[14px] leading-[22px] tracking-[-0.34px] font-light shadow-[0px_0px_0px_1px_#FFFFFF40]  py-2 px-3 h-[48px] "
         type="text"
         placeholder="Enter city or district"
-        value = {location?? location}
+        value={location ?? location}
         onChange={handleInputChange}
       />
       {/* {timezone && <p>Timezone: {timezone}</p>} */}

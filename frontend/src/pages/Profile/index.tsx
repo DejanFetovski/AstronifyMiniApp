@@ -10,6 +10,24 @@ import GradientBorder from "../../components/GradientBorder";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
+interface GeoData {
+  place_name: string;
+  latitude: string;
+  longitude: string;
+  country_code: string;
+  timezone_id: string;
+}
+
+interface PlanetData {
+  name: string;
+  fullDegree: number;
+  normDegree: number;
+  speed: number;
+  isRetro: string;
+  sign: string;
+  house: number;
+}
+
 function getZodiacSign(day: number, month: number) {
   const zodiacSigns = [
     {
@@ -86,6 +104,8 @@ const Profile = () => {
   const [luckyNo, setLuckyNo] = useState("");
   const [luckyTime, setLuckyTime] = useState("");
 
+  const [geoData, setGeoData] = useState<GeoData | null>(null);
+
   const handleClickWallet = () => {
     navigate("/wallet");
   };
@@ -95,10 +115,10 @@ const Profile = () => {
   };
 
   useEffect(() => {
-    // Get Birthday from UserInof
+    // if(userInfo == null || userInfo.setting == null)
+    console.log("UserInfo has been updated >>>>>>>>>>>>", userInfo)
     const date = new Date(userInfo?.setting.birth);
-  
-    // Extract year, month, and day
+
     const year = date.getUTCFullYear(); // Get the year
     const month = date.getUTCMonth() + 1; // Get the month (0-based, so add 1)
     const day = date.getUTCDate(); // Get the day of the month
@@ -108,28 +128,61 @@ const Profile = () => {
     setZodiac(zodiac);
     setAvatar(userInfo?.avatar);
 
-    fetchAstrologyData(userInfo)
+    const place = userInfo?.setting?.location.split(",")[0].trim();
+    console.log("place>>>>>>>>>>>>", place);
+
+    fetchGeoDetails(place)
+      .then((geoDetails) => {
+        if (geoDetails == null) return null;
+
+        console.log("Filter Condition =>", place, userInfo.setting.timeZoneId);
+        const geoData = geoDetails.filter(
+          (geoDetail: any) =>
+            geoDetail.place_name === place &&
+            geoDetail.timezone_id.toLowerCase() ==
+              userInfo.setting.timeZoneId.toLowerCase()
+        );
+
+        console.log("================matching Geo data", geoData[0]);
+        setGeoData(geoData[0]);
+      })
+      .catch((err) => console.log(err));
     //
   }, [userInfo]);
+
+  useEffect(() => {
+    const place = userInfo?.setting?.location.split(",")[0].trim();
+    fetchPlanetData(geoData)
+      .then((planetData) => {
+        const sunData = planetData.find((planet: PlanetData) => planet.name === "Sun");
+
+        const moonData = planetData.find((planet: PlanetData) => planet.name === "Moon");
+
+        const risingData = planetData.find(
+          (planet: PlanetData) => planet.name === "Ascendant"
+        );
+
+        setSunSign(sunData.sign);
+        setMoonSign(moonData.sign);
+        setRisingSign(risingData.sign);
+      })
+      .catch((err) => console.log(err));
+  }, [geoData]);
 
   const editProfile = () => {
     navigate("/profileedit"); // Navigate to the profile page
   };
 
-  const fetchAstrologyData = async (userInfo: any) => {
-    if(userInfo == null)
-      return
-
-    const token = localStorage.getItem("authorization");
-    const birthDate = new Date(userInfo?.setting.birth);
-    const birthTime = userInfo?.setting.birthTime;
-    const [hour, min] = birthTime.split(':')
-
+  const fetchGeoDetails = async (place: string) => {
+    console.log("[fetchGeoDetail] is called")
     // lat, lon
     const data = {
-      "place": userInfo?.setting?.state,
-      "maxRows": 7
-  }
+      place: place,
+      maxRows: 7,
+    };
+
+    const token = localStorage.getItem("authorization");
+    console.log("[fetchGeoDetail - data]>>>>>>>>>", data)
 
     const response: any = await axios.post(
       `${API_BASE_URL}/api/astronology/get_details`,
@@ -142,22 +195,38 @@ const Profile = () => {
       }
     );
 
-    console.log("GEO_DETAILS >>>>> ", response)  
-    
-    const data1 = {
-      day: birthDate.getUTCDate(),
-      month: birthDate.getUTCMonth() + 1,
-      year: birthDate.getUTCFullYear(),
-      hour: hour,
-      min: min,
-      lat: 19.132,
-      lon: 72.342,
-      tzone: 5.5,
+    if (response.status == 200) {
+      console.log("GEO_DETAILS >>>>> ", response.data.data.geonames);
+      return response.data.data.geonames;
+    } else {
+      console.log("fetchGeoDetails failed" );
+      return null;
+    }
+  };
+
+  const fetchPlanetData = async (geoData: GeoData) => {
+    // if(geoData == )
+    const birth = new Date(userInfo.setting.birth);
+    const birthTime = userInfo?.setting.birthTime;
+    const [hour, min] = birthTime.split(":");
+
+    console.log("GeoData--------------------------", geoData);
+    const data = {
+      day: birth.getDate(),
+      month: birth.getMonth(),
+      year: birth.getFullYear(),
+      hour: parseInt(hour),
+      min: parseInt(min),
+      lat: parseFloat(geoData.latitude),
+      lon: parseFloat(geoData.longitude),
+      tzone: 4,
     };
 
-    const response1: any = await axios.post(
-      `${API_BASE_URL}/api/astronology/planets`,
-      data1,
+    const token = localStorage.getItem("authorization");
+
+    const response: any = await axios.post(
+      `${API_BASE_URL}/api/astronology/planets/tropical`,
+      data,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -166,21 +235,11 @@ const Profile = () => {
       }
     );
 
-    console.log("response>>>>>>>>>>>>>>>>>>>>>>>>>>>>",response1)
-
-    if (response1?.data?.state === true) {
-      const signs: string[] = response1?.data?.data
-        ?.filter((item: any) => item.name === 'Sun' || item.name === 'Moon' || item.name === 'Ascendant')
-        .map((item: any) => item.sign) || []; // Ensure default empty array if data is undefined or null
-
-        console.log("Signs >>>>>>>>", signs)
-        setSunSign(signs[0])
-        setMoonSign(signs[1])
-        setRisingSign(signs[2])
-
+    if (response.status == 200) {
+      return response.data.data;
+    } else {
+      return null;
     }
-
-
   };
 
   // Format the birthdate for display (e.g., "February 19, 1989")
@@ -189,7 +248,7 @@ const Profile = () => {
   ).toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
-    day: "numeric"
+    day: "numeric",
   });
 
   return (
