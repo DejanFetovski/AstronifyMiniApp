@@ -102,7 +102,7 @@ const Profile = () => {
   const [risingSign, setRisingSign] = useState("");
   const [element, setElement] = useState("");
   const [luckyNo, setLuckyNo] = useState("");
-  const [luckyTime, setLuckyTime] = useState("");
+  const [chineseZod, setChineseZod] = useState("");
 
   const [geoData, setGeoData] = useState<GeoData | null>(null);
 
@@ -211,6 +211,14 @@ const Profile = () => {
       .catch((err) => console.log(err));
   }, [geoData]);
 
+  useEffect(() => {
+    fetchChineseZod()
+      .then((res) => {
+        setChineseZod(res.name)
+      })
+      .catch((err) => console.log(err));
+  }, [userInfo]);
+
   const editProfile = () => {
     navigate("/profileedit"); // Navigate to the profile page
   };
@@ -247,7 +255,7 @@ const Profile = () => {
   };
 
   const fetchPlanetData = async (geoData: GeoData) => {
-    console.log("------------fetchPlametData-----------------")
+    console.log("------------fetchPlametData-----------------");
 
     if (geoData == null) return;
 
@@ -268,7 +276,7 @@ const Profile = () => {
     };
 
     const token = localStorage.getItem("authorization");
-    console.log(`api/astrology/planets/tropical - Data : `, data)
+    console.log(`api/astrology/planets/tropical - Data : `, data);
     try {
       const response: any = await axios.post(
         `${API_BASE_URL}/api/astronology/planets/tropical`,
@@ -304,7 +312,7 @@ const Profile = () => {
 
     try {
       const token = localStorage.getItem("authorization");
-      console.log(`api/astrology/numero_table - Data : `, data)
+      console.log(`api/astrology/numero_table - Data : `, data);
 
       const response: any = await axios.post(
         `${API_BASE_URL}/api/astronology/numero_table`,
@@ -324,6 +332,40 @@ const Profile = () => {
       }
     } catch (error) {
       console.error("Error:", error);
+    }
+  };
+
+  const fetchChineseZod = async () => {
+    const birth = new Date(userInfo.setting.birth);
+
+    const data = {
+      day: birth.getDate(),
+      month: birth.getMonth() + 1,
+      year: birth.getFullYear()
+    };
+
+    const token = localStorage.getItem("authorization");
+    console.log(`api/astrology/chinese_zodiac - Data : `, data);
+    try {
+      const response: any = await axios.post(
+        `${API_BASE_URL}/api/astronology/chinese_zodiac`,
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json", // Ensure proper content type
+          },
+        }
+      );
+
+      if (response.status == 200) {
+        console.log("Planet Data >>>>>>>>>>>>>", response.data.data);
+        return response.data.data;
+      } else {
+        return null;
+      }
+    } catch (error) {
+      console.log("Planet Data Error>>>>>>>>>", error);
     }
   };
 
@@ -563,12 +605,12 @@ const Profile = () => {
                   </div>
                 </GradientBorder>
                 <GradientBorder className="" borderWidth={1}>
-                  <div className="flex flex-col px-6 py-1 justify-center items-center w-[110px] h-[54px]">
+                  <div className="flex flex-col px-3 py-1 justify-center items-center w-[110px] h-[54px]">
                     <span className="text-white text-[10px] leading-[18px] font-semibold">
-                      LUCKY TIME
+                      CHINESE ZOD
                     </span>
                     <span className="text-[14px] leading-[18px] text-[#03B1FB] font-bold">
-                      11:31 PM
+                      {chineseZod}
                     </span>
                   </div>
                 </GradientBorder>

@@ -178,4 +178,30 @@ router.post('/numero_table', verifyToken, async (req, res) => {
     }
 });
 
+router.post('/chinese_zodiac', verifyToken, async (req, res) => {
+    try {
+        const { chatId } = req.body.user
+
+        const api = "chinese_zodiac"
+        const data =
+        {
+            day: req.body.day,
+            month: req.body.month,
+            year: req.body.year
+        }
+
+        const planetData = await astronologyAPI(api, data)
+
+        if (planetData?.status == 200 && planetData?.data != null) {
+            res.status(200).json({
+                state: true,
+                data: planetData?.data,
+            })
+        }
+
+    } catch (error) {
+        res.status(500).end()
+    }
+});
+
 export default router
