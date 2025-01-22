@@ -8,8 +8,8 @@ dotenv.config()
 const router = express.Router()
 
 const url = `https://json.astrologyapi.com/v1`
-const userId = '636619';
-const apiKey = '0501987722bcfc291ab3988223d2a0b49028af65';
+const userId = '633754';
+const apiKey = '4a83d366b861f26551db7af1cb94325b934bd46b';
 
 const astronologyAPI = async (api: string, data: any): Promise<any> => {
     const auth = "Basic " + new Buffer(userId + ":" + apiKey).toString("base64");
@@ -113,5 +113,69 @@ router.post('/planets/tropical', verifyToken, async (req, res) => {
     }
 
 })
+
+router.post('/natal_chart_interpretation', verifyToken, async (req, res) => {
+    console.log(`Astronology  - get planets`)
+    try {
+        const { chatId } = req.body.user
+
+        const api = "natal_chart_interpretation"
+        console.log("==================Data: ", req.body)
+        const data =
+        {
+            day: req.body.day,
+            month: req.body.month,
+            year: req.body.year,
+            hour: req.body.hour,
+            min: req.body.min,
+            lat: req.body.lat,
+            lon: req.body.lon,
+            tzone: req.body.tzone
+        }
+
+        const planetData = await astronologyAPI(api, data)
+
+        if (planetData?.status == 200 && planetData?.data != null) {
+            console.log("Planet Data >>>>", planetData.data)
+            res.status(200).json({
+                state: true,
+                data: planetData?.data,
+            })
+        }
+
+    } catch (error) {
+        res.status(500).end()
+    }
+});
+
+router.post('/numero_table', verifyToken, async (req, res) => {
+    console.log(`Astronology  - get Lucky Number`)
+    try {
+        const { chatId } = req.body.user
+
+        const api = "numero_table"
+        console.log("==================Data: ", req.body)
+        const data =
+        {
+            day: req.body.day,
+            month: req.body.month,
+            year: req.body.year,
+            name: req.body.name
+        }
+
+        const planetData = await astronologyAPI(api, data)
+
+        if (planetData?.status == 200 && planetData?.data != null) {
+            console.log("Planet Data >>>>", planetData.data)
+            res.status(200).json({
+                state: true,
+                data: planetData?.data,
+            })
+        }
+
+    } catch (error) {
+        res.status(500).end()
+    }
+});
 
 export default router

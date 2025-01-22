@@ -39,12 +39,7 @@ const App: React.FC = () => {
   const [userInfo, setUserInfo] = useState(null);
 
   const getAuthenticatedUserInfo = async (telegramUserInfo: any) => {
-    console.log(
-      "main.tsx - UserID >>> ",
-      telegramUserInfo.id,
-      API_BASE_URL,
-      `${API_BASE_URL}/api/auth/getAuthentication`
-    );
+
     try {
       const chatId = telegramUserInfo.id;
       if (chatId == null || chatId == undefined) {
@@ -59,7 +54,6 @@ const App: React.FC = () => {
           telegramUserInfo: telegramUserInfo,
         }
       );
-      console.log("main.tsx - authenticated user info >>> ", data);
       if (data.token) {
         localStorage.setItem("authorization", data.token);
         setToken(data.token);
@@ -76,7 +70,6 @@ const App: React.FC = () => {
       const WebApp = (await import("@twa-dev/sdk")).default;
       WebApp.ready();
       initData = WebApp.initData;
-      console.log("main.tsx - initData >>> ", initData);
 
       const params = new URLSearchParams(initData);
       const user: string | null = params.get("user");
@@ -86,15 +79,12 @@ const App: React.FC = () => {
   };
 
   const getUserInfoHandler = async (token: any) => {
-    console.log("[main.tsx - getUserInfoHanlder]", token);
     // Get user info with token
     const res = await axios.get(`${API_BASE_URL}/api/user/info`, {
       headers: {
         Authorization: `bearer ${token}`,
       },
     });
-
-    console.log("[main.tsx - Userinfo]", res.data);
 
     // if (res.data.state == false || res.data?.isFirstLogin == true) {
     //   // window.location.href = "/";

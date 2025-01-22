@@ -116,7 +116,7 @@ const Profile = () => {
 
   useEffect(() => {
     // if(userInfo == null || userInfo.setting == null)
-    console.log("UserInfo has been updated >>>>>>>>>>>>", userInfo)
+    console.log("UserInfo has been updated >>>>>>>>>>>>", userInfo);
     const date = new Date(userInfo?.setting.birth);
 
     const year = date.getUTCFullYear(); // Get the year
@@ -129,7 +129,8 @@ const Profile = () => {
     setAvatar(userInfo?.avatar);
 
     const place = userInfo?.setting?.location.split(",")[0].trim();
-    console.log("place>>>>>>>>>>>>", place);
+
+    console.log(">>>>>>>>>>>>place>>>>>>>>>>>>", place);
 
     fetchGeoDetails(place)
       .then((geoDetails) => {
@@ -152,12 +153,16 @@ const Profile = () => {
 
   useEffect(() => {
     const place = userInfo?.setting?.location.split(",")[0].trim();
+    console.log(">>>>>>>>>>>>place>>>>>>>>>>>>", place);
+
     fetchPlanetData(geoData)
       .then((planetData) => {
-        const sunData = planetData.find((planet: PlanetData) => planet.name === "Sun");
-
-        const moonData = planetData.find((planet: PlanetData) => planet.name === "Moon");
-
+        const sunData = planetData.find(
+          (planet: PlanetData) => planet.name === "Sun"
+        );
+        const moonData = planetData.find(
+          (planet: PlanetData) => planet.name === "Moon"
+        );
         const risingData = planetData.find(
           (planet: PlanetData) => planet.name === "Ascendant"
         );
@@ -167,6 +172,43 @@ const Profile = () => {
         setRisingSign(risingData.sign);
       })
       .catch((err) => console.log(err));
+
+    // Get Element
+    // fetchElements(geoData)
+    //   .then((elements) => {})
+    //   .catch((err) => console.log(err));
+    if (
+      zodiac.toLowerCase() === "aries" ||
+      zodiac.toLowerCase() === "leo" ||
+      zodiac.toLowerCase() === "sagittarius"
+    ) {
+      setElement("Fire");
+    } else if (
+      zodiac.toLowerCase() === "taurus" ||
+      zodiac.toLowerCase() === "virgo" ||
+      zodiac.toLowerCase() === "capricorn"
+    ) {
+      setElement("Earth");
+    } else if (
+      zodiac.toLowerCase() === "gemini" ||
+      zodiac.toLowerCase() === "libra" ||
+      zodiac.toLowerCase() === "aquarius"
+    ) {
+      setElement("Air");
+    } else if (
+      zodiac.toLowerCase() === "cancer" ||
+      zodiac.toLowerCase() === "scorpio" ||
+      zodiac.toLowerCase() === "pisces"
+    ) {
+      setElement("Water");
+    }
+
+    // Get Lucky Number
+    fetchLucky()
+      .then((res) => {
+        setLuckyNo(res.destiny_number || 1);
+      })
+      .catch((err) => console.log(err));
   }, [geoData]);
 
   const editProfile = () => {
@@ -174,7 +216,7 @@ const Profile = () => {
   };
 
   const fetchGeoDetails = async (place: string) => {
-    console.log("[fetchGeoDetail] is called")
+    console.log("[fetchGeoDetail] is called");
     // lat, lon
     const data = {
       place: place,
@@ -182,7 +224,7 @@ const Profile = () => {
     };
 
     const token = localStorage.getItem("authorization");
-    console.log("[fetchGeoDetail - data]>>>>>>>>>", data)
+    console.log("[fetchGeoDetail - data]>>>>>>>>>", data);
 
     const response: any = await axios.post(
       `${API_BASE_URL}/api/astronology/get_details`,
@@ -199,18 +241,97 @@ const Profile = () => {
       console.log("GEO_DETAILS >>>>> ", response.data.data.geonames);
       return response.data.data.geonames;
     } else {
-      console.log("fetchGeoDetails failed" );
+      console.log("fetchGeoDetails failed");
       return null;
     }
   };
 
   const fetchPlanetData = async (geoData: GeoData) => {
-    // if(geoData == )
+    console.log("------------fetchPlametData-----------------")
+
+    if (geoData == null) return;
+
     const birth = new Date(userInfo.setting.birth);
     const birthTime = userInfo?.setting.birthTime;
     const [hour, min] = birthTime.split(":");
 
-    console.log("GeoData--------------------------", geoData);
+    console.log("GeoData: ", geoData);
+    const data = {
+      day: birth.getDate(),
+      month: birth.getMonth() + 1,
+      year: birth.getFullYear(),
+      hour: parseInt(hour),
+      min: parseInt(min),
+      lat: parseFloat(geoData.latitude),
+      lon: parseFloat(geoData.longitude),
+      tzone: 4,
+    };
+
+    const token = localStorage.getItem("authorization");
+    console.log(`api/astrology/planets/tropical - Data : `, data)
+    try {
+      const response: any = await axios.post(
+        `${API_BASE_URL}/api/astronology/planets/tropical`,
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json", // Ensure proper content type
+          },
+        }
+      );
+
+      if (response.status == 200) {
+        console.log("Planet Data >>>>>>>>>>>>>", response.data.data);
+        return response.data.data;
+      } else {
+        return null;
+      }
+    } catch (error) {
+      console.log("Planet Data Error>>>>>>>>>", error);
+    }
+  };
+
+  const fetchLucky = async () => {
+    const birth = new Date(userInfo.setting.birth);
+
+    const data = {
+      day: birth.getDate(),
+      month: birth.getMonth() + 1,
+      year: birth.getFullYear(),
+      name: userInfo?.setting.pfName,
+    };
+
+    try {
+      const token = localStorage.getItem("authorization");
+      console.log(`api/astrology/numero_table - Data : `, data)
+
+      const response: any = await axios.post(
+        `${API_BASE_URL}/api/astronology/numero_table`,
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json", // Ensure proper content type
+          },
+        }
+      );
+
+      if (response.status == 200) {
+        return response.data.data;
+      } else {
+        return null;
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  const fetchElements = async (geoData: GeoData) => {
+    const birth = new Date(userInfo.setting.birth);
+    const birthTime = userInfo?.setting.birthTime;
+    const [hour, min] = birthTime.split(":");
+
     const data = {
       day: birth.getDate(),
       month: birth.getMonth(),
@@ -225,7 +346,7 @@ const Profile = () => {
     const token = localStorage.getItem("authorization");
 
     const response: any = await axios.post(
-      `${API_BASE_URL}/api/astronology/planets/tropical`,
+      `${API_BASE_URL}/api/astronology/natal_chart_interpretation`,
       data,
       {
         headers: {
@@ -241,7 +362,6 @@ const Profile = () => {
       return null;
     }
   };
-
   // Format the birthdate for display (e.g., "February 19, 1989")
   const formattedBirthdate = new Date(
     userInfo.setting.birth
@@ -344,7 +464,7 @@ const Profile = () => {
                     </span>
                     <div className="flex gap-[4px] items-center">
                       <span className="text-white text-[10px] leading-[16px]">
-                        Air
+                        {element}
                       </span>
                       <svg
                         width="16"
@@ -397,7 +517,7 @@ const Profile = () => {
                       LUCKY NO.
                     </span>
                     <span className="text-[16px] leading-[27px] text-[#03B1FB] font-bold">
-                      7
+                      {luckyNo}
                     </span>
                   </div>
                 </GradientBorder>
