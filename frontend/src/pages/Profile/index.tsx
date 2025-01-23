@@ -103,8 +103,14 @@ const Profile = () => {
   const [element, setElement] = useState("");
   const [luckyNo, setLuckyNo] = useState("");
   const [chineseZod, setChineseZod] = useState("");
-
+  const [description, setDescription] = useState<string>("");
   const [geoData, setGeoData] = useState<GeoData | null>(null);
+  const [isExpanded, setIsExpanded] = useState(false);
+  const characterLimit = 100; // Set your character limit here
+
+  const toggleExpand = () => {
+    setIsExpanded(!isExpanded);
+  };
 
   const handleClickWallet = () => {
     navigate("/wallet");
@@ -214,11 +220,32 @@ const Profile = () => {
   useEffect(() => {
     fetchChineseZod()
       .then((res) => {
-        setChineseZod(res.name)
+        setChineseZod(res.name);
       })
       .catch((err) => console.log(err));
   }, [userInfo]);
 
+  useEffect(() => {
+    if (zodiac != "") {
+      fetchDescription()
+        .then((res) => {
+          let descriptions: string[] = [];
+          if (res.prediction != null) {
+            descriptions.push(res.prediction["personal_life"]);
+            descriptions.push(res.prediction["profession"]);
+            descriptions.push(res.prediction["health"]);
+            descriptions.push(res.prediction["emotions"]);
+            descriptions.push(res.prediction["travel"]);
+            descriptions.push(res.prediction["luck"]);
+          }
+
+          setDescription(
+            descriptions[Math.floor(Math.random() * descriptions.length)]
+          );
+        })
+        .catch((err) => console.log(err));
+    }
+  }, [zodiac]);
   const editProfile = () => {
     navigate("/profileedit"); // Navigate to the profile page
   };
@@ -369,6 +396,35 @@ const Profile = () => {
     }
   };
 
+  const fetchDescription = async () => {
+    const data = {
+      zodiac: zodiac,
+    };
+    const token = localStorage.getItem("authorization");
+    console.log(`api/sun_sign_prediction/daily - Data : `, data);
+    try {
+      const response: any = await axios.post(
+        `${API_BASE_URL}/api/astronology/sun_sign_prediction/daily`,
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json", // Ensure proper content type
+          },
+        }
+      );
+
+      if (response.status == 200) {
+        console.log("sun_sign_prediction >>>>>>>>>>>>>", response.data.data);
+        return response.data.data;
+      } else {
+        return null;
+      }
+    } catch (error) {
+      console.log("sun_sign_prediction Error>>>>>>>>>", error);
+    }
+  };
+
   const fetchElements = async (geoData: GeoData) => {
     const birth = new Date(userInfo.setting.birth);
     const birthTime = userInfo?.setting.birthTime;
@@ -459,15 +515,18 @@ const Profile = () => {
         </div>
 
         <div>
-          <span className="text-white text-[14px] leading-[24px]">
-            Emotions: Emotionally, The day may bring a heightened awareness of
-            your needs and desires. The Moon’s sextile to Jupiter provides a
-            positive boost to your emotional resilience, helping you to
-            articulate...
+          <span className="text-white text-[14px] leading-[24px] block max-h-[72px] overflow-hidden">
+            {isExpanded ? description : description.slice(0, characterLimit)}
+            {description.length > characterLimit && !isExpanded && "..."}
           </span>
-          <span className="text-[13px] leading-[17.7px] underline text-[#03B1FB] pl-2">
-            Show More
-          </span>
+          {description.length > characterLimit && (
+            <span
+              className="text-[13px] leading-[17.7px] underline text-[#03B1FB] pl-2 cursor-pointer"
+              onClick={toggleExpand}
+            >
+              {isExpanded ? "Show Less" : "Show More"}
+            </span>
+          )}
         </div>
 
         <div className="w-full flex justify-center">
