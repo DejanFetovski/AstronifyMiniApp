@@ -1,11 +1,11 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import ActionButton from "../../components/ActionButton";
 import { motion } from "framer-motion";
 import { AppContext } from "../../main";
 
 const Splash = () => {
-  const { userInfo } = useContext(AppContext);
+  const { userInfo } = useContext(AppContext) ?? {};
 
   const navigate = useNavigate();
   const handleNext = () => {

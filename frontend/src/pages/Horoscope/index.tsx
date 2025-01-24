@@ -122,6 +122,9 @@ const Horoscope = () => {
               state: { type: type, question: startQuestion },
             });
           }}
+          onKeyDown = {() => {
+              //
+          }}
         ></AskInput>
       </div>
       <div className="flex justify-center">

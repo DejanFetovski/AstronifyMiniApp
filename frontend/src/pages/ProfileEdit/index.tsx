@@ -78,8 +78,10 @@ const ProfileEdit = () => {
         userInfo?.setting?.location !== "" ? userInfo?.setting?.location : ""
       );
       setTimeZoneId(
-        userInfo?.setting?.timeZoneId !== "" ? userInfo?.setting?.timeZoneId : ""
-      )
+        userInfo?.setting?.timeZoneId !== ""
+          ? userInfo?.setting?.timeZoneId
+          : ""
+      );
       setGenderSelection(userInfo?.setting?.sex !== "male" ? 0 : 1);
     }
     // Saving
@@ -181,14 +183,22 @@ const ProfileEdit = () => {
         </div>
 
         {/* Location */}
-        <CountryCitySelector
-          timeZoneId={timeZoneId}
-          setTimeZoneId={setTimeZoneId}
-          country={country}
-          setCountry={setCountry}
-          location={location}
-          setLocation={setLocation}
-        />
+        <div className="flex flex-col gap-1 w-full">
+          <label
+            className="text-[17px] leading-[22px] tracking-[-0.4px] text-[#FFFFFFBF]"
+            htmlFor="datepicker"
+          >
+            Location of birth
+          </label>
+          <CountryCitySelector
+            timeZoneId={timeZoneId}
+            setTimeZoneId={setTimeZoneId}
+            country={country}
+            setCountry={setCountry}
+            location={location}
+            setLocation={setLocation}
+          />
+        </div>
 
         {/* Time */}
         <div className="flex flex-col gap-1 w-full">

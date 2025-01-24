@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
 import axios from "axios";
@@ -6,7 +6,7 @@ import axios from "axios";
 import BottomBar from "../../components/BottomBar";
 import CopyIcon from "../../svgs/CopyIcon";
 import SearchIcon from "../../svgs/SearchIcon";
-import { AppContext } from "../../main";
+
 
 const INVITE_BOT_URL = import.meta.env.VITE_BOT_URL;
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;

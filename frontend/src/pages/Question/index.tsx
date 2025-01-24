@@ -16,7 +16,7 @@ const Question = () => {
   const handleClick = () => {
       switch (step) {
         case 0:
-          setUserInfo((prev) => ({
+          setUserInfo((prev : any) => ({
             ...prev,
             setting: {
               ...prev.setting,
@@ -26,7 +26,7 @@ const Question = () => {
           console.log("Question-index.tsx - Option1 selected", userInfo);
           break;
         case 1:
-          setUserInfo((prev) => ({
+          setUserInfo((prev: any) => ({
             ...prev,
             setting: {
               ...prev.setting,
@@ -36,7 +36,7 @@ const Question = () => {
           console.log("Question-index.tsx - Option2 selected", userInfo);
           break;
         case 2:
-          setUserInfo((prev) => ({
+          setUserInfo((prev: any) => ({
             ...prev,
             setting: {
               ...prev.setting,

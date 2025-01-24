@@ -132,7 +132,7 @@ const Welcome = () => {
         <>
           <img src="assets/images/stars.png" className="scale-125"></img>
           <div className="text-[36px] leading-[38px] tracking-[0.4px] font-bold text-[#EAEAEA] flex flex-col gap-[30px]">
-            <span>Starts cannot talk without details.....</span>
+            <span>Stars cannot talk without details.....</span>
             <span>Share yours!</span>
           </div>
         </>
