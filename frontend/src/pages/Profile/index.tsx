@@ -620,7 +620,7 @@ const Profile = () => {
                     <span className="text-white text-[10px] leading-[18px] font-semibold">
                       LUCKY NO.
                     </span>
-                    <span className="text-[16px] leading-[27px] text-[#03B1FB] font-bold">
+                    <span className="text-[16px] leading-[27px] text-[#03B1FB] font-semibold">
                       {luckyNo}
                     </span>
                   </div>
@@ -652,7 +652,7 @@ const Profile = () => {
                     <span className="text-white text-[10px] leading-[18px] font-semibold">
                       CHINESE ZOD
                     </span>
-                    <span className="text-[14px] leading-[18px] text-[#03B1FB] font-bold">
+                    <span className="text-[14px] leading-[18px] text-[#03B1FB] font-semibold">
                       {chineseZod}
                     </span>
                   </div>

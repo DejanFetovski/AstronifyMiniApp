@@ -74,7 +74,7 @@ const BottomBar = () => {
               />
             </svg>
             <span className={`text-white text-[11px] leading-[15px]`}>
-              AI Agent
+              Oracle
             </span>
           </button>
           <button
