@@ -7,27 +7,43 @@ export interface UserInfoDocument extends Document {
   logo: string
   allowWithPm?: boolean
 }
-// Define the schema corresponding to the document interface
-// const userMetaInfoSchema = new Schema<UserInfoDocument>({
-//   firstName: {
-//     type: String,
-//   },
-//   lastName: {
-//     type: String,
-//   },
-//   userName: {
-//     type: String,
-//   },
-//   logo: {
-//     type: String,
-//   },
-//   allowWithPm: {
-//     type: Boolean,
-//     default: true,
-//   },
-// })
-// -----------------------------------------------------------------------
- 
+
+//Zodiac Data
+interface ZodiacDocument extends Document {
+  sunSign: string
+  moonSign: string
+  risingSign: string
+  element: string 
+  luckyNo: number
+  chineseZodiac: string
+}
+
+const ZodiaSchema = new Schema<ZodiacDocument>({
+  sunSign: {
+    type: String,
+    default: null,
+  },
+  moonSign: {
+    type: String,
+    default: null,
+  },
+  risingSign: {
+    type: String,
+    default: null,
+  },
+  element: {
+    type: String,
+    default: null,
+  },
+  luckyNo: {
+    type: Number,
+    default: 0,
+  },
+  chineseZodiac: {
+    type: String,
+    default: null,
+  }
+})
 
 // User Setting------------------------------------------------------
 interface SettingDocument extends Document {
@@ -92,6 +108,7 @@ export interface UserDocument extends Document {
   chatId: string
   avatar: string
   setting: SettingDocument
+  zodiac: ZodiacDocument
   point: number
   isFirstLogin: Boolean
 }
@@ -107,6 +124,7 @@ const userSchema = new Schema<UserDocument>({
     default: "default.png",
   },
   setting: settingSchema,
+  zodiac: ZodiaSchema,
   point: {
     type: Number,
     default: 0,

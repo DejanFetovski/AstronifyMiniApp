@@ -2,8 +2,18 @@ import express from 'express'
 import dotenv from 'dotenv'
 import axios from 'axios'
 import { verifyToken } from '../middleware'
+import { UserModel } from '../models/user.model'
 
 dotenv.config()
+interface PlanetData {
+    name: string;
+    fullDegree: number;
+    normDegree: number;
+    speed: number;
+    isRetro: string;
+    sign: string;
+    house: number;
+}
 
 const router = express.Router()
 
@@ -28,6 +38,30 @@ const astronologyAPI = async (api: string, data: any): Promise<any> => {
     }
 }
 
+const updateZodiac = async (chatId: string, fields: string[], values: any[]): Promise<any> => {
+
+    if (fields.length !== values.length) {
+        throw new Error('Fields and values arrays must have the same length');
+    }
+    const update: { [key: string]: any } = {};
+    fields.forEach((field, index) => {
+        update[`zodiac.${field}`] = values[index];
+    });
+
+    try {
+        const options = { new: true }; // Return the updated document
+        const updatedUser = await UserModel.findOneAndUpdate({ chatId }, { $set: update }, options);
+
+        if (updatedUser) {
+            console.log('User updated successfully:', updatedUser);
+        } else {
+            console.log('User not found');
+        }
+    } catch (error) {
+        console.error('Error updating user:', error);
+    }
+
+}
 const astronologyAPIBeta = async (api: string, data: any): Promise<any> => {
     const auth = "Basic " + new Buffer('636621' + ":" + '3a63ff9cba04b896d42914d96912b54d1e26ab9f').toString("base64");
 
@@ -46,7 +80,7 @@ const astronologyAPIBeta = async (api: string, data: any): Promise<any> => {
 }
 router.post('/planets', verifyToken, async (req, res) => {
 
-    console.log(`Astronology  - get info`)
+    console.log(`Astronology  - planets`)
     try {
         const { chatId } = req.body.user
 
@@ -55,6 +89,7 @@ router.post('/planets', verifyToken, async (req, res) => {
 
         const astronologyData = await astronologyAPI(api, data)
         if (astronologyData?.status == 200 && astronologyData?.data != null) {
+
             res.status(200).json({
                 state: true,
                 data: astronologyData?.data,
@@ -93,7 +128,7 @@ router.post('/get_details', verifyToken, async (req, res) => {
 })
 
 router.post('/planets/tropical', verifyToken, async (req, res) => {
-    console.log(`Astronology  - get planets`)
+    console.log(`Astronology  - get planets tropical`)
     try {
         const { chatId } = req.body.user
 
@@ -113,6 +148,22 @@ router.post('/planets/tropical', verifyToken, async (req, res) => {
         const planetData = await astronologyAPI(api, data)
 
         if (planetData?.status == 200 && planetData?.data != null) {
+
+            console.log("Planet Data >>>>", planetData.data)
+
+            if (planetData.data) {
+                const sunData = planetData.find(
+                    (planet: PlanetData) => planet.name === "Sun"
+                );
+                const moonData = planetData.find(
+                    (planet: PlanetData) => planet.name === "Moon"
+                );
+                const risingData = planetData.find(
+                    (planet: PlanetData) => planet.name === "Ascendant"
+                );
+
+                updateZodiac(chatId, ['sunSign', 'moonSign', 'risingSign'], [sunData.name, moonData.name, risingData.name])
+            }
             res.status(200).json({
                 state: true,
                 data: planetData?.data,
@@ -126,7 +177,7 @@ router.post('/planets/tropical', verifyToken, async (req, res) => {
 })
 
 router.post('/natal_chart_interpretation', verifyToken, async (req, res) => {
-    console.log(`Astronology  - get planets`)
+    console.log(`Astronology  - get natal_chart_interpretation`)
     try {
         const { chatId } = req.body.user
 
@@ -146,6 +197,9 @@ router.post('/natal_chart_interpretation', verifyToken, async (req, res) => {
         const planetData = await astronologyAPI(api, data)
 
         if (planetData?.status == 200 && planetData?.data != null) {
+
+            console.log("planetData >>>>", planetData.data)
+
             res.status(200).json({
                 state: true,
                 data: planetData?.data,
@@ -171,12 +225,18 @@ router.post('/numero_table', verifyToken, async (req, res) => {
             name: req.body.name
         }
 
-        const planetData = await astronologyAPI(api, data)
+        const luckyData = await astronologyAPI(api, data)
 
-        if (planetData?.status == 200 && planetData?.data != null) {
+        if (luckyData?.status == 200 && luckyData.data != null) {
+            // console.log("LuckyNo >>>>", luckyData.data)
+
+            if (luckyData.data && luckyData.data.destiny_number != null) {
+                updateZodiac(chatId, ['luckyNo'], [luckyData.data.destiny_number])
+            }
+
             res.status(200).json({
                 state: true,
-                data: planetData?.data,
+                data: luckyData?.data,
             })
         }
 
@@ -197,12 +257,19 @@ router.post('/chinese_zodiac', verifyToken, async (req, res) => {
             year: req.body.year
         }
 
-        const planetData = await astronologyAPI(api, data)
+        const chineseZodiac = await astronologyAPI(api, data)
 
-        if (planetData?.status == 200 && planetData?.data != null) {
+        if (chineseZodiac?.status == 200 && chineseZodiac?.data != null) {
+
+            // console.log("chinese_zodiac/daily >>>>", chineseZodiac.data)
+
+            if (chineseZodiac.data && chineseZodiac.data.name != null) {
+                updateZodiac(chatId, ['chineseZodiac'], [chineseZodiac.data.name])
+            }
+
             res.status(200).json({
                 state: true,
-                data: planetData?.data,
+                data: chineseZodiac?.data,
             })
         }
 
@@ -222,7 +289,7 @@ router.post('/sun_sign_prediction/daily', verifyToken, async (req, res) => {
         const planetData = await astronologyAPIBeta(api, {})
 
         if (planetData?.status == 200 && planetData?.data != null) {
-            console.log("sun_sign_prediction/daily >>>>", planetData.data)
+            // console.log("sun_sign_prediction/daily >>>>", planetData.data)
 
             res.status(200).json({
                 state: true,
@@ -234,4 +301,6 @@ router.post('/sun_sign_prediction/daily', verifyToken, async (req, res) => {
         res.status(500).end()
     }
 });
+
+
 export default router
