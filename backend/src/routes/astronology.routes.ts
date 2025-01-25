@@ -18,8 +18,8 @@ interface PlanetData {
 const router = express.Router()
 
 const url = `https://json.astrologyapi.com/v1`
-const userId = '633754';
-const apiKey = '4a83d366b861f26551db7af1cb94325b934bd46b';
+const userId = process.env.ASTROLOGY_USER_ID;
+const apiKey = process.env.ASTROLOGY_API_KEY;
 
 const astronologyAPI = async (api: string, data: any): Promise<any> => {
     const auth = "Basic " + new Buffer(userId + ":" + apiKey).toString("base64");
@@ -53,7 +53,7 @@ const updateZodiac = async (chatId: string, fields: string[], values: any[]): Pr
         const updatedUser = await UserModel.findOneAndUpdate({ chatId }, { $set: update }, options);
 
         if (updatedUser) {
-            console.log('User updated successfully:', updatedUser);
+            // console.log('User updated successfully:', updatedUser);
         } else {
             console.log('User not found');
         }
@@ -79,7 +79,6 @@ const astronologyAPIBeta = async (api: string, data: any): Promise<any> => {
     }
 }
 router.post('/planets', verifyToken, async (req, res) => {
-
     console.log(`Astronology  - planets`)
     try {
         const { chatId } = req.body.user
@@ -102,7 +101,7 @@ router.post('/planets', verifyToken, async (req, res) => {
 })
 
 router.post('/get_details', verifyToken, async (req, res) => {
-    console.log(`/get_details`)
+    console.log(`Astronology  - get details`)
     try {
         const { chatId } = req.body.user
 
@@ -149,20 +148,20 @@ router.post('/planets/tropical', verifyToken, async (req, res) => {
 
         if (planetData?.status == 200 && planetData?.data != null) {
 
-            console.log("Planet Data >>>>", planetData.data)
+            // console.log(">>>> Tropical Data >>>>", planetData.data)
 
-            if (planetData.data) {
-                const sunData = planetData.find(
+            if (planetData.data != null) {
+                const sunData = planetData.data.find(
                     (planet: PlanetData) => planet.name === "Sun"
                 );
-                const moonData = planetData.find(
+                const moonData = planetData.data.find(
                     (planet: PlanetData) => planet.name === "Moon"
                 );
-                const risingData = planetData.find(
+                const risingData = planetData.data.find(
                     (planet: PlanetData) => planet.name === "Ascendant"
                 );
 
-                updateZodiac(chatId, ['sunSign', 'moonSign', 'risingSign'], [sunData.name, moonData.name, risingData.name])
+                updateZodiac(chatId, ['sunSign', 'moonSign', 'risingSign'], [sunData.sign, moonData.sign, risingData.sign])
             }
             res.status(200).json({
                 state: true,
@@ -197,9 +196,6 @@ router.post('/natal_chart_interpretation', verifyToken, async (req, res) => {
         const planetData = await astronologyAPI(api, data)
 
         if (planetData?.status == 200 && planetData?.data != null) {
-
-            console.log("planetData >>>>", planetData.data)
-
             res.status(200).json({
                 state: true,
                 data: planetData?.data,
@@ -228,8 +224,6 @@ router.post('/numero_table', verifyToken, async (req, res) => {
         const luckyData = await astronologyAPI(api, data)
 
         if (luckyData?.status == 200 && luckyData.data != null) {
-            // console.log("LuckyNo >>>>", luckyData.data)
-
             if (luckyData.data && luckyData.data.destiny_number != null) {
                 updateZodiac(chatId, ['luckyNo'], [luckyData.data.destiny_number])
             }
@@ -246,6 +240,7 @@ router.post('/numero_table', verifyToken, async (req, res) => {
 });
 
 router.post('/chinese_zodiac', verifyToken, async (req, res) => {
+    console.log(`Astronology  - get chinese_zodiac`)
     try {
         const { chatId } = req.body.user
 
@@ -260,9 +255,6 @@ router.post('/chinese_zodiac', verifyToken, async (req, res) => {
         const chineseZodiac = await astronologyAPI(api, data)
 
         if (chineseZodiac?.status == 200 && chineseZodiac?.data != null) {
-
-            // console.log("chinese_zodiac/daily >>>>", chineseZodiac.data)
-
             if (chineseZodiac.data && chineseZodiac.data.name != null) {
                 updateZodiac(chatId, ['chineseZodiac'], [chineseZodiac.data.name])
             }
@@ -278,19 +270,17 @@ router.post('/chinese_zodiac', verifyToken, async (req, res) => {
     }
 });
 
-
 router.post('/sun_sign_prediction/daily', verifyToken, async (req, res) => {
+    console.log(`Astronology  - get sun_sign_prediction/daily`)
+
     try {
         const { chatId } = req.body.user
 
         const zodiac = req.body.zodiac
         const api = `sun_sign_prediction/daily/${zodiac.toLowerCase()}`
-        console.log("sun_sign_prediction - API >>>>", api)
         const planetData = await astronologyAPIBeta(api, {})
 
         if (planetData?.status == 200 && planetData?.data != null) {
-            // console.log("sun_sign_prediction/daily >>>>", planetData.data)
-
             res.status(200).json({
                 state: true,
                 data: planetData?.data,
@@ -301,6 +291,5 @@ router.post('/sun_sign_prediction/daily', verifyToken, async (req, res) => {
         res.status(500).end()
     }
 });
-
 
 export default router

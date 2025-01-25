@@ -3,9 +3,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 dotenv.config();
 import axios from 'axios';
-import session from 'express-session';
 import { verifyToken } from '../middleware';
-import { ChatSessionModel } from '../models/chatsession.model';
 import { UserModel } from '../models/user.model';
 
 const router = express.Router();
@@ -26,25 +24,57 @@ router.post('/chat', verifyToken, async (req, res) => {
     console.log("Chat Gpt Response................................")
     try {
         const { chatId } = req.body.user;
-        const { prompt, categoryId } = req.body;
+        const { prompt } = req.body;
 
-        const userZodiac = await UserModel.findOne({ chatId });
-        console.log("userZodiac >>>>>>", userZodiac)
+        const user = await UserModel.findOne({ chatId });
 
-
-        let promptMessages: any[] = [];
-
+        let promptMessages: any[] = []
         promptMessages.push({ role: "system", content: systemMessage })
         promptMessages.push({ role: "user", content: prompt })
 
+        if (user != null && user.zodiac != null) {
+            if (user.zodiac.sunSign) {
+                promptMessages.push({ role: "system", content: `My Sun Sign is ${user.zodiac.sunSign}` })
+            }
+            if (user.zodiac.moonSign) {
+                promptMessages.push({ role: "system", content: `My Moon Sign is ${user.zodiac.moonSign}` })
+            }
+            if (user.zodiac.risingSign) {
+                promptMessages.push({ role: "system", content: `My Rising Sign is ${user.zodiac.risingSign}` })
+            }
+            if (user.zodiac.element) {
+                promptMessages.push({ role: "system", content: `My Element is ${user.zodiac.element}` })
+            }
+            if (user.zodiac.luckyNo) {
+                promptMessages.push({ role: "system", content: `My Lucky Number is ${user.zodiac.luckyNo}` })
+            }
+            if (user.zodiac.chineseZodiac) {
+                promptMessages.push({ role: "system", content: `My Chinese Zodiac is ${user.zodiac.chineseZodiac}` })
+            }
+            if (user.setting.birth) {
+                const date = new Date(user.setting.birth);
+                const year = date.getFullYear();
+                const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Months are zero-based
+                const day = date.getDate().toString().padStart(2, '0');
+
+                const formattedDate = `${year}-${month}-${day}`;
+                promptMessages.push({ role: "system", content: `My BirthDay is ${formattedDate}` })
+            }
+            if (user.setting.birthTime) {
+                const [hour, minute] = user.setting.birthTime.split(':');
+                promptMessages.push({ role: "system", content: `My BirthTime is ${hour}:${minute}` })
+            }
+
+        }
+
         const response = await axios.post(apiUrl, {
-            model: 'gpt-4-mini',
+            model: 'gpt-4',
             messages: promptMessages,
-            temperature: 1.0,
             max_tokens: 2048,
+            temperature: 1.0,
             top_p: 1.0,
             frequency_penalty: 1.0,
-            presence_penalty: 0.65,
+            presence_penalty: 0.65
         }, {
             headers: {
                 'Authorization': `Bearer ${apiKey}`,
