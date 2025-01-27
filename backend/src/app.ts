@@ -12,14 +12,12 @@ import routeGPT from './routes/chatgpt.route'
 // import routeTask from './routes/task.routes'
 // import routeGame from './routes/game.routes'
 
-// import {appInit} from './core/tapgame'
+import { appInit } from './core/tapgame'
 import { startWebSocketServer } from './socket'
 
 // import https from "https";
 import http from "http";
 import { Socket } from 'socket.io'
-
-import { verifyToken } from './middleware/index'; // Adjust the import path as needed
 
 export const run = async (bot: any): Promise<void> => {
   const app: Express = express()
@@ -43,11 +41,6 @@ export const run = async (bot: any): Promise<void> => {
   app.use('/api/user', routeUser)
   app.use('/api/astronology', routerAstronology)
   app.use('/api/chatgpt', routeGPT)
-  
-  // app.use('*', (req, res) => {
-  //   res.json("API is wokring")
-  //   console.log("API is working...")
-  // })
 
   const port = process.env.PORT
 
@@ -71,6 +64,5 @@ export const run = async (bot: any): Promise<void> => {
     async (userId: string) => { }
 
   // Schedule the task to run every day at 00:00 UTC (midnight)
-  // appInit();
-
+  appInit();
 }

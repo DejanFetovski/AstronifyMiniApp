@@ -1,17 +1,50 @@
 require('dotenv').config()
 import { UserModel } from '../models/user.model'
 import { ReferralModel } from '../models/referral.model';
-
-export let scoreTempValue: { [key: string]: number } = {};
-export let spinWheelInfo: { [key: string]: { count: number, timestamp: number } } = {};
-export let userInfoList: { [key: string]: any } = {};
-export let gameItemList: any[] = [];
-export let gameLevels: any[] = [];
-export let gameTasks: any[] = [];
-export let autoEarningUsers: { chatId: string, time: number, online: boolean, offlineTimestamp: number, scoreOffline: number }[] = [];
+import { TaskModel } from '../models/task.model';
 
 export const appInit = async () => {
+  console.log("Checking necessary database...");
 
+  const tasks = await TaskModel.find({});
+
+  if (tasks == null || tasks.length == 0) {
+    const data = [
+      {
+        title: "Daily login bonus",
+        points: 500,
+      },
+      {
+        title: "Engage with AI Agent - 2 Prompts",
+        points: 1200,
+      },
+      {
+        title: "Get your daily horoscope reading",
+        points: 750,
+      },
+      {
+        title: "Invite 1 friend",
+        points: 1200,
+      },
+    ];
+
+    try {
+      // Generate incremental id manually (if needed)
+      const existingCount = await TaskModel.countDocuments();
+
+      const tasksWithIds = data.map((task, index) => ({
+        id: existingCount + index + 1, // Auto-increment id
+        ...task,
+      }));
+
+      // Insert all tasks in one go
+      await TaskModel.insertMany(tasksWithIds);
+
+      console.log("Tasks saved successfully!");
+    } catch (error) {
+      console.error("Error saving tasks:", error);
+    }
+  }
 }
 
 export async function findUser(chatId: string): Promise<any> {
@@ -20,6 +53,13 @@ export async function findUser(chatId: string): Promise<any> {
 }
 
 export async function createUser(userInfo: any, avatar: string): Promise<any> {
+  const taskModel: any = await TaskModel.find({});
+
+  const tasks = taskModel.map((task : any)=> ({
+    taskId: task.id,
+    isAccomplish: false
+  }));
+
   const userData: any = {
     chatId: userInfo?.id, // Example chatId
     avatar: avatar,
@@ -31,6 +71,7 @@ export async function createUser(userInfo: any, avatar: string): Promise<any> {
       birth: null,
       sex: 'male',
     },
+    tasks: tasks,
     point: 0,
     isFirstLogin: true,
   };

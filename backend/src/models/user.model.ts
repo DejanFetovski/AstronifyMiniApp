@@ -8,6 +8,23 @@ export interface UserInfoDocument extends Document {
   allowWithPm?: boolean
 }
 
+
+interface UserTaskDocument extends Document {
+  taskId: number,
+  isAccomplish: boolean
+}
+
+const UserTaskSchema = new Schema<UserTaskDocument>({
+  taskId: {
+    type: Number,
+    required: true
+  },
+  isAccomplish: {
+    type: Boolean,
+    default: false,
+  }
+})
+
 //Zodiac Data
 interface ZodiacDocument extends Document {
   sunSign: string
@@ -109,6 +126,7 @@ export interface UserDocument extends Document {
   avatar: string
   setting: SettingDocument
   zodiac: ZodiacDocument
+  tasks: [UserTaskDocument]
   point: number
   isFirstLogin: Boolean
 }
@@ -125,6 +143,7 @@ const userSchema = new Schema<UserDocument>({
   },
   setting: settingSchema,
   zodiac: ZodiaSchema,
+  tasks: [UserTaskSchema],
   point: {
     type: Number,
     default: 0,

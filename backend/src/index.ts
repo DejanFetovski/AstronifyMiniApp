@@ -4,16 +4,12 @@ dotenv.config();
 import * as app from "./app";
 import * as bot from "./bot";
 
-bot.init();
-bot.sessionInit();
+const start = async () => {
+    bot.init();
+    
+    await bot.sessionInit();
+    app.run(bot);
+}
 
-// process.on("uncaughtException", async (error) => {
-//   await bot.bot.stopPolling();
-//   bot.init();
-// });
-// process.on("SIGSEGV", async (error) => {
-//   await bot.bot.stopPolling();
-//   bot.init();
-// });
+start();
 
-app.run(bot);
