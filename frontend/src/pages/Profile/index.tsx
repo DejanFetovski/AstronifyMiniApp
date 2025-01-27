@@ -559,7 +559,7 @@ const Profile = () => {
                       SUN SIGN
                     </span>
                     <div className="flex gap-[4px] items-center">
-                      <span className="text-white text-[10px] leading-[16px]">
+                      <span className="text-white text-[11px] leading-[16px]">
                         {sunSign || " "}
                       </span>
                       {sunSign && (
@@ -579,7 +579,7 @@ const Profile = () => {
                       ELEMENT
                     </span>
                     <div className="flex gap-[4px] items-center">
-                      <span className="text-white text-[10px] leading-[16px]">
+                      <span className="text-white text-[11px] leading-[16px]">
                         {element}
                       </span>
                       {element && (
@@ -601,7 +601,7 @@ const Profile = () => {
                       MOON SIGN
                     </span>
                     <div className="flex gap-[4px] items-center">
-                      <span className="text-white text-[10px] leading-[16px]">
+                      <span className="text-white text-[11px] leading-[16px]">
                         {moonSign}
                       </span>
                       {moonSign && (
@@ -620,7 +620,7 @@ const Profile = () => {
                     <span className="text-white text-[10px] leading-[18px] font-semibold">
                       LUCKY NO.
                     </span>
-                    <span className="text-[16px] leading-[27px] text-[#03B1FB] font-semibold">
+                    <span className="text-[14px] leading-[27px] text-[#03B1FB]">
                       {luckyNo}
                     </span>
                   </div>
@@ -633,7 +633,7 @@ const Profile = () => {
                       RISING SIGN
                     </span>
                     <div className="flex gap-[4px] items-center">
-                      <span className="text-white text-[10px] leading-[16px]">
+                      <span className="text-white text-[11px] leading-[16px]">
                         {risingSign}
                       </span>
                       {risingSign && (
@@ -652,7 +652,7 @@ const Profile = () => {
                     <span className="text-white text-[10px] leading-[18px] font-semibold">
                       CHINESE ZOD
                     </span>
-                    <span className="text-[14px] leading-[18px] text-[#03B1FB] font-semibold">
+                    <span className="text-[14px] leading-[18px] text-[#03B1FB]">
                       {chineseZod}
                     </span>
                   </div>
