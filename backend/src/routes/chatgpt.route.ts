@@ -48,12 +48,12 @@ router.post('/chat', verifyToken, async (req, res) => {
             if (user.zodiac.sunSign) {
                 promptMessages.push({ role: "system", content: `My Sun Sign is ${user.zodiac.sunSign}` })
             }
-            if (user.zodiac.moonSign) {
-                promptMessages.push({ role: "system", content: `My Moon Sign is ${user.zodiac.moonSign}` })
-            }
-            if (user.zodiac.risingSign) {
-                promptMessages.push({ role: "system", content: `My Rising Sign is ${user.zodiac.risingSign}` })
-            }
+            // if (user.zodiac.moonSign) {
+                // promptMessages.push({ role: "system", content: `My Moon Sign is ${user.zodiac.moonSign}` })
+            // }
+            // if (user.zodiac.risingSign) {
+                // promptMessages.push({ role: "system", content: `My Rising Sign is ${user.zodiac.risingSign}` })
+            // }
             if (user.zodiac.element) {
                 promptMessages.push({ role: "system", content: `My Element is ${user.zodiac.element}` })
             }

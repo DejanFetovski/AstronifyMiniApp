@@ -122,14 +122,14 @@ const Profile = () => {
   const [element, setElement] = useState("");
   const [luckyNo, setLuckyNo] = useState("");
   const [chineseZod, setChineseZod] = useState("");
-  const [description, setDescription] = useState<string>("");
+  // const [description, setDescription] = useState<string>("");
   const [geoData, setGeoData] = useState<GeoData | null>(null);
-  const [isExpanded, setIsExpanded] = useState(false);
-  const characterLimit = 100; // Set your character limit here
+  // const [isExpanded, setIsExpanded] = useState(false);
+  // const characterLimit = 100; // Set your character limit here
 
-  const toggleExpand = () => {
-    setIsExpanded(!isExpanded);
-  };
+  // const toggleExpand = () => {
+  //   setIsExpanded(!isExpanded);
+  // };
 
   // const handleClickWallet = () => {
   //   navigate("/wallet");
@@ -140,18 +140,22 @@ const Profile = () => {
   };
 
   useEffect(() => {
-    // if(userInfo == null || userInfo.setting == null)
     console.log("UserInfo has been updated >>>>>>>>>>>>", userInfo);
     const date = new Date(userInfo?.setting.birth);
 
-    // const year = date.getUTCFullYear(); // Get the year
     const month = date.getUTCMonth() + 1; // Get the month (0-based, so add 1)
     const day = date.getUTCDate(); // Get the day of the month
 
     const zodiac = getZodiacSign(day, month);
     setLogo(`assets/astronify/${zodiac.toLowerCase()}.png`);
     setZodiac(zodiac);
-    setAvatar(userInfo?.avatar);
+
+    if (userInfo?.avatar == "default.png" || userInfo?.avatar == "") {
+      setAvatar(userInfo.avatar);
+    } else {
+      const defaultAvatar = userInfo.setting.sex === 'male' ? "assets/images/avatar_man.png" : "assets/images/avatar_woman.png";
+      setAvatar(defaultAvatar);
+    }
 
     const place = userInfo?.setting?.location.split(",")[0].trim();
 
@@ -166,7 +170,7 @@ const Profile = () => {
           (geoDetail: any) =>
             geoDetail.place_name === place &&
             geoDetail.timezone_id.toLowerCase() ==
-              userInfo.setting.timeZoneId.toLowerCase()
+            userInfo.setting.timeZoneId.toLowerCase()
         );
 
         console.log("================matching Geo data", geoData[0]);
@@ -198,10 +202,7 @@ const Profile = () => {
       })
       .catch((err) => console.log(err));
 
-    // Get Element
-    // fetchElements(geoData)
-    //   .then((elements) => {})
-    //   .catch((err) => console.log(err));
+    // Fetch element
     if (
       zodiac.toLowerCase() === "aries" ||
       zodiac.toLowerCase() === "leo" ||
@@ -244,27 +245,28 @@ const Profile = () => {
       .catch((err) => console.log(err));
   }, [userInfo]);
 
-  useEffect(() => {
-    if (zodiac != "") {
-      fetchDescription()
-        .then((res) => {
-          let descriptions: string[] = [];
-          if (res.prediction != null) {
-            descriptions.push(res.prediction["personal_life"]);
-            descriptions.push(res.prediction["profession"]);
-            descriptions.push(res.prediction["health"]);
-            descriptions.push(res.prediction["emotions"]);
-            descriptions.push(res.prediction["travel"]);
-            descriptions.push(res.prediction["luck"]);
-          }
+  // useEffect(() => {
+  //   if (zodiac != "") {
+  //     fetchDescription()
+  //       .then((res) => {
+  //         let descriptions: string[] = [];
+  //         if (res.prediction != null) {
+  //           descriptions.push(res.prediction["personal_life"]);
+  //           descriptions.push(res.prediction["profession"]);
+  //           descriptions.push(res.prediction["health"]);
+  //           descriptions.push(res.prediction["emotions"]);
+  //           descriptions.push(res.prediction["travel"]);
+  //           descriptions.push(res.prediction["luck"]);
+  //         }
 
-          setDescription(
-            descriptions[Math.floor(Math.random() * descriptions.length)]
-          );
-        })
-        .catch((err) => console.log(err));
-    }
-  }, [zodiac]);
+  //         setDescription(
+  //           descriptions[Math.floor(Math.random() * descriptions.length)]
+  //         );
+  //       })
+  //       .catch((err) => console.log(err));
+  //   }
+  // }, [zodiac]);
+
   const editProfile = () => {
     navigate("/profileedit"); // Navigate to the profile page
   };
@@ -415,34 +417,34 @@ const Profile = () => {
     }
   };
 
-  const fetchDescription = async () => {
-    const data = {
-      zodiac: zodiac,
-    };
-    const token = localStorage.getItem("authorization");
-    console.log(`api/sun_sign_prediction/daily - Data : `, data);
-    try {
-      const response: any = await axios.post(
-        `${API_BASE_URL}/api/astronology/sun_sign_prediction/daily`,
-        data,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json", // Ensure proper content type
-          },
-        }
-      );
+  // const fetchDescription = async () => {
+  //   const data = {
+  //     zodiac: zodiac,
+  //   };
+  //   const token = localStorage.getItem("authorization");
+  //   console.log(`api/sun_sign_prediction/daily - Data : `, data);
+  //   try {
+  //     const response: any = await axios.post(
+  //       `${API_BASE_URL}/api/astronology/sun_sign_prediction/daily`,
+  //       data,
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //           "Content-Type": "application/json", // Ensure proper content type
+  //         },
+  //       }
+  //     );
 
-      if (response.status == 200) {
-        console.log("sun_sign_prediction >>>>>>>>>>>>>", response.data.data);
-        return response.data.data;
-      } else {
-        return null;
-      }
-    } catch (error) {
-      console.log("sun_sign_prediction Error>>>>>>>>>", error);
-    }
-  };
+  //     if (response.status == 200) {
+  //       console.log("sun_sign_prediction >>>>>>>>>>>>>", response.data.data);
+  //       return response.data.data;
+  //     } else {
+  //       return null;
+  //     }
+  //   } catch (error) {
+  //     console.log("sun_sign_prediction Error>>>>>>>>>", error);
+  //   }
+  // };
 
   const fetchElements = async (geoData: GeoData) => {
     const birth = new Date(userInfo.setting.birth);
@@ -501,9 +503,13 @@ const Profile = () => {
         className="absolute top-0 right-0 z-0"
       ></img>
       <div className="flex flex-col gap-[20px] h-full overflow-x-hidden overflow-y-scroll relative z-10">
-        <h1 className="text-[24px] leading-[43px] tracking-[0.4px] text-white">
-          Daily Horoscope
-        </h1>
+        {/* <h1 className="text-[24px] leading-[43px] tracking-[0.4px] text-white"> */}
+        {/* Daily Horoscope */}
+        {/* </h1> */}
+        <img
+          src="assets/images/logo.png"
+          className="rounded-full w-full h-[200px] scale-75"
+        ></img>
 
         <div className="flex items-center gap-2">
           <img src={avatar} className="rounded-full w-[55px] h-[55px]"></img>
@@ -533,7 +539,7 @@ const Profile = () => {
           </div>
         </div>
 
-        <div>
+        {/* <div>
           <span className="text-white text-[14px] leading-[24px] block max-h-[250px] overflow-hidden">
             {isExpanded ? description : description.slice(0, characterLimit)}
             {description.length > characterLimit && !isExpanded && "..."}
@@ -546,7 +552,7 @@ const Profile = () => {
               {isExpanded ? "Show Less" : "Show More"}
             </span>
           )}
-        </div>
+        </div> */}
 
         <div className="w-full flex justify-center">
           <div className="astronify flex justify-center items-center relative">
@@ -620,7 +626,7 @@ const Profile = () => {
                     <span className="text-white text-[10px] leading-[18px] font-semibold">
                       LUCKY NO.
                     </span>
-                    <span className="text-[14px] leading-[27px] text-[#03B1FB]">
+                    <span className="text-white text-[11px] leading-[16px]">
                       {luckyNo}
                     </span>
                   </div>
@@ -652,7 +658,7 @@ const Profile = () => {
                     <span className="text-white text-[10px] leading-[18px] font-semibold">
                       CHINESE ZOD
                     </span>
-                    <span className="text-[14px] leading-[18px] text-[#03B1FB]">
+                    <span className="text-white text-[11px] leading-[16px]">
                       {chineseZod}
                     </span>
                   </div>
@@ -680,7 +686,7 @@ const Profile = () => {
           </div>
           <div
             className="flex items-center justify-center gap-2 bg-gradient-to-r from-[rgba(134,134,134,0.5)] to-[rgba(88,88,88,0.5)] border border-[#77777766] rounded-[20px] py-[14px] cursor-not-allowed" /*backdrop-blur-[42px] hover:opacity-50 */
-            // onClick={handleClickWallet}
+          // onClick={handleClickWallet}
           >
             <div>
               <WalletIcon />

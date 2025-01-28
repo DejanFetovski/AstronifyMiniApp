@@ -72,7 +72,6 @@ export async function createUser(userInfo: any, avatar: string): Promise<any> {
       sex: 'male',
     },
     tasks: tasks,
-    point: 0,
     isFirstLogin: true,
   };
 
@@ -102,7 +101,6 @@ export async function findOrCreateUser(
         birth: null,
         sex: 'male',
       },
-      point: 0,
       isFirstLogin: true,
     };
 

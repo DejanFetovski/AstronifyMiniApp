@@ -9,7 +9,7 @@ import routeAuth from './routes/auth.routes'
 import routeUser from './routes/user.routes'
 import routerAstronology from './routes/astronology.routes'
 import routeGPT from './routes/chatgpt.route'
-// import routeTask from './routes/task.routes'
+import routeTask from './routes/task.routes'
 // import routeGame from './routes/game.routes'
 
 import { appInit } from './core/tapgame'
@@ -41,6 +41,7 @@ export const run = async (bot: any): Promise<void> => {
   app.use('/api/user', routeUser)
   app.use('/api/astronology', routerAstronology)
   app.use('/api/chatgpt', routeGPT)
+  app.use('/api/task', routeTask)
 
   const port = process.env.PORT
 

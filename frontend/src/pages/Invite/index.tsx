@@ -27,8 +27,13 @@ const Invite = () => {
 
   const handleClickInvite = () => {
     console.log("handleClickInvite");
+    
+    const message = encodeURIComponent(
+      `🌠 The stars have aligned and so should you! 🌠\n\nJoin Astronify for a stellar mix of astrology, crypto updates and rewards that are out of this world.🚀`
+      );
+      
     tele.openTelegramLink(
-      `https://t.me/share/url?url=${inviteCode}&text="Welcome to Astronify App. You can realize your position in space"`
+      `https://t.me/share/url?url=${inviteCode}&text=${message}`
     );
   };
 
@@ -131,7 +136,7 @@ const Invite = () => {
                   <button
                     className={`bg-[#03B1FB] p-3 rounded-2xl ${
                       user.status === true ? "opacity-50" : ""
-                    }`}
+                      }`}
                   >
                     {user?.state === true ? "Accepted" : "Invite"}
                   </button>

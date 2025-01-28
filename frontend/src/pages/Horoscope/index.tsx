@@ -1,20 +1,26 @@
+import { useEffect } from 'react'
 import { useNavigate } from "react-router-dom";
 import AskInput from "../../components/AskInput";
 import BottomBar from "../../components/BottomBar";
 import GradientBorder from "../../components/GradientBorder";
 import { useState } from "react";
 import { motion } from "framer-motion";
+import axios from "axios";
+
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const defaultQuestion ="What is my horoscope for today?"
 
 const Horoscope = () => {
   const navigate = useNavigate();
   const [type, setType] = useState(0);
   const [startQuestion, setStartQuestion] = useState("");
+  const [point, setPoint] = useState(0)
 
   const handleClickFinance = () => {
     console.log("handleClickFinance");
     setType(1);
     setStartQuestion(
-       "It’s time to take control of my financial journey—where do we start?"
+      "It’s time to take control of my financial journey—where do we start?"
     );
   };
   const handleClickCareer = () => {
@@ -33,7 +39,29 @@ const Horoscope = () => {
     setType(4);
     setStartQuestion("It’s time to prioritize my health and wellness—how should I begin?");
   };
- 
+
+  const fetchUserInfo = async () => {
+    console.log("Orcale - getUserInfo...");
+    const token = localStorage.getItem("authorization");
+
+    // Get User Info
+    const response = await axios.get(`${API_BASE_URL}/api/user/info`, {
+      headers: {
+        Authorization: `bearer ${token}`,
+      },
+    });
+
+    if (response.data.state == true) {
+      const userInfo = response.data.data
+      console.log("Orcale - getUserInfo...", userInfo);
+      setPoint(userInfo.point)
+    }
+
+  }
+
+  useEffect(() => {
+    fetchUserInfo()
+  }, [])
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -52,7 +80,7 @@ const Horoscope = () => {
             <div
               className={`${
                 type == 1 ? "opacity-50" : ""
-              } text-white flex flex-col items-center justify-between gradient-bg border border-[#FE53BB] rounded-[24px] py-2`}
+                } text-white flex flex-col items-center justify-between gradient-bg border border-[#FE53BB] rounded-[24px] py-2`}
               onClick={handleClickFinance}
             >
               <img src="assets/images/rocket.png"></img>
@@ -63,7 +91,7 @@ const Horoscope = () => {
             <div
               className={`${
                 type == 2 ? "opacity-50" : ""
-              } text-white flex flex-col items-center justify-between gradient-bg border border-[#FE53BB] rounded-[24px] py-2`}
+                } text-white flex flex-col items-center justify-between gradient-bg border border-[#FE53BB] rounded-[24px] py-2`}
               onClick={handleClickCareer}
             >
               <img src="assets/images/panda.png"></img>
@@ -76,7 +104,7 @@ const Horoscope = () => {
             <div
               className={`${
                 type == 3 ? "opacity-50" : ""
-              } text-white flex flex-col items-center justify-between gradient-bg border border-[#FE53BB] rounded-[24px] py-2`}
+                } text-white flex flex-col items-center justify-between gradient-bg border border-[#FE53BB] rounded-[24px] py-2`}
               onClick={handleClickRelation}
             >
               <img src="assets/images/relation.png"></img>
@@ -87,7 +115,7 @@ const Horoscope = () => {
             <div
               className={`${
                 type == 4 ? "opacity-50" : ""
-              } text-white flex flex-col items-center justify-between gradient-bg border border-[#FE53BB] rounded-[24px] py-2`}
+                } text-white flex flex-col items-center justify-between gradient-bg border border-[#FE53BB] rounded-[24px] py-2`}
               onClick={handleClickHealth}
             >
               <img src="assets/images/watch.png"></img>
@@ -105,25 +133,25 @@ const Horoscope = () => {
                 Rewards Points
               </span>
               <span className="text-[19px] leading-[43px] tracking-[0.4px]">
-                10000
+                {point || 0} 
               </span>
             </div>
           </GradientBorder>
         </div>
         <AskInput
-          text={startQuestion}
+          text={startQuestion || defaultQuestion}
           onChange={(message) => {
             setStartQuestion(message);
           }}
           onSendMessage={() => {
-            console.log(`category: ${type} question: ${startQuestion}`);
+            console.log(`category: ${type} question: ${startQuestion || defaultQuestion}`);
 
             navigate("/agent", {
-              state: { type: type, question: startQuestion },
+              state: { type: type, question: startQuestion || defaultQuestion },
             });
           }}
           onKeyDown = {() => {
-              //
+            //
           }}
         ></AskInput>
       </div>

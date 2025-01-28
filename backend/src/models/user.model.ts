@@ -129,6 +129,7 @@ export interface UserDocument extends Document {
   tasks: [UserTaskDocument]
   point: number
   isFirstLogin: Boolean
+  lastLoginTimeStamp: number
 }
 
 // Define the schema corresponding to the document interface
@@ -146,12 +147,16 @@ const userSchema = new Schema<UserDocument>({
   tasks: [UserTaskSchema],
   point: {
     type: Number,
-    default: 0,
+    default: 10000,
   },
   isFirstLogin: {
     type: Boolean,
     default: true
   },
+  lastLoginTimeStamp :{
+    type: Number,
+    default: Date.now
+  }
 })
 
 // Create a Model

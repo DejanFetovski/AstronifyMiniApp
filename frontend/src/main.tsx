@@ -86,12 +86,6 @@ const App: React.FC = () => {
       },
     });
 
-    // if (res.data.state == false || res.data?.isFirstLogin == true) {
-    //   // window.location.href = "/";
-    // } else {
-    //   // window.location.href = "/profile";
-    // }
-
     console.log("Set User Info>>>>>", res.data.data);
     setUserInfo(res.data.data);
   };

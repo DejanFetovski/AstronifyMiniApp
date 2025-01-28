@@ -35,7 +35,6 @@ router.get('/info', verifyToken, async (req, res) => {
           birth: new Date(),
           sex: "male",
         },
-        point: 0,
         isFirstLogin: true,
       });
 
@@ -81,7 +80,7 @@ router.put('/info', verifyToken, async (req, res) => {
   try {
     const { chatId } = req.body.user;
     const data = req.body;
-    
+
     // Find the user by chatId
     const user = await UserModel.findOne({ chatId });
 
@@ -116,10 +115,40 @@ router.put('/info', verifyToken, async (req, res) => {
   }
 });
 
-router.get('/referral', verifyToken, async(req, res) => {
+router.post('/update_task', verifyToken, async (req, res) => {
+  console.log(`user.route.ts - update task`)
   try {
     const { chatId } = req.body.user;
-    const referrals = await ReferralModel.find({inviterId: chatId})
+    const { point, taskId, isAccomplish } = req.body
+
+    const user = await UserModel.findOne({ chatId: chatId });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    console.log("----------------------------", taskId, isAccomplish)
+
+    // Find and update the specific task
+    const task = user.tasks.find(task => task.taskId === taskId);
+    if (task) {
+      task.isAccomplish = isAccomplish;
+    } else {
+      return res.status(404).json({ message: 'Task not found' });
+    }
+
+    const updatedUser = await user.save();
+    return res.status(200).json({ data:updatedUser });
+
+  } catch (error) {
+  res.status(500).end()
+}
+})
+
+
+router.get('/referral', verifyToken, async (req, res) => {
+  try {
+    const { chatId } = req.body.user;
+    const referrals = await ReferralModel.find({ inviterId: chatId })
     res.status(200).json({
       referrals: referrals
     })

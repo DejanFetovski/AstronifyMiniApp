@@ -1,27 +1,65 @@
+import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import BottomBar from "../../components/BottomBar";
 import { motion } from "framer-motion";
+import axios from "axios";
+
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const Tasks = () => {
   const navigate = useNavigate();
-  const tasks = [
-    {
-      title: "Daily login bonus",
-      points: 500,
-    },
-    {
-      title: "Engage with AI Agent - 2 Prompts",
-      points: 1200,
-    },
-    {
-      title: "Get your daily horoscope reading",
-      points: 750,
-    },
-    {
-      title: "Invite 1 friend",
-      points: 1200,
-    },
-  ];
+  const [tasks, setTasks] = useState([]);
+  const [point, setPoint] = useState(0)
+
+  const fetchTaskModel = async () => {
+
+    const token = localStorage.getItem("authorization");
+    // GetTask Model
+    let response: any = await axios.get(
+      `${API_BASE_URL}/api/task`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json", // Ensure proper content type
+        },
+      }
+    );
+
+    if (response.status !== 200)
+      return
+
+    const basicTasksData = response.data;
+
+    // Get User Info
+    response = await axios.get(`${API_BASE_URL}/api/user/info`, {
+      headers: {
+        Authorization: `bearer ${token}`,
+      },
+    });
+
+    setPoint(response.data.data.point)
+
+    const userTasksInfo = response.data.data.tasks;
+
+    const tasks = userTasksInfo.map((task: any) => {
+      const matchingTask = basicTasksData.find((item: any) => item.id === task.taskId);
+      return {
+        taskId: task.taskId,
+        title: matchingTask.title,
+        isAccomplish: task.isAccomplish,
+        points: matchingTask.points
+      };
+    });
+
+    console.log("tasks-------------------------", tasks)
+    setTasks(tasks)
+  }
+
+  useEffect(() => {
+    //Get Database Task
+    fetchTaskModel()
+  }, [])
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -38,7 +76,7 @@ const Tasks = () => {
         <div className="flex flex-col">
           <div className="flex flex-col items-center gap-[6px]">
             <span className="text-[20px] leading-[28px] text-white">
-              4 Tasks Available
+              {tasks ? tasks.length : 'No'} Tasks Available
             </span>
             <span className="text-[13px] text-[#FFFFFFB2]">
               Complete Tasks - Receive Points
@@ -55,7 +93,7 @@ const Tasks = () => {
             <img src="assets/images/medal.png" className="absolute top-3"></img>
           </div>
           <div className="relative w-full flex flex-col p-5 pt-20 gap-4 z-10">
-            {tasks.map((task, index) => (
+            {tasks && tasks.map((task: any, index: any) => (
               <div key={index}>
                 <div className="flex justify-between">
                   <div className="flex flex-col justify-between">
@@ -67,15 +105,46 @@ const Tasks = () => {
                     </span>
                   </div>
                   <img
-                    src="assets/images/start-btn.png"
-                    onClick={() => {
-                      if (task.title === "Invite 1 friend") {
-                        navigate("/invite");
-                      } else {
+                    src={!task.isAccomplish ? "assets/images/start-btn.png" : "assets/images/completed-btn.png"}
+                    onClick={async () => {
+                      if (task.isAccomplish)
+                        return
+
+                      const token = localStorage.getItem("authorization");
+                      if (task.title === "Daily login bonus") {
+                        const response = await axios.get(`${API_BASE_URL}/api/user/info`, {
+                          headers: {
+                            Authorization: `Bearer ${token}`,
+                            "Content-Type": "application/json",
+                          },
+                        });
+
+                        await axios.post(
+                          `${API_BASE_URL}/api/user/update_task`,
+                          {
+                            'point': response.data.point + task.points,
+                            'taskId': index + 1,
+                            'isAccomplish': !task.isAccomplish
+                          },
+                          {
+                            headers: {
+                              Authorization: `Bearer ${token}`,
+                              "Content-Type": "application/json", // Ensure proper content type
+                            },
+                          }
+                        );
                         navigate("/profile");
+                      } else if (task.title === "Engage with AI Agent - 2 Prompts") {
+                        navigate("/profile");
+
+                      } else if (task.title === "Get your daily horoscope reading") {
+
+                        navigate("/profile");
+                      } else if (task.title === "Invite 1 friend") {
+
+                        navigate("/invite");
                       }
                     }}
-                    alt="Start"
                   />
                 </div>
                 <div className="colorDivider"></div>

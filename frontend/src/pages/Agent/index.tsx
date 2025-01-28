@@ -49,6 +49,40 @@ const Agent = () => {
   const [inputMessage, setInputMessage] = useState("");
   const containerRef = useRef(null);
 
+  const sendMessageAuto = async(inputMessage: string) => {
+    const newMessage = { type: 1, message: inputMessage };
+    setAllMessages((prevMessages) => [...prevMessages, newMessage]);
+    setInputMessage("");
+
+    const gptResponse = await chatGptResponse(inputMessage);
+
+    if (gptResponse !== "" && gptResponse !== null) {
+      const gptReplyMessage = { type: 2, message: gptResponse };
+      setAllMessages((prevMessages) => [
+        ...prevMessages,
+        gptReplyMessage,
+      ]);
+    }
+  }
+
+  const sendMessage = async () => {
+    if(inputMessage == "")
+      return;
+    const newMessage = { type: 1, message: inputMessage };
+    setAllMessages((prevMessages) => [...prevMessages, newMessage]);
+    setInputMessage("");
+
+    const gptResponse = await chatGptResponse(inputMessage);
+
+    if (gptResponse !== "" && gptResponse !== null) {
+      const gptReplyMessage = { type: 2, message: gptResponse };
+      setAllMessages((prevMessages) => [
+        ...prevMessages,
+        gptReplyMessage,
+      ]);
+    }
+  }
+
   useEffect(() => {
     if (containerRef.current) {
       containerRef.current.scrollTop = containerRef.current.scrollHeight;
@@ -57,9 +91,9 @@ const Agent = () => {
 
   useEffect(() => {
     const { type, question } = location.state;
-    
-    setInputMessage(question);
     setCategory(type);
+
+    sendMessageAuto(question)
   }, [location]);
   const handleBack = () => {
     navigate("/horoscope");
@@ -172,23 +206,7 @@ const Agent = () => {
           onChange={(message: string) => {
             setInputMessage(message);
           }}
-          onSendMessage={async () => {
-            if(inputMessage == "")
-              return;
-            const newMessage = { type: 1, message: inputMessage };
-            setAllMessages((prevMessages) => [...prevMessages, newMessage]);
-            setInputMessage("");
-
-            const gptResponse = await chatGptResponse(inputMessage);
-
-            if (gptResponse !== "" && gptResponse !== null) {
-              const gptReplyMessage = { type: 2, message: gptResponse };
-              setAllMessages((prevMessages) => [
-                ...prevMessages,
-                gptReplyMessage,
-              ]);
-            }
-          }}
+          onSendMessage={sendMessage}
           onKeyDown={async (event: React.KeyboardEvent) => {
             if (event.key === "Enter") {
               event.preventDefault(); // Prevent any default Enter key behavior (e.g., form submission)

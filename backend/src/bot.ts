@@ -215,7 +215,7 @@ export const replaceMenu = async (
   return new Promise(async (resolve, reject) => {
     try {
       await bot.deleteMessage(chatId, messageId)
-    } catch (error) {}
+    } catch (error) { }
 
     await removeMenu(chatId, messageType)
 
@@ -257,7 +257,7 @@ export const removeMessage = async (sessionId: string, messageId: number) => {
   if (sessionId && messageId) {
     try {
       await bot.deleteMessage(sessionId, messageId)
-    } catch (error) {}
+    } catch (error) { }
   }
 }
 
@@ -393,12 +393,12 @@ Dates will be announced in our announcement channel. Stay tuned!`
   let json = [
     [
       json_webapp_buttonItem(
-        'Play in 1 click 💰',
+        'Open Astronify',
         process.env.WEBAPP_URL,
         sessionId
       ),
     ],
-    [json_url_buttonItem('Subscribe to the channel', 't.me/+iEpy-r_inQNhZjZi')],
+    [json_url_buttonItem('Join Telegram Chat', 't.me/Astronify_AI')],
   ]
   return { title: title, options: json }
 }
@@ -412,13 +412,11 @@ export const getMainMenuMessage = async (
   }
 
   const MESSAGE = `
-  Hello! Welcome to Tap Game 👋
-You are now the director of a crypto exchange.
-Which one? You choose. Tap the screen, collect coins, pump up your passive income,
-develop your own income strategy.
-We’ll definitely appreciate your efforts once the token is listed (the dates are coming soon).
-Don't forget about your friends — bring them to the game and get even more coins together!
-  `
+  🚀 Welcome to Astronify – the ultimate intersection where astrology meets crypto, offering a unique blend of insights, airdrops, and value for both stargazers and traders.
+
+  🌌 Whether you’re deeply into planetary alignments, market trends, or a bit of both, Astronify is here to help you stay aligned—with the stars and your portfolio.
+  
+  🌠 Join us today and let’s explore the cosmos together.`
 
   return MESSAGE
 }
@@ -433,19 +431,13 @@ export const json_main = async (sessionId: string) => {
   const json = [
     [
       json_webapp_buttonItem(
-        'Play in 1 click 💰',
+        'Open Astronify',
         process.env.WEBAPP_URL,
         sessionId
       ),
     ],
-    [json_url_buttonItem('Subscribe to the channel', 't.me/+FiDY6BZHVUA4MDIy')],
-    [
-      json_buttonItem(
-        itemData,
-        C.OptionCode.MAIN_HELP,
-        'How to earn from the game'
-      ),
-    ],
+    [json_url_buttonItem('Join Telegram Chat', 't.me/Astronify_AI')],
+    [json_url_buttonItem('Visit Website', 'https://astronify.ai')],
   ]
 
   return { title: '', options: json }
@@ -506,24 +498,21 @@ export const createSession = async (chatId: string) => {
 export function showSessionLog(session: any) {
   if (session.type === 'private') {
     console.log(
-      `@${session.username} user${
-        session.wallet
+      `@${session.username} user${session.wallet
         ? ' joined'
         : "'s session has been created (" + session.chatId + ')'
       }`
     )
   } else if (session.type === 'group') {
     console.log(
-      `@${session.username} group${
-        session.wallet
+      `@${session.username} group${session.wallet
         ? ' joined'
         : "'s session has been created (" + session.chatId + ')'
       }`
     )
   } else if (session.type === 'channel') {
     console.log(
-      `@${session.username} channel${
-        session.wallet ? ' joined' : "'s session has been created"
+      `@${session.username} channel${session.wallet ? ' joined' : "'s session has been created"
       }`
     )
   }
