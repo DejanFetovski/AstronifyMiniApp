@@ -128,7 +128,8 @@ export interface UserDocument extends Document {
   zodiac: ZodiacDocument
   tasks: [UserTaskDocument]
   point: number
-  isFirstLogin: Boolean
+  isFirstLogin: boolean
+  chatNumber: number
   lastLoginTimeStamp: number
 }
 
@@ -152,6 +153,10 @@ const userSchema = new Schema<UserDocument>({
   isFirstLogin: {
     type: Boolean,
     default: true
+  },
+  chatNumber: {
+    type: Number,
+    default: 0
   },
   lastLoginTimeStamp :{
     type: Number,

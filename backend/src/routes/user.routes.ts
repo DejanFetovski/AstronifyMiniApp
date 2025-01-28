@@ -4,6 +4,7 @@ import dotenv from 'dotenv'
 import { UserModel } from '../models/user.model'
 import { ReferralModel } from '../models/referral.model'
 import { verifyToken } from '../middleware'
+import { TaskModel } from '../models/task.model'
 
 dotenv.config()
 
@@ -121,27 +122,51 @@ router.post('/update_task', verifyToken, async (req, res) => {
     const { chatId } = req.body.user;
     const { point, taskId, isAccomplish } = req.body
 
+    // Get Default Task data
+    // const default = await TaskModel.find({});
+    // let response: any = await axios.get(
+    //   `${API_BASE_URL}/api/task`,
+    //   {
+    //     headers: {
+    //       Authorization: `Bearer ${token}`,
+    //       "Content-Type": "application/json", // Ensure proper content type
+    //     },
+    //   }
+    // );
+
+    // if (response.status !== 200)
+    //   return
+    const taskData = await TaskModel.find({})
+    console.log("TaskData................", taskData)
+    const matchedTaskData = taskData.filter((task) => task.id == taskId);
+    console.log("TaskData................", matchedTaskData)
+
+
     const user = await UserModel.findOne({ chatId: chatId });
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
-
     console.log("----------------------------", taskId, isAccomplish)
 
     // Find and update the specific task
     const task = user.tasks.find(task => task.taskId === taskId);
     if (task) {
       task.isAccomplish = isAccomplish;
+
+      if(matchedTaskData != null && matchedTaskData[0] != null){
+        user.point += matchedTaskData[0].points;
+      }
+        
     } else {
       return res.status(404).json({ message: 'Task not found' });
     }
 
     const updatedUser = await user.save();
-    return res.status(200).json({ data:updatedUser });
+    return res.status(200).json({ data: updatedUser });
 
   } catch (error) {
-  res.status(500).end()
-}
+    res.status(500).end()
+  }
 })
 
 
