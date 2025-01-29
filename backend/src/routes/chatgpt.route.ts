@@ -108,11 +108,12 @@ router.post('/chat', verifyToken, async (req, res) => {
                     console.log("User not found")
                 } else {
                     // AI Agent - 2 Prompts
-                    if (user.chatNumber >= 2) {
+                    if (user.chatNumber >= 2 && user.chatNumber == -1) {
                         const task = user.tasks.find(task => task.taskId === 2);
                         if (task) {
                             task.isAccomplish = true;
                             user.point += 1200
+                            user.chatNumber = -1
                             const updatedUser = await user.save();
                             console.log("Task info updated")
                         }
