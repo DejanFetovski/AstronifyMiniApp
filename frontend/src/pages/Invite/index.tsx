@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
 import axios from "axios";
-
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 import BottomBar from "../../components/BottomBar";
 import CopyIcon from "../../svgs/CopyIcon";
 import SearchIcon from "../../svgs/SearchIcon";
@@ -27,11 +27,11 @@ const Invite = () => {
 
   const handleClickInvite = () => {
     console.log("handleClickInvite");
-    
+
     const message = encodeURIComponent(
       `🌠 The stars have aligned and so should you! 🌠\n\nJoin Astronify for a stellar mix of astrology, crypto updates and rewards that are out of this world.🚀`
-      );
-      
+    );
+
     tele.openTelegramLink(
       `https://t.me/share/url?url=${inviteCode}&text=${message}`
     );
@@ -98,16 +98,20 @@ const Invite = () => {
             </div>
             <img src="assets/images/telegram.png"></img>
           </div>
-          <div
-            className="text-white px-[20px] py-[8px] flex items-center justify-between gap-4 bg-gradient-to-r from-[rgba(255,83,188,0.15)] to-[rgba(10,252,212,0.15)] border border-[#FE53BB] rounded-full"
-            onClick={handleCopyReferralLink}
-          >
-            <div className="flex flex-col">
-              <span className="text-[12px] leading-[16px]">Copy</span>
-              <span className="text-[16px] leading-[22px]">Referral Link</span>
+          <CopyToClipboard
+            text={inviteCode}
+            onCopy={handleCopyReferralLink}>
+            <div
+              className="text-white px-[20px] py-[8px] flex items-center justify-between gap-4 bg-gradient-to-r from-[rgba(255,83,188,0.15)] to-[rgba(10,252,212,0.15)] border border-[#FE53BB] rounded-full"
+              onClick={handleCopyReferralLink}
+            >
+              <div className="flex flex-col">
+                <span className="text-[12px] leading-[16px]">Copy</span>
+                <span className="text-[16px] leading-[22px]">Referral Link</span>
+              </div>
+              <CopyIcon />
             </div>
-            <CopyIcon />
-          </div>
+          </CopyToClipboard>
         </div>
 
         <div className="inviteCard mt-12 flex-grow">
@@ -134,8 +138,7 @@ const Invite = () => {
                     </span>
                   </div>
                   <button
-                    className={`bg-[#03B1FB] p-3 rounded-2xl ${
-                      user.status === true ? "opacity-50" : ""
+                    className={`bg-[#03B1FB] p-3 rounded-2xl ${user.status === true ? "opacity-50" : ""
                       }`}
                   >
                     {user?.state === true ? "Accepted" : "Invite"}
