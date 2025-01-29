@@ -128,10 +128,44 @@ export async function saveReferral(
     userFirstName: userInfo.first_name,
     userLastName: userInfo.last_name,
     userName: userInfo.username,
-    state: false,
+    state: true,
   };
 
   const referral = new ReferralModel(referralData);
+
+  // Set user task field
+  if (referral != null) {
+    try {
+      const chatId = invitedFrom;
+      const taskData = await TaskModel.find({})
+      console.log("TaskData................", taskData)
+      const matchedTaskData = taskData.filter((task) => task.id == 4);
+      console.log("TaskData................", matchedTaskData)
+
+
+      const user = await UserModel.findOne({ chatId: chatId });
+      if (!user) {
+        console.log(`User not found : ${chatId}`)
+      } else {
+        // Find and update the specific task
+        const task = user.tasks.find(task => task.taskId === 4);
+        if (task) {
+          task.isAccomplish = true;
+
+          if (matchedTaskData != null && matchedTaskData[0] != null) {
+            user.point += matchedTaskData[0].points;
+          }
+          const updatedUser = await user.save();
+
+        } else {
+          console.log("Task is not found")
+        }
+      }
+    } catch (error) {
+      console.log("Update Task in UserTable is failed", error)
+    }
+  }
+
   // Save the referral data to the database
   return await referral.save();
 }
