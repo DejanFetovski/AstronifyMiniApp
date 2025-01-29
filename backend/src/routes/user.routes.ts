@@ -1,5 +1,6 @@
 import express from 'express'
 import dotenv from 'dotenv'
+import cron from 'node-cron';
 
 import { UserModel } from '../models/user.model'
 import { ReferralModel } from '../models/referral.model'
@@ -153,10 +154,10 @@ router.post('/update_task', verifyToken, async (req, res) => {
     if (task) {
       task.isAccomplish = isAccomplish;
 
-      if(matchedTaskData != null && matchedTaskData[0] != null){
+      if (matchedTaskData != null && matchedTaskData[0] != null) {
         user.point += matchedTaskData[0].points;
       }
-        
+
     } else {
       return res.status(404).json({ message: 'Task not found' });
     }
@@ -229,81 +230,14 @@ router.get('/friend-count', verifyToken, async (req, res) => {
   }
 })
 
-// router.get('/task', verifyToken, async (req, res) => {
-//   const { chatId } = req.body.user
-
-//   //Get existed Task data of user
-//   const oldUser = await UserModel.findOne({ chatId: chatId })
-//   const oldUserTasks = oldUser?.userTasks;
-
-//   let newUserTasks: UserTaskDocument[] = oldUserTasks ? [...oldUserTasks] : [];
-
-//   let invitedNumber: number = 0;
-//   try {
-//     invitedNumber = await UserModel.countDocuments({
-//       invitedFrom: chatId,
-//     })
-//     console.log(`Number of users with invitedFrom not empty: ${invitedNumber}`)
-//   } catch (error) {
-//     console.error('Error counting users with invitedFrom:', error)
-//     throw error
-//   }
-
-//   const { xConnected, tgChannelConnected, tgGroupConnected, walletConnected } =
-//     await checkRoyalTask(chatId)
-//   // await checkFriendTask(chatId)
-//   TapGame.gameTasks.forEach((task) => {
-//     let existingTask = oldUserTasks?.find((_v, _i) => _v.id == task.id);
-//     if (existingTask) return;
-
-//     let isJoined = false;
-//     if (task.type?.toLowerCase() == "Royal".toLowerCase()) {
-//       if (task.title?.toLowerCase() == "Follow us on X".toLowerCase())
-//         isJoined = xConnected;
-//       else if (task.title?.toLowerCase() == "Join the TG Channel".toLowerCase())
-//         isJoined = tgChannelConnected;
-//       else if (task.title?.toLowerCase() == "Join the Royal Coin Chat".toLowerCase())
-//         isJoined = tgGroupConnected;
-//       else if (task.title?.toLowerCase() == "Connect your TON wallet".toLowerCase())
-//         isJoined = walletConnected;
-//     } else if (task.type?.toLowerCase() == "Friends".toLowerCase()) {
-//       isJoined = invitedNumber > parseInt(task.title?.split(' ')[1])
-//     }
-//     if (isJoined) {
-//       let generatedUserTask: UserTaskDocument = {
-//         id: task.id,
-//         isJoined: isJoined,
-//         isClaimed: false
-//       } as UserTaskDocument
-//       newUserTasks.push(generatedUserTask);
-//     }
-//   })
-
-//   try {
-//     const updatedUser = await UserModel.findOneAndUpdate(
-//       { chatId: chatId }, // Find the user by chatId
-//       { userTasks: newUserTasks }, // Update the tasks field
-//       { new: true } // Return the updated document
-//     )
-
-//     if (updatedUser) {
-//       console.log('User tasks updated successfully:', updatedUser)
-//       res.status(200).json({
-//         state: true,
-//         data: updatedUser,
-//       })
-//     } else {
-//       console.log('User not found')
-//       res.status(200).json({
-//         state: false,
-//         data: null,
-//       })
-//     }
-//   } catch (error) {
-//     console.error('Error updating user tasks:', error)
-//     res.status(500).end()
-//   }
-// })
-
+cron.schedule('0 0 * * *', async () => {
+// cron.schedule('* * * * *', async () => {
+  try {
+    const result = await UserModel.updateMany({}, { $set: { point: 10000 } });
+    console.log(`Reset points for ${result.modifiedCount} users at UTC+0`);
+  } catch (error) {
+    console.error("Error resetting points:", error);
+  }
+});
 
 export default router

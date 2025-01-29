@@ -128,10 +128,10 @@ export async function saveReferral(
     userFirstName: userInfo.first_name,
     userLastName: userInfo.last_name,
     userName: userInfo.username,
-    state: true,
+    state: false,
   };
 
   const referral = new ReferralModel(referralData);
   // Save the referral data to the database
-  await referral.save();
+  return await referral.save();
 }
