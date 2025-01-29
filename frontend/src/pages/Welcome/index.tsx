@@ -170,6 +170,8 @@ const Welcome = () => {
                 placeholderText="DD/MM/YYYY"
                 onChange={handleDateChange}
                 showYearDropdown
+                yearDropdownItemNumber={100} // Adjust the number of years shown
+                scrollableYearDropdown
                 showMonthDropdown
                 className="w-full outline-none bg-[#00000075] rounded-full border-[1px] border-[#000000] text-[#FFFFFF99] cursor-pointer border-none text-[14px] leading-[22px] tracking-[-0.34px] font-light shadow-[0px_0px_0px_1px_#FFFFFF40]  py-2 px-3 h-[48px] "
               />
@@ -207,22 +209,20 @@ const Welcome = () => {
 
             <div className="bg-[#00000066] border-[1px] border-black [box-shadow: 0px_0px_0px_1px_rgba(187, 167, 167, 0.15)] rounded-full grid grid-cols-2 p-1 gap-3">
               <div
-                className={`${
-                  genderSelection == 0
+                className={`${genderSelection == 0
                     ? "bg-[rgb(254,83,187)] text-white"
                     : "bg-transparent text-[#737B84BF]"
-                } flex items-center p-2 rounded-full gap-2 pr-4 text-[16.7px] leading-[22px] tracking-[-0.34px] w- `}
+                  } flex items-center p-2 rounded-full gap-2 pr-4 text-[16.7px] leading-[22px] tracking-[-0.34px] w- `}
                 onClick={() => setGenderSelection(0)}
               >
                 <FemaleIcon active={genderSelection == 0 ? true : false} />
                 <span>Female</span>
               </div>
               <div
-                className={`${
-                  genderSelection == 1
+                className={`${genderSelection == 1
                     ? "bg-[rgb(254,83,187)] text-white"
                     : "bg-transparent text-[#737B84BF]"
-                } flex items-center justify-center p-2 rounded-full gap-2 pr-4 text-[16.7px] leading-[22px] tracking-[-0.34px] `}
+                  } flex items-center justify-center p-2 rounded-full gap-2 pr-4 text-[16.7px] leading-[22px] tracking-[-0.34px] `}
                 onClick={() => setGenderSelection(1)}
               >
                 <MaleIcon active={genderSelection == 1 ? true : false} />
@@ -234,7 +234,7 @@ const Welcome = () => {
               <ActionButton
                 className="gradient-bg w-[167px] h-[40px] flex justify-center items-center"
                 onClick={handleNext}
-                // disabled={!name || !selectedDate} // Disable button if validation fails
+              // disabled={!name || !selectedDate} // Disable button if validation fails
               >
                 <span className="text-[14px] text-white">Next</span>
               </ActionButton>

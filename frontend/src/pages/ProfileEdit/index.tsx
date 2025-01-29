@@ -178,8 +178,11 @@ const ProfileEdit = () => {
             onChange={handleDateChange}
             showYearDropdown
             showMonthDropdown
+            yearDropdownItemNumber={100} // Adjust the number of years shown
+            scrollableYearDropdown
             className="w-full outline-none bg-[#00000075] rounded-full border-[1px] border-[#000000] text-[#FFFFFF99] cursor-pointer border-none text-[14px] leading-[22px] tracking-[-0.34px] font-light shadow-[0px_0px_0px_1px_#FFFFFF40]  py-2 px-3 h-[48px] "
           />
+
         </div>
 
         {/* Location */}
@@ -224,9 +227,9 @@ const ProfileEdit = () => {
           <div
             className={`${
               genderSelection == 0
-                ? "bg-[rgb(254,83,187)] text-white"
-                : "bg-transparent text-[#737B84BF]"
-            } flex items-center p-2 rounded-full gap-2 pr-4 text-[16.7px] leading-[22px] tracking-[-0.34px] w- `}
+              ? "bg-[rgb(254,83,187)] text-white"
+              : "bg-transparent text-[#737B84BF]"
+              } flex items-center p-2 rounded-full gap-2 pr-4 text-[16.7px] leading-[22px] tracking-[-0.34px] w- `}
             onClick={() => setGenderSelection(0)}
           >
             <FemaleIcon active={genderSelection == 0 ? true : false} />
@@ -235,9 +238,9 @@ const ProfileEdit = () => {
           <div
             className={`${
               genderSelection == 1
-                ? "bg-[rgb(254,83,187)] text-white"
-                : "bg-transparent text-[#737B84BF]"
-            } flex items-center justify-center p-2 rounded-full gap-2 pr-4 text-[16.7px] leading-[22px] tracking-[-0.34px] `}
+              ? "bg-[rgb(254,83,187)] text-white"
+              : "bg-transparent text-[#737B84BF]"
+              } flex items-center justify-center p-2 rounded-full gap-2 pr-4 text-[16.7px] leading-[22px] tracking-[-0.34px] `}
             onClick={() => setGenderSelection(1)}
           >
             <MaleIcon active={genderSelection == 1 ? true : false} />
