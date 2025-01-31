@@ -1,28 +1,6 @@
 import dotenv from 'dotenv'
 dotenv.config()
 
-import * as C from './utils/constant'
-
-export enum lvlTypes {
-  LT_PEASANT = 0,
-  LT_MERCHANT,
-  LT_KNIGHT,
-  LT_ROYAL_KNIGHT,
-  LT_LORD,
-  LT_QUEEN,
-  LT_KING,
-}
-
-const lvlLabels: Array<String> = [
-  'PEASANT',
-  'MERCHANT',
-  'KNIGHT',
-  'ROYAL KNIGHT',
-  'LORD',
-  'QUEEN',
-  'KING',
-]
-
 export const init = async () => {}
 
 export const errorLog = (summary: string, error: any): void => {

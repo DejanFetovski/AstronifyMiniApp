@@ -1,6 +1,4 @@
 import express, { Express, NextFunction, Request, Response } from 'express'
-import session from 'express-session';
-
 import cors from 'cors'
 
 require('dotenv').config()
@@ -10,14 +8,13 @@ import routeUser from './routes/user.routes'
 import routerAstronology from './routes/astronology.routes'
 import routeGPT from './routes/chatgpt.route'
 import routeTask from './routes/task.routes'
-// import routeGame from './routes/game.routes'
 
 import { appInit } from './core/tapgame'
-import { startWebSocketServer } from './socket'
+// import { startWebSocketServer } from './socket'
 
 // import https from "https";
 import http from "http";
-import { Socket } from 'socket.io'
+// import { Socket } from 'socket.io'
 
 export const run = async (bot: any): Promise<void> => {
   const app: Express = express()
@@ -58,11 +55,11 @@ export const run = async (bot: any): Promise<void> => {
   })
 
   // Start socket server 
-  startWebSocketServer(server,
-    async (socket: Socket) => {
-      socket.emit("Hello", JSON.stringify({ message: "OK" }))
-    }),
-    async (userId: string) => { }
+  // startWebSocketServer(server,
+  //   async (socket: Socket) => {
+  //     socket.emit("Hello", JSON.stringify({ message: "OK" }))
+  //   }),
+  //   async (userId: string) => { }
 
   // Schedule the task to run every day at 00:00 UTC (midnight)
   appInit();
