@@ -103,7 +103,7 @@ const Invite = () => {
             onCopy={handleCopyReferralLink}>
             <div
               className="text-white px-[20px] py-[8px] flex items-center justify-between gap-4 bg-gradient-to-r from-[rgba(255,83,188,0.15)] to-[rgba(10,252,212,0.15)] border border-[#FE53BB] rounded-full"
-              onClick={handleCopyReferralLink}
+              // onClick={handleCopyReferralLink}
             >
               <div className="flex flex-col">
                 <span className="text-[12px] leading-[16px]">Copy</span>
