@@ -15,7 +15,7 @@ const router = express.Router()
 // @request: bearer token
 // @response: user info & energy & score
 // @method: GET
-router.get('/info', verifyToken, async (req, res) => {
+router.get('/info', verifyToken, async (req, res): Promise<any> => {
   console.log(`user.route.ts - get info`)
   try {
     const { chatId } = req.body.user
@@ -52,7 +52,7 @@ router.get('/info', verifyToken, async (req, res) => {
   }
 })
 
-router.post('/info', verifyToken, async (req, res) => {
+router.post('/info', verifyToken, async (req, res): Promise<any> => {
   console.log(`user.route.ts - save info`)
   try {
     const { chatId } = req.body.user;
@@ -77,7 +77,7 @@ router.post('/info', verifyToken, async (req, res) => {
   }
 })
 
-router.put('/info', verifyToken, async (req, res) => {
+router.put('/info', verifyToken, async (req, res): Promise<any> => {
   console.log(`user.route.ts - update info`)
   try {
     const { chatId } = req.body.user;
@@ -117,7 +117,7 @@ router.put('/info', verifyToken, async (req, res) => {
   }
 });
 
-router.post('/update_task', verifyToken, async (req, res) => {
+router.post('/update_task', verifyToken, async (req, res): Promise<any> => {
   console.log(`user.route.ts - update task`)
   try {
     const { chatId } = req.body.user;
@@ -139,7 +139,9 @@ router.post('/update_task', verifyToken, async (req, res) => {
     //   return
     const taskData = await TaskModel.find({})
     console.log("TaskData................", taskData)
-    const matchedTaskData = taskData.filter((task) => task.id == taskId);
+    // const matchedTaskData = taskData.filter((task: any) => task.id == taskId);
+    const matchedTaskData = taskData.filter((task: any) => task.id == taskId);
+
     console.log("TaskData................", matchedTaskData)
 
 
@@ -150,7 +152,7 @@ router.post('/update_task', verifyToken, async (req, res) => {
     console.log("----------------------------", taskId, isAccomplish)
 
     // Find and update the specific task
-    const task = user.tasks.find(task => task.taskId === taskId);
+    const task = user.tasks.find((task: any) => task.taskId === taskId);
     if (task) {
       task.isAccomplish = isAccomplish;
 
@@ -163,7 +165,7 @@ router.post('/update_task', verifyToken, async (req, res) => {
     }
 
     const updatedUser = await user.save();
-    return res.status(200).json({ data: updatedUser });
+    res.status(200).json({ data: updatedUser });
 
   } catch (error) {
     res.status(500).end()
@@ -171,7 +173,7 @@ router.post('/update_task', verifyToken, async (req, res) => {
 })
 
 
-router.get('/referral', verifyToken, async (req, res) => {
+router.get('/referral', verifyToken, async (req, res): Promise<any> => {
   try {
     const { chatId } = req.body.user;
     const referrals = await ReferralModel.find({ inviterId: chatId })
@@ -185,7 +187,7 @@ router.get('/referral', verifyToken, async (req, res) => {
   }
 
 })
-router.post('/setting', verifyToken, async (req, res) => {
+router.post('/setting', verifyToken, async (req, res): Promise<any> => {
   const chatId = req.body.user?.chatId
   const { lang, animation, sound, music } = req.body
 
@@ -216,7 +218,7 @@ router.post('/setting', verifyToken, async (req, res) => {
   }
 })
 
-router.get('/friend-count', verifyToken, async (req, res) => {
+router.get('/friend-count', verifyToken, async (req, res): Promise<any> => {
   try {
     const { chatId } = req.body.user
     const friendCount = await UserModel.countDocuments({ invitedFrom: chatId });
@@ -231,7 +233,7 @@ router.get('/friend-count', verifyToken, async (req, res) => {
 })
 
 cron.schedule('0 0 * * *', async () => {
-// cron.schedule('* * * * *', async () => {
+  // cron.schedule('* * * * *', async () => {
   try {
     const result = await UserModel.updateMany({}, { $set: { point: 10000 } });
     console.log(`Reset points for ${result.modifiedCount} users at UTC+0`);

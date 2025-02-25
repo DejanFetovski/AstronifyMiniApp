@@ -6,7 +6,7 @@ export const verifyToken = (
     req: express.Request,
     res: express.Response,
     next: express.NextFunction
-  ) => {
+  ) : void => {
     const authHeader = req.headers['authorization']
   
     //Extracting token from authorization header
@@ -14,17 +14,20 @@ export const verifyToken = (
   
     //Checking if the token is null
     if (!token) {
-      return res.status(401).send('Authorization failed. No access token.')
+      const error = new Error('Authorization failed. No access token.')
+      return next(error)
     }
   
     //Verifying if the token is valid.
     jwt.verify(token, process.env.JWT_SECRET as string, (err, user) => {
       if (err) {
         console.log(err)
-        return res.status(403).send('Could not verify token')
+        const error = new Error('Could not verify token')
+        return next(error)
       }
       req.body.user = user
+      next()
     })
-    next()
+    
   }
   
